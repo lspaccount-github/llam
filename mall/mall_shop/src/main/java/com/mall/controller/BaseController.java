@@ -10,10 +10,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.mall.exception.BusinessException;
+import com.mall.exception.ParameterException;
 
 /**
  * @ClassName: BaseController
@@ -130,4 +134,18 @@ public class BaseController  {
 		outJson(returnMap);
 	}
 	
+	/** 基于@ExceptionHandler异常处理 */
+	@ExceptionHandler
+	public String exp(HttpServletRequest request, Exception exception) {
+		request.setAttribute("exception", exception);
+		// 根据不同错误转向不同页面
+		if (exception instanceof BusinessException) {
+			return "error-business";
+		} else if (exception instanceof ParameterException) {
+			return "error-parameter";
+		} else {
+			return "error";
+		}
+	}
+
 }
