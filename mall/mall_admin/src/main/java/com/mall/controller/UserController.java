@@ -23,13 +23,6 @@ public class UserController {
 		try {
 			Order orderByOderId = orderService.getOrderByOderId("111");
 		} catch (Exception e) {
-try {
-			Order orderByOderId = orderService.getOrderByOderId("111");
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return "userList";
 
 			e.printStackTrace();
 		}
