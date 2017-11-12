@@ -23,9 +23,9 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
  */
 public class BaseController  {
 	
-	protected HttpServletRequest request;  
-    protected HttpServletResponse response;  
-    protected HttpSession session; 
+	protected HttpServletRequest request;
+    protected HttpServletResponse response;
+    protected HttpSession session;
     private static ObjectMapper objectMapper=new ObjectMapper();
     
     @ModelAttribute  
