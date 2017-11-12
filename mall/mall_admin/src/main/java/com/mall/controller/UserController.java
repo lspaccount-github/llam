@@ -29,6 +29,9 @@ public class UserController {
 			Order orderByOderId = orderService.getOrderByOderId("111");
 			Order orderByOderId2 = orderService.getOrderByOderId("111");
 			System.out.println("sssssswwwwwwww");
+			System.out.println("sssssswwwwwwww");
+			Order orderByOderId3 = orderService.getOrderByOderId("111");
+			int aa = 11;
 		} catch (Exception e) {
 			logger.error(e);
 		}
