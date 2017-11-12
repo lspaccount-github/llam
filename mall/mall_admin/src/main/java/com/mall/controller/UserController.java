@@ -27,8 +27,8 @@ public class UserController {
 	public String getUsers(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
 		try {
 			Order orderByOderId = orderService.getOrderByOderId("111");
-			Order orderByOderId3 = orderService.getOrderByOderId("111");
-			System.out.println("aa");
+			Order orderByOderId2 = orderService.getOrderByOderId("111");
+			
 		} catch (Exception e) {
 			logger.error(e);
 		}
