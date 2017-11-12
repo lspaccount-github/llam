@@ -8,22 +8,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mall.pojo.User;
-import com.mall.service.UserService;
+import com.mall.pojo.order.Order;
+import com.mall.service.order.OrderService;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
-	private UserService userService;
+	private OrderService orderService;
 	
 	@RequestMapping(value="/getUser")
 	public String getUsers(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
-		User user = userService.getById(1);
-		int aa = userService.update(user);
-		System.out.println(user.toString());
-		System.out.                     println("aa");
+		try {
+			Order orderByOderId = orderService.getOrderByOderId("111");
+		} catch (Exception e) {
+try {
+			Order orderByOderId = orderService.getOrderByOderId("111");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return "userList";
+
+			e.printStackTrace();
+		}
 		return "userList";
 	}
 }

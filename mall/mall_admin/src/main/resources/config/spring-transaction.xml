@@ -39,7 +39,7 @@
     <!-- 配置AOP事务 -->  
     <aop:config>
         <!-- 配置事务切点  第一个"*"代表所有的返回值类型, 第二个"*"代表所有类, 第三个"*"代表所有方法, ".."代表任意参数 -->   
-		<aop:pointcut id="transactionPointcut" expression="execution(* com.mall.service.impl.*Impl.*(..))" />
+		<aop:pointcut id="transactionPointcut" expression="execution(* com.mall.service.impl.*.*Impl.*(..))" />
         <!-- 结合事务切点与切面 -->  
 		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
 	</aop:config> 
