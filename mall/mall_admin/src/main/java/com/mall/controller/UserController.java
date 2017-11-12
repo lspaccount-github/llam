@@ -1,5 +1,7 @@
 package com.mall.controller;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,4 +33,6 @@ public class UserController {
 		}
 		return "userList";
 	}
+	
+	
 }
