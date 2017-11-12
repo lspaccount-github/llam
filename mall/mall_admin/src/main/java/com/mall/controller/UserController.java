@@ -28,6 +28,7 @@ public class UserController {
 		try {
 			Order orderByOderId = orderService.getOrderByOderId("111");
 			Order orderByOderId2 = orderService.getOrderByOderId("111");
+			
 		} catch (Exception e) {
 			logger.error(e);
 		}
