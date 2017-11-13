@@ -26,7 +26,6 @@ public class UserController {
 	@RequestMapping(value="/getUser")
 	public String getUsers(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
 		try {
-			orderser	
 		} catch (Exception e) {
 			logger.error(e);
 		}
