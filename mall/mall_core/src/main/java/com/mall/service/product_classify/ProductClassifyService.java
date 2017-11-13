@@ -25,4 +25,15 @@ public interface ProductClassifyService {
 	 * @throws
 	 */
 	public List<ProductClassify> getProductClassifyListByMerchantId(String merchantId);
+	
+	/**
+	 * 
+	 * @Title: getProductClassifyListByProductClassifyId 
+	 * @Description: 根据商品分类id查询商品分类
+	 * @param @param productClassifyId
+	 * @param @return    设定文件 
+	 * @return ProductClassify    返回类型 
+	 * @throws
+	 */
+	public ProductClassify getProductClassifyListByProductClassifyId(long productClassifyId);
 }

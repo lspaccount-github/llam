@@ -23,7 +23,7 @@ import com.mall.exception.ParameterException;
  * @ClassName: BaseController
  * @Description: Controller基类
  * @author JW
- * @date 2015�?1�?4�?上午9:38:19
+ * @date 2017年11月13日 上午9:38:19
  */
 public class BaseController  {
 	
@@ -46,7 +46,11 @@ public class BaseController  {
     public void outJson(Object object) {
 		try {
 			String json = JSON.toJSONString(object);
-			response.setContentType("text/html;charset=utf-8");
+			//设置页面不缓存
+			response.setContentType("application/json");
+		    response.setHeader("Pragma", "No-cache");
+		    response.setHeader("Cache-Control", "no-cache");
+		    response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
 			response.getWriter().flush();
 			response.getWriter().close();
