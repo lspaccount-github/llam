@@ -22,7 +22,7 @@
 	  <artifactId>mall_core</artifactId>
 	  <version>0.0.1-SNAPSHOT</version>
     </dependency>
-    <!-- shiro配置 start -->
+     <!-- shiro配置 start -->
 	<dependency>
 	    <groupId>org.apache.shiro</groupId>
 	    <artifactId>shiro-all</artifactId>
@@ -32,19 +32,19 @@
     <!-- 日志工具 start -->
 	<!--shiro使用slf4j作为日志框架，所以必需配置slf4j。同时，使用log4j作为底层的日志实现框架。-->
 	<dependency>
-	　　<groupId>org.slf4j</groupId>
-	　　<artifactId>slf4j-api</artifactId>
-	　　<version>1.7.25</version>
+		<groupId>org.slf4j</groupId>
+	 	<artifactId>slf4j-api</artifactId>
+	    <version>1.7.25</version>
 	</dependency>
 	<dependency>
-	　　<groupId>org.slf4j</groupId>
-	　　<artifactId>slf4j-log4j12</artifactId>
-	　　<version>1.7.25</version>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.7.25</version>
 	</dependency>
 	<dependency>
-	　　<groupId>log4j</groupId>
-	　　<artifactId>log4j</artifactId>
-	　　<version>1.2.17</version>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.17</version>
 	</dependency>
     <!-- 日志工具 end -->
     <dependency>
