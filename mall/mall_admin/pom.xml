@@ -13,11 +13,44 @@
   <packaging>war</packaging>
   <name>mall_admin Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  <properties>  
+    <shiro.version>1.3.2</shiro.version>
+  </properties> 
   <dependencies>
     <dependency>
      <groupId>com.mall.cn</groupId>
 	  <artifactId>mall_core</artifactId>
 	  <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <!-- shiro配置 start -->
+	<dependency>
+	    <groupId>org.apache.shiro</groupId>
+	    <artifactId>shiro-all</artifactId>
+	    <version>${shiro.version}</version>
+	</dependency>
+    <!-- shiro配置 end-->
+    <!-- 日志工具 start -->
+	<!--shiro使用slf4j作为日志框架，所以必需配置slf4j。同时，使用log4j作为底层的日志实现框架。-->
+	<dependency>
+	　　<groupId>org.slf4j</groupId>
+	　　<artifactId>slf4j-api</artifactId>
+	　　<version>1.7.25</version>
+	</dependency>
+	<dependency>
+	　　<groupId>org.slf4j</groupId>
+	　　<artifactId>slf4j-log4j12</artifactId>
+	　　<version>1.7.25</version>
+	</dependency>
+	<dependency>
+	　　<groupId>log4j</groupId>
+	　　<artifactId>log4j</artifactId>
+	　　<version>1.2.17</version>
+	</dependency>
+    <!-- 日志工具 end -->
+    <dependency>
+       <groupId>net.sf.ehcache</groupId>
+       <artifactId>ehcache-core</artifactId>
+       <version>2.4.3</version>
     </dependency>
   </dependencies>
   <build>
