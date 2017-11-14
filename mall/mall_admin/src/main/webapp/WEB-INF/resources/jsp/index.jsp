@@ -23,10 +23,15 @@
         <div class="message">x-admin2.0-管理登录</div>
         <div id="darkbannerwrap"></div>
         
-        <form method="post" class="layui-form" >
-            <input name="username" placeholder="用户名" value="admin" type="text" lay-verify="required" class="layui-input" >
+        <form method="post" class="layui-form" action = "${pageContext.request.contextPath}/login.do" >
+            <input name="username" placeholder="用户名" value="" type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" value="123456"  placeholder="密码"  type="password" class="layui-input">
+            <input name="password" lay-verify="required" value=""  placeholder="密码"  type="password" class="layui-input">
+            <hr class="hr15">
+            <div>
+            <input name="randomcode" style="width:160px;float:left;" lay-verify="required" value="123456"  placeholder="验证码"  type="text" class="layui-input">
+            </div>
+            <img id="validateCodeImg" style="padding-top: 10px; padding-right: 0px;padding-bottom: 1px;padding-left: 20px;" src="${pageContext.request.contextPath}/validateCode.do" />&nbsp;&nbsp;<a href="#" onclick="javascript:reloadValidateCode();">看不清？</a>
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
@@ -41,15 +46,19 @@
               //   //关闭后的操作
               //   });
               //监听提交
-              form.on('submit(login.do)', function(data){
+              form.on('submit(login)', function(data){
                 // alert(888)
-                layer.msg(JSON.stringify(data.field),function(){
+                console.log(data);
+				                
+                /* layer.msg(JSON.stringify(data.field),function(){
                     location.href='index.html'
-                });
-                return false;
+                }); */
               });
             });
         })
+        function reloadValidateCode(){
+            $("#validateCodeImg").attr("src","${pageContext.request.contextPath}/validateCode.do?data=" + new Date() + Math.floor(Math.random()*24));
+        }
 
         
     </script>

@@ -1,6 +1,10 @@
 package com.mall.controller;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mall.utils.util.MyUtil;
+import com.mall.utils.util.ValidateCode;
 
 /**
  * 首页
@@ -36,6 +41,22 @@ public class IndexController {
 		ModelAndView mv = new ModelAndView("home");
 		return mv;
 	}
+	
+	/**
+	 * 验证码
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "validateCode")
+    public void validateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Cache-Control", "no-cache");
+        String verifyCode = ValidateCode.generateTextCode(ValidateCode.TYPE_NUM_LOWER, 4, null);
+        request.getSession().setAttribute("validateCode", verifyCode);
+        response.setContentType("image/jpeg");
+        BufferedImage bim = ValidateCode.generateImageCode(verifyCode, 90, 30, 5, true, Color.WHITE, Color.BLUE, null);
+        ImageIO.write(bim, "JPEG", response.getOutputStream());
+    }
 	
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest req, HttpServletResponse resp) {
@@ -72,7 +93,7 @@ public class IndexController {
 		
 		if(ex != null) {
 			req.setAttribute("ex", ex);
-			return "index";
+			return MyUtil.redirect(req, resp, "/");
 		}
 		return MyUtil.redirect(req, resp, "/");
 	}
