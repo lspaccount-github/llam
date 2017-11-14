@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.order.OrderDao;
 import com.mall.pojo.order.Order;
@@ -11,6 +12,7 @@ import com.mall.pojo.order.OrderCriteria;
 import com.mall.service.order.OrderService;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private OrderDao orderDao;

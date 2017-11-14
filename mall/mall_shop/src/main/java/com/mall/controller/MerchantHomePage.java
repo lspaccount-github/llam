@@ -1,6 +1,8 @@
 package com.mall.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -14,8 +16,10 @@ import com.mall.exception.BusinessException;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.merchant.Merchant;
 import com.mall.pojo.merchant.MerchantCriteria;
+import com.mall.pojo.product.Product;
 import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.service.merchant.MerchantService;
+import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
 import com.mall.utils.util1.StringUtil;
 
@@ -37,6 +41,8 @@ public class MerchantHomePage extends BaseController{
 	private ProductClassifyService productClassifyService;
 	@Autowired
 	private MerchantService merchantService;
+	@Autowired
+	private ProductService productService;
 	/**
 	 *
 	 * @Title: orderPage 
@@ -70,4 +76,46 @@ public class MerchantHomePage extends BaseController{
 		return returnPage;
 	}
 	
+	/**
+	 * 
+	 * @Title: getProductByProductClassifyId 
+	 * @Description: 根据商品分类id查询商品
+	 * @param @param productClassifyId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="getProductByProductClassifyId")
+	public void getProductByProductClassifyId(@RequestParam(required = true)String productClassifyId){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			if(StringUtils.isBlank(productClassifyId)){
+				map.put("flag","0");
+				map.put("message","系统参数异常！");
+				return;
+			}
+			//首先判断商品分类是否存在
+			ProductClassify productClassify = productClassifyService.getProductClassifyListByProductClassifyId(Long.parseLong(productClassifyId));
+			if(null==productClassify){
+				map.put("flag","0");
+				map.put("message","系统参数异常！");
+				return;
+			}
+			//根据商品分类id查询商品
+			List<Product> productList=productService.getProductAndProductRelevantByproductClassifyId(Long.parseLong(productClassifyId));
+			if(null!=productList && productList.size()>0){
+				map.put("productList",productList);
+				map.put("flag",1);
+			}else{
+				map.put("flag","0");
+				map.put("message","该分类暂时没有维护商品，敬请期待！");
+				return;
+			}
+		} catch (Exception e) {
+			logger.error("====getProductByProductClassifyId 根据商品分类id查询商品  异常====",e);
+			map.put("flag","0");
+			map.put("message","系统参数异常！");
+		}finally{
+			outJson(map);
+		}
+	} 
 }

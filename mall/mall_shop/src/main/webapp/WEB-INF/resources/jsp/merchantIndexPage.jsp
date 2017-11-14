@@ -6,11 +6,39 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>请点餐</title>
+<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
 </head>
 <body>
 循环商品分类<br/>
 <c:forEach items="${productClassifyList}" var="productClassify" varStatus="vs">  
-        <h5>${productClassify.classifyName}</h5>
+        <a href="javascript:void(0)" onClick="getProduct('${productClassify.classifyId}')">${productClassify.classifyName}</a>
 </c:forEach>  
 </body>
 </html>
+
+<script>
+	function getProduct(classifyId){
+		var param = {"productClassifyId":classifyId};
+		 $.ajax({
+		        url : '${pageContext.request.contextPath}/merchantHomePage/getProductByProductClassifyId.do',
+		        type : "post",
+		        dataType : "json",
+		        data : param,
+		        cache : false,
+		        async : false,
+		        success : function(data, textStatus, jqXHR) {
+		            if ('success' == textStatus) {
+		            	if(data.flag=="0"){
+		            		alert(data.message);
+		            		return;
+		            	}else{
+		            		alert("成功！！！");
+		            	}
+		            }
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		            alert("系统异常！！！！");
+		        }
+		    });
+	}
+</script>

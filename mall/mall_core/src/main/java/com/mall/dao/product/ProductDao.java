@@ -27,4 +27,6 @@ public interface ProductDao {
     int updateByPrimaryKeySelective(Product record);
 
     int updateByPrimaryKey(Product record);
+    //根据商品分类id查询商品以及商品相关信息 shenwei 
+	List<Product> getProductAndProductRelevantByproductClassifyId(long productClassifyId);
 }

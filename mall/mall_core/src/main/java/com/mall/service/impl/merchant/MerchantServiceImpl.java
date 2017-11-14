@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.merchant.MerchantDao;
 import com.mall.pojo.merchant.Merchant;
@@ -19,6 +20,7 @@ import com.mall.service.merchant.MerchantService;
  *
  */
 @Service
+@Transactional
 public class MerchantServiceImpl implements MerchantService{
 
 	@Autowired
