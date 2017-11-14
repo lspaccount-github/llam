@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mall.dao.product.ProductDao" >
- 	<select id="getProductAndProductRelevantByproductClassifyId" 
- 	resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    	select * from ho_product p where p.classify_id = #{productClassifyId,jdbcType=BIGINT}
+
+	<resultMap id="BaseResultMap1" type="com.mall.pojo.product.Product" extends="BaseResultMap">  
+	    <collection  property="productSpecList" javaType="list" ofType="com.mall.pojo.product_spec.ProductSpec">
+            <id column="spce_id" property="spceId" jdbcType="BIGINT" />
+		    <result column="spce_name" property="spceName" jdbcType="VARCHAR" />
+		    <result column="price" property="price" jdbcType="DOUBLE" />
+		    <result column="lunch_fee" property="lunchFee" jdbcType="DOUBLE" />
+		    <result column="current_inventory" property="currentInventory" jdbcType="BIGINT" />
+		    <result column="max_inventory" property="maxInventory" jdbcType="BIGINT" />
+		    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+        </collection>
+	</resultMap>
+	<!-- 查询商品，并关联查询商品规格，主要用户点餐页面使用 -->
+ 	<select id="getProductAndProductRelevantByproductClassifyId" resultMap="BaseResultMap1" parameterType="java.lang.Long" >
+    	SELECT * FROM ho_product p ,ho_product_spec ps WHERE p.product_id = ps.product_id AND p.classify_id = #{productClassifyId,jdbcType=BIGINT}
   </select>
 </mapper>

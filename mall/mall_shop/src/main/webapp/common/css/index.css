@@ -1,0 +1,100 @@
+/* 自定义public类 */
+body,html{background: #f8f8f8;width: 100%;height: 100%;font-family: "微软雅黑";}
+.btn{padding:20px;}
+.btn button{height: 40px;width:100%;border: 1px solid red;margin:0 auto;background: #fff;cursor: pointer;font-size: 16px;}
+
+
+/*请点餐页面    2017.11.13 */
+.container{height: 100%;width: 100%;}
+.Leftside{width:30%;height:100%;float: left;}
+.Leftside ul li{height: 40px;line-height:40px; font-family: 20px;border-bottom:1px solid #e8e8e8; border-right:1px solid #e8e8e8;padding-left: 30px;}
+.Leftside ul li a{height: 100%;width: 100%;display: inline-block;}
+.Leftside ul .current1{border-right:none;background: #fff;}
+.Rightside{width:70%;height: 100%;float: left;padding:0 10px;background: #fff;}
+.current1{background: #fff;border-right:1px solid #fff;}
+.Rightside .R_box{display: none; }
+.Rightside .current {display:block;}
+.Rightside dl { border-bottom: 1px solid #e8e8e8; padding:  15px 0;overflow: hidden;background: #fff;}
+.Rightside dl dt{float: left;margin-right: 10px;}
+.Rightside dl dt{float: left;margin-right: 10px;height: 100px;width:100px;border: 1px solid #e8e8e8;}
+.Rightside dl dt img{height:100%;width: 100%;vertical-align: middle;}
+.Rightside dl dd {margin-bottom: 10px;}
+.Rightside dl dd p{font-size:15px;}
+.Rightside dl dd span{font-size:14px;}
+.Rightside dl dd span:nth-child(1){color: red;}
+.Rightside dl .aa a{ height:20px;width:20px;border:1px solid #4586d8; border-radius: 50px;display: inline-block;vertical-align: middle;}
+.Rightside dl .aa span{margin: 0 10px;vertical-align: middle;font-size: 15px;}
+.order{position: fixed;bottom: 0;border-top: 1px solid #e8e8e8;background: rgba(51,51,51,0.9);}
+.order{width:100%;}
+.order span{width:70%;height: 30px;display: inline-block;float: left;text-align: center;line-height: 30px;color: #fff;}
+.order a{height: 30px;width:30%;display: inline-block;background:#df7255;line-height: 30px;text-align: center;float: right;color: #fff;}
+
+/* 请点餐页面 */
+
+.container_box{padding: 0 15px; font-size: 14px;}
+.container_box .boxwindow{background: #fff;border:1px solid #e8e8e8;border-radius: 5px;margin: 10px 0;line-height: 40px;padding:0 20px;}
+.container_box .boxwindow li{height: 40px;}
+.container_box .boxwindow span{float: left;}
+.container_box .boxwindow span:nth-child(2){margin-left: 20px;}
+.container_box .boxwindow span:nth-child(3){float: right;}
+.container_box ul {height: 160px;background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}
+.container_box ul li{border-bottom:1px solid #e8e8e8;position: relative;height: 40px;line-height: 40px;}
+.container_box ul li:last-child{border-bottom:none;}
+.container_box ul li span{position: absolute;left:0 ;top:0;}
+.container_box ul li input{padding-left: 90px;width: 100%}
+.container_box ul li div{float: right;}
+.container_bottom{height:40px;position: fixed;bottom: 0;left:0;line-height: 40px;overflow: hidden;width: 100%}
+.container_bottom .return{float:left;background: gray;width:20%;text-align: center;}
+.container_bottom span{float:left;width:50%;text-align: center;}
+.container_bottom span i{font-size: 16px;}
+.container_bottom .sure{float:right;background:#df7255;width:30%;text-align: center;}
+
+
+/* 绑定就餐卡 */
+.card{font-size: 16px;}
+.card ul li{height: 40px;line-height: 40px;border-bottom: 1px solid #e8e8e8;padding:0 15px ;position: relative;background: #fff;}
+.card ul li span{position: absolute;left:20px ;top:0;}
+.card ul li input{width:100%;padding-left: 100px;}
+ 
+/* 支付剩余时间  11.14*/
+.pay_time{background: #fff;}
+.pay_time p{font-size: 14px;text-align: center;padding:20px 0;}
+.pay_time .pay_timer{font-size: 20px;text-align: center;margin:0 0 20px 0;}
+.pay_time .pay_money {overflow: hidden;border-top: 1px solid #e8e8e8;padding: 0 20px;height: 40px;line-height: 40px;}
+.pay_time .pay_money span:nth-child(1){float: left;}
+.pay_time .pay_money span:nth-child(2){float: right;color: red;}
+.pay_style dl{margin: 10px 0 10px 0;}
+.pay_style dt,.pay_style dd{height: 40px;line-height: 40px;background: #fff;padding: 0px 20px;}
+.pay_style dd{border-top: 1px solid #e8e8e8;}
+.pay_style dd  span{float: left;}
+.pay_style dd input{margin-top: 10px;float: right;border: 1px solid red;height: 20px;width:20px;border-radius: 50px;}
+  
+/* 我的订餐页面 */
+.myorder{background: #fff;padding: 20px 20px 0 20px;}
+.myorder ul  li {border-bottom: 1px solid #e8e8e8;overflow: hidden;margin-top: 10px;}
+.myorder ul  li:last-child{border-bottom: none;}
+.myorder ul  li .left{float: left;}
+.myorder ul  li .left div:nth-child(1){margin-bottom: 10px;color: #666;}
+.myorder ul  li .left div:nth-child(2){margin-bottom: 13px;font-size: 12px;color: #999;}
+.myorder ul  li .left div:nth-child(2) span{margin-right:10px;}
+.myorder ul  li .right div{margin-bottom:6px;border: 1px solid #df5f51;font-size:13px;border-radius:5px;height:24px;width:70px;line-height:24px;text-align: center;}
+.myorder ul  li .right{float: right;color: #df5f51;}
+
+/* 订餐状态 */
+.order_status{background: #fff;border: 1px dotted #999;overflow: hidden;padding: 10px;margin:10px;}
+.order_status div:nth-child(1){float: left;}
+.order_status div:nth-child(1) img{height:50px;width:50px;border-radius: 50%;border: 1px solid #e8e8e8;}
+.order_status div:nth-child(2){float: left;font-size: 13px;color: #333;margin-left: 20px;}
+.order_status div:nth-child(2) p{margin-top:5px;}
+.order_status div:nth-child(3){float: right;height:60px;width:60px;border-radius: 50%;text-align: center;padding: 10px 15px;}
+.order_status .wait_handle{border: 1px solid  #df5f51;color: #df5f51;}
+.order_status .handle{border: 1px solid  #4586d8;color:#4586d8;padding: 19px 1px!important;}
+.order_status .cancle_order{border: 1px solid  #eda59d;color:#eda59d;}
+.calculate{background: #fff;border: 1px solid #e8e8e8;margin: 10px;overflow: hidden;    }
+.calculate ul li{height: 40px;line-height:40px; font-family: 20px;border-bottom:1px solid #e8e8e8; margin:0 10px;}
+.calculate ul li span:nth-child(1){float: left;}
+.calculate ul li span:nth-child(1) i{color: #999;font-style: normal;}
+.calculate ul li span:nth-child(2){float: right;}
+.calculate div{float: right;padding-right: 10px;height: 40px;line-height: 40px;}
+.calculate div span{color:#df5f51;}
+.cancle a{float: right;color: #df5f51;margin-right: 10px;}

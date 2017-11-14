@@ -1,6 +1,9 @@
 package com.mall.pojo.product;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.mall.pojo.product_spec.ProductSpec;
 
 public class Product implements Serializable {
     /**
@@ -43,6 +46,11 @@ public class Product implements Serializable {
      */
     private Long minBuyNum;
 
+    /**
+     * 商品规格
+     */
+    private List<ProductSpec> productSpecList;
+    
     private static final long serialVersionUID = 1L;
 
     public String getProductId() {
@@ -127,4 +135,14 @@ public class Product implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+	public List<ProductSpec> getProductSpecList() {
+		return productSpecList;
+	}
+
+	public void setProductSpecList(List<ProductSpec> productSpecList) {
+		this.productSpecList = productSpecList;
+	}
+    
+    
 }
