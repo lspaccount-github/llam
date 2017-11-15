@@ -27,19 +27,19 @@
 			</ul>
 		</div>
 		<div class="Rightside">
-			<div class="R_box current" id="ProductHtml">
+		  <div class="R_box current" id="ProductHtml">
 				<dl>
 					<dt><img src="../images/food.jpg" alt=""></dt>
 					<dd><p>窗口套餐（三荤一素）</p></dd>
 					<dd><span>￥10.00</span><span>/份</span></dd>
-					<dd class="aa"><a href="#"></a><span>1</span> <a href="#"></a></dd>
+					<dd class="aa"><a href="#"  class="minus"></a><span>1</span> <a href="#" class="plus"></a></dd>
 				</dl>
 			</div>
 		</div>
 
 		<div class="order">
 			<!-- <img src="../images/shoppingcar.png" alt=""> -->
-			<span>10元</span>
+			<span><i id="totalPrice">0</i>元</span>
 			<a href="#">去下单</a>
 		</div>
 	</div>
@@ -64,6 +64,66 @@ $(function(){
 		}
 	}
 	
+	var shopCartObj = [];
+	var shopCartPrice = 0;
+	function jia(event){
+		var productId=event|| window.event;
+		var shopCartLength = shopCartObj.length;
+		if(shopCartLength>0){
+			var bool = false;
+			for(var i = 0;i<shopCartLength;i++){
+				if(shopCartObj[i].productId == productId){
+					shopCartObj[i].num = shopCartObj[i].num+1;
+					bool = true;
+					$("#"+productId+"num").text(shopCartObj[i].num);
+					shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+					$("#totalPrice").text(shopCartPrice);
+				}
+			}
+			if(!bool){
+				var prodJson = {"productId":productId,"num":1};
+				shopCartObj.push(prodJson);
+				$("#"+productId+"num").text(1);
+				shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+				$("#totalPrice").text(shopCartPrice);
+			}
+		}else{
+			var prodJson = {"productId":productId,"num":1};
+			shopCartObj.push(prodJson);
+			$("#"+productId+"num").text(1);
+			shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+			$("#totalPrice").text(shopCartPrice);
+		}
+	}
+	
+	function jian(event){
+		var productId=event|| window.event;
+		var shopCartLength = shopCartObj.length;
+		if(shopCartLength>0){
+			for(var i = 0;i<shopCartLength;i++){
+				if(shopCartObj[i].productId == productId){
+					if(shopCartObj[i].num==1){
+						shopCartObj.splice(i,1)
+						$("#"+productId+"num").text(0);
+						shopCartPrice = shopCartPrice-parseInt($("#"+productId+"price").text());
+						$("#totalPrice").text(shopCartPrice);
+						break;
+					}else if(shopCartObj[i].num<=0){
+						$("#"+productId+"num").text(0);
+					}else{
+						shopCartObj[i].num = shopCartObj[i].num -1;
+						$("#"+productId+"num").text(shopCartObj[i].num);
+						shopCartPrice = shopCartPrice-parseInt($("#"+productId+"price").text());
+						$("#totalPrice").text(shopCartPrice);
+					}
+				}
+			}
+		}else{
+			return;
+		}
+	}
+	
+	
 	function getProductAjax(classifyId){
 		$("#ProductHtml").html("");
 		var param = {"productClassifyId":classifyId};
@@ -82,12 +142,12 @@ $(function(){
 		            		return;
 		            	}else{
 		            		var productList = eval('(' + data.productList + ')'); 
-		            		for(var i=0; i<productList.length; i++){  
-								htmlCode +="<dl><dt><img src='../images/food.jpg'></dt>";
-								htmlCode +="<dd><p>"+productList[i].productName+"</p></dd>";
-								htmlCode +="<dd><span>￥"+productList[i].productSpecList[0].price+"</span><span>/"+productList[i].productUnit+"</span></dd>";
-								htmlCode +="<dd class='aa'><a href='#'></a><span>1</span> <a href='#'></a></dd></dl>";
-							  }
+		            		for(var i=0; i<productList.length; i++){ 
+		            			htmlCode +='<dl><dt><img src="../images/food.jpg"></dt>';
+		            			htmlCode +='<dd><p>'+productList[i].productName+'</p></dd>';
+		            			htmlCode +='<dd><span>￥<i id="'+productList[i].productId+'price">'+productList[i].productSpecList[0].price+'<i/></span><span>/'+productList[i].productUnit+'</span></dd>';
+		            			htmlCode +='<dd class="aa"><a href="javascript:void(0)" onclick="jian('+"'"+productList[i].productId+"'"+');" class="minus"></a><span id="'+productList[i].productId+'num">0</span> <a href="javascript:void(0)" onclick="jia('+"'"+productList[i].productId+"'"+');" class="plus"></a></dd></dl>';
+		            		}
 		            		$("#ProductHtml").html("");
 		            		$("#ProductHtml").html(htmlCode);
 		            	}
@@ -98,4 +158,5 @@ $(function(){
 		        }
 		    });
 	}
+	
 </script>
