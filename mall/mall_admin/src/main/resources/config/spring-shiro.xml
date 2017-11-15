@@ -84,10 +84,13 @@
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
         <constructor-arg>
             <value>
-                /admin/** = anon <!-- 静态资源目录 -->
-                /validateCode.do = anon <!-- 获取验证码 -->
+                <!-- 静态资源目录 -->
+                /admin/** = anon
+                <!-- 获取验证码 -->
+                /validateCode.do = anon
+            	<!-- 请求 logout.action地址，shiro去清除session -->
+                /logout.do = logout
             	/ = authc
-                /login = authc
             </value>
         </constructor-arg>
     </bean>
@@ -119,9 +122,11 @@
     <!-- 自定义form认证过虑器 -->  
     <!-- 基于Form表单的身份验证过滤器，不配置将也会注册此过虑器，表单中的用户账号、密码及loginurl将采用默认值，建议配置 -->  
     <bean id="formAuthenticationFilter" class="com.mall.utils.shiro.CustomFormAuthenticationFilter">  
-        <!--表单中账户和密码的input框名称-->  
-        <!-- <property name="usernameParam" value="username"/>  
-        <property name="passwordParam" value="password"/>  
-        <property name="rememberMeParam" value="rememberMe"/>   -->
+        <!-- 表单中账号的input名称 -->  
+	    <property name="usernameParam" value="username" />  
+	    <!-- 表单中密码的input名称 -->  
+	    <property name="passwordParam" value="password" />  
+	    <!-- 记住我input的名称 -->  
+	    <property name="rememberMeParam" value="rememberMe"/>
     </bean> 
 </beans>
