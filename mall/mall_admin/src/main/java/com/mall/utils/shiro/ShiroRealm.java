@@ -36,14 +36,16 @@ public class ShiroRealm extends AuthorizingRealm {
 		//3. 调用数据库的方法, 从数据库中查询 username 对应的用户记录
 		//TODO 
 		Merchant merchant = new Merchant();
-		
+		merchant.setUsername("admin");
+		merchant.setPassword("038bdaf98f2037b31f1e75b5b4c9b26e");
+		merchant.setMerchantStatus(MerchantStatus.able.ordinal());
 		//4. 若用户不存在, 则可以抛出 UnknownAccountException 异常
 		if(merchant == null){
 			throw new UnknownAccountException("用户不存在!");
 		}
 		
 		//5. 根据用户信息的情况, 决定是否需要抛出其他的 AuthenticationException 异常. 
-		if(!merchant.getMerchantStatus().equals(MerchantStatus.able.ordinal())){
+		if(merchant.getMerchantStatus() == null || !merchant.getMerchantStatus().equals(Merchant.MerchantStatus.able.ordinal())){
 			throw new LockedAccountException("用户被锁定");
 		}
 		

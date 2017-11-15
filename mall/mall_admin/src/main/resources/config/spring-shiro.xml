@@ -20,7 +20,7 @@
         <property name="realms">
         	<list>
     			<ref bean="jdbcRealm"/>
-    			<ref bean="secondRealm"/>
+    			<!-- <ref bean="secondRealm"/> -->
     		</list>
         </property>
         <property name="rememberMeManager.cookie.maxAge" value="10"></property>
@@ -46,14 +46,14 @@
     		</bean>
     	</property>
     </bean>
-    <bean id="secondRealm" class="com.mall.utils.shiro.SecondRealm">
+    <!-- <bean id="secondRealm" class="com.mall.utils.shiro.SecondRealm">
     	<property name="credentialsMatcher">
     		<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-    			<property name="hashAlgorithmName" value="SHA1"></property><!-- 加密算法的名称 -->
-    			<property name="hashIterations" value="1024"></property><!-- 配置加密的次数 -->
+    			<property name="hashAlgorithmName" value="SHA1"></property>
+    			<property name="hashIterations" value="1024"></property>
     		</bean>
     	</property>
-    </bean>
+    </bean> -->
     
     <!-- 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法. -->       
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
