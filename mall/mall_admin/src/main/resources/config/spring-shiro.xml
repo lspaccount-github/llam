@@ -13,45 +13,28 @@
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <!-- 配置 ShiroFilter -->     
-    <!--注意：bean的id 必须和 web.xml 文件中配置的 DelegatingFilterProxy 的 <filter-name> 一致.若不一致, 则会抛出: NoSuchBeanDefinitionException. 因为 Shiro 会来 IOC 容器中查找和 <filter-name> 名字对应的 filter bean. -->     
-    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/index.do"/>
-        <property name="successUrl" value="/"/>
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
-        <property name="filterChainDefinitions" ref="shiroFilterChainDefinitions"></property>
-    </bean>
-    
     <!-- 配置 SecurityManager -->     
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    	<property name="cacheManager" ref="cacheManager"/>
+        <property name="authenticator" ref="authenticator"></property>
         <property name="realms">
         	<list>
     			<ref bean="jdbcRealm"/>
     			<ref bean="secondRealm"/>
     		</list>
         </property>
-    	<property name="sessionManager" ref="sessionManager" />  
-        <property name="cacheManager" ref="cacheManager"/>
-        <property name="authenticator" ref="authenticator"></property>
-        <property name="rememberMeManager" ref="rememberMeManager"/> 
-        <!-- <property name="rememberMeManager.cookie.maxAge" value="10"></property> -->
+        <property name="rememberMeManager.cookie.maxAge" value="10"></property>
     </bean>
-
+    
+    <!-- 缓存管理器 -->  
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:/config/ehcache.xml"/> 
+    </bean>
+    
     <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
     	<property name="authenticationStrategy">
     		<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
     	</property>
-    </bean>
-
-
-    <!-- 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法. -->       
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-    <!--  启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->     
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
     </bean>
     
     <!--  配置 Realm,直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean -->     
@@ -72,6 +55,24 @@
     	</property>
     </bean>
     
+    <!-- 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法. -->       
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!--  启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->     
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    
+    <!-- 配置 ShiroFilter -->     
+    <!--注意：bean的id 必须和 web.xml 文件中配置的 DelegatingFilterProxy 的 <filter-name> 一致.若不一致, 则会抛出: NoSuchBeanDefinitionException. 因为 Shiro 会来 IOC 容器中查找和 <filter-name> 名字对应的 filter bean. -->     
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/home.do"/>
+        <property name="filterChainDefinitions" ref="shiroFilterChainDefinitions"></property>
+    </bean>
+    
     <!-- Shiro权限过滤过滤器定义 -->
     <!--
     	配置哪些页面需要受保护. 
@@ -84,49 +85,33 @@
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
         <constructor-arg>
             <value>
+            	/ = authc
                 <!-- 静态资源目录 -->
                 /admin/** = anon
                 <!-- 获取验证码 -->
+                /login.jsp = anon
+                <!-- 获取验证码 -->
                 /validateCode.do = anon
-            	<!-- 请求 logout.action地址，shiro去清除session -->
-                /logout.do = logout
-            	/ = authc
             </value>
         </constructor-arg>
     </bean>
     
     <!-- 会话管理器 -->  
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
-        <!-- session的失效时长，单位毫秒 -->  
+        <!-- session的失效时长，单位毫秒 --> 
         <property name="globalSessionTimeout" value="600000"/>  
         <!-- 删除失效的session -->  
         <property name="deleteInvalidSessions" value="true"/>  
     </bean> 
     
-    <!-- 缓存管理器 -->  
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:/config/ehcache.xml"/> 
-    </bean>
-    
     <!-- rememberMeManager管理器 -->  
-    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
+   <!--  <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
         <property name="cookie" ref="rememberMeCookie" />  
-    </bean>  
+    </bean>   -->
     <!-- 记住我cookie -->  
-    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+    <!-- <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
         <constructor-arg value="rememberMe" />  
-        <!-- 记住我cookie生效时间30天 -->  
+        记住我cookie生效时间30天  
         <property name="maxAge" value="2592000" />  
-    </bean>
-    
-    <!-- 自定义form认证过虑器 -->  
-    <!-- 基于Form表单的身份验证过滤器，不配置将也会注册此过虑器，表单中的用户账号、密码及loginurl将采用默认值，建议配置 -->  
-    <bean id="formAuthenticationFilter" class="com.mall.utils.shiro.CustomFormAuthenticationFilter">  
-        <!-- 表单中账号的input名称 -->  
-	    <property name="usernameParam" value="username" />  
-	    <!-- 表单中密码的input名称 -->  
-	    <property name="passwordParam" value="password" />  
-	    <!-- 记住我input的名称 -->  
-	    <property name="rememberMeParam" value="rememberMe"/>
-    </bean> 
+    </bean> -->
 </beans>

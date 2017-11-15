@@ -3,11 +3,38 @@ package com.mall.pojo.merchant;
 import java.io.Serializable;
 
 public class Merchant implements Serializable {
+	
+	/**
+	 * 商户状态
+	 * @author Administrator
+	 *
+	 */
+    public enum MerchantStatus{
+    	disabled("已注销"),
+    	able("正常"),
+    	locked("已锁定");
+    	
+    	
+    	private MerchantStatus(String name) {
+    		this.name = name;
+    	}
+    	private String name;
+    	public String getName() {
+    		return name;
+    	}
+    }
+	
     /**
      * 商户id
      */
     private String merchantId;
 
+    /** 用户名*/
+    private String username;
+    
+    /** 密码*/
+    private String password;
+    
     /**
      * 商户状态
      */
@@ -42,8 +69,24 @@ public class Merchant implements Serializable {
     public void setMerchantId(String merchantId) {
         this.merchantId = merchantId == null ? null : merchantId.trim();
     }
+    
+    public String getUsername() {
+		return username;
+	}
 
-    public Integer getMerchantStatus() {
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Integer getMerchantStatus() {
         return merchantStatus;
     }
 

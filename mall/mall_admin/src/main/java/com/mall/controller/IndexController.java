@@ -3,12 +3,15 @@ package com.mall.controller;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ConcurrentAccessException;
@@ -19,8 +22,11 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mall.utils.util.MyUtil;
@@ -36,14 +42,20 @@ import com.mall.utils.util.ValidateCode;
 public class IndexController {
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
-	@RequestMapping("/")
-	public ModelAndView home(HttpServletRequest req) {
-		ModelAndView mv = new ModelAndView("home");
-		return mv;
+	/**
+	 * 后台首页
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/home.do")
+	public String home(HttpServletRequest request, HttpServletResponse response,Model model) {
+		return "home";
 	}
 	
 	/**
-	 * 验证码
+	 * 获取验证码
 	 * @param request
 	 * @param response
 	 * @throws IOException
@@ -58,51 +70,57 @@ public class IndexController {
         ImageIO.write(bim, "JPEG", response.getOutputStream());
     }
 	
-	@RequestMapping("/index")
-	public ModelAndView index(HttpServletRequest req, HttpServletResponse resp) {
-		//req.getSession().setAttribute("test", new MySessionListener());
-		ModelAndView mv = new ModelAndView("index");
-		return mv; 
-	}
-	
 	@RequestMapping("/login")
-	public String login(HttpServletRequest req, HttpServletResponse resp,
+	@ResponseBody
+	public Map<String,Object> login(HttpServletRequest req, HttpServletResponse resp,Model model,
 			@RequestParam("username") String username, 
-			@RequestParam("password") String password,
-			@RequestParam(value="rememberMe", required=false) boolean rememberMe) throws ServletException, IOException {
+			@RequestParam("password") String password) throws ServletException, IOException {
+		Map<String,Object> returnMap = new HashMap<String, Object>();
+		//校验验证码
+		//页面输入的验证码  
+        String randomcode = req.getParameter("randomCode");  
+        //从session中取出验证码  
+        String validateCode = (String) req.getSession().getAttribute("validateCode");
+        if(StringUtils.isBlank(randomcode) || StringUtils.isBlank(validateCode) || !randomcode.equals(validateCode)){
+        	returnMap.put("code", 0);
+        	returnMap.put("msg", "验证码错误");
+        	return returnMap;
+        }
 		Subject currentUser =  SecurityUtils.getSubject();
-		Exception ex = null;
+		String msg = "";
 		if(!currentUser.isAuthenticated()) {
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 			try {
 				currentUser.login(token);
 			} catch (UnknownAccountException e) {
-				ex = e;
+				msg = "用户名不存在";
 				logger.error(String.format("user not found: %s", username), e);
 			} catch(IncorrectCredentialsException e) {
-				ex = e;
+				msg = "密码不正确";
 				logger.error(String.format("user: %s pwd: %s error", username, password), e);
 			} catch (ConcurrentAccessException e) {
-				ex = e;
+				msg = "权限不足";
 				logger.error(String.format("user has been authenticated: %s", username), e);
 			} catch (AuthenticationException e) {
-				ex = e;
+				msg = "用户名密码错误";
 			    logger.error(String.format("account except: %s", username), e);
 			}
 		}
-		
-		if(ex != null) {
-			req.setAttribute("ex", ex);
-			return MyUtil.redirect(req, resp, "/");
+		if(StringUtils.isNotBlank(msg)) {
+			returnMap.put("code", 0);
+        	returnMap.put("msg", msg);
+		}else{
+			returnMap.put("code", 1);
+			returnMap.put("msg", "登录成功");
 		}
-		return MyUtil.redirect(req, resp, "/");
+		return returnMap;
 	}
 	
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		SecurityUtils.getSubject().logout();
 		req.getSession().invalidate();
-		return MyUtil.redirect(req, resp, "/index");
+		return "redirect:login.jsp";
 	}
 
 }
