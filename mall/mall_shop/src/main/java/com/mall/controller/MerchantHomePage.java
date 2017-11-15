@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.mall.exception.BusinessException;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.merchant.Merchant;
-import com.mall.pojo.merchant.MerchantCriteria;
 import com.mall.pojo.product.Product;
 import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
-import com.mall.utils.util1.StringUtil;
 
 /**
  * 
