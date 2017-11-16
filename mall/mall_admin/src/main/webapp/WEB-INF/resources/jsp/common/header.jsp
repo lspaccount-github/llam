@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <div class="container">
-    <div class="logo"><a href="./index.html">X-admin v2.0</a></div>
+    <div class="logo"><a href="./index.html">北京航天总院订餐管理</a></div>&emsp;
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>
@@ -23,6 +24,19 @@
           <dd><a href="${pageContext.request.contextPath}/logout.do">退出</a></dd>
         </dl>
       </li>
-      <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">皮肤</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+          <dd><a onclick="footer_color();">默认(黑)</a></dd>
+          <dd><a onclick="footer_color();">蓝色</a></dd>
+          <dd><a onclick="footer_color();">绿色</a></dd>
+          <dd><a onclick="footer_color();">红色</a></dd>
+        </dl>
+      </li>
     </ul>
 </div>
+<script type="text/javascript">
+	function footer_color(){
+		/* $(".footer").css("background-color","rgba\(108, 74, 74, 0.5\)"); */
+	}
+</script>
