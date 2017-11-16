@@ -85,13 +85,16 @@
     <bean name="shiroFilterChainDefinitions" class="java.lang.String">
         <constructor-arg>
             <value>
-            	/ = authc
-                <!-- 静态资源目录 -->
+                <!-- 不拦截静态资源目录 -->
                 /admin/** = anon
-                <!-- 获取验证码 -->
-                /login.jsp = anon
-                <!-- 获取验证码 -->
+                /admin_ui/** = anon
+                <!-- 不拦截登录页面、登录接口 -->
+                /login = anon
+                /login.do = anon
+                <!-- 不拦截获取验证码 -->
                 /validateCode.do = anon
+                <!-- 其它所有路径都拦截 -->
+                /** = authc
             </value>
         </constructor-arg>
     </bean>

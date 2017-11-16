@@ -49,9 +49,9 @@ public class IndexController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/home.do")
+	@RequestMapping("/home")
 	public String home(HttpServletRequest request, HttpServletResponse response,Model model) {
-		return "home";
+		return "common/home";
 	}
 	
 	/**

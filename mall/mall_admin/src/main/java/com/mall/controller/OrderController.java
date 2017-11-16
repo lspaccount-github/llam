@@ -1,7 +1,5 @@
 package com.mall.controller;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mall.pojo.order.Order;
 import com.mall.service.order.OrderService;
 
 @Controller
@@ -23,13 +20,9 @@ public class OrderController {
 	
 	Logger logger = Logger.getLogger(OrderController.class);
 	
-	@RequestMapping(value="/getUser")
-	public String getUsers(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
-		try {
-		} catch (Exception e) {
-			logger.error(e);
-		}
-		return "userList";
+	@RequestMapping(value="/tolist")
+	public String tolist(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
+		return "order/order_list";
 	}
 	
 	
