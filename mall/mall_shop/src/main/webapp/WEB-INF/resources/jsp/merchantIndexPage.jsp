@@ -142,11 +142,20 @@ $(function(){
 		            		return;
 		            	}else{
 		            		var productList = eval('(' + data.productList + ')'); 
-		            		for(var i=0; i<productList.length; i++){ 
+		            		var shopCartLength = shopCartObj.length;
+		            		for(var i=0; i<productList.length; i++){
+		            			var num = 0;
+		            			if(shopCartLength>0){
+		            				for(var j = 0;j<shopCartLength;j++){
+		            					if(shopCartObj[j].productId == productList[i].productId){
+		            						num = shopCartObj[j].num;
+		            					}
+		            				}	
+		            			}
 		            			htmlCode +='<dl><dt><img src="../images/food.jpg"></dt>';
 		            			htmlCode +='<dd><p>'+productList[i].productName+'</p></dd>';
 		            			htmlCode +='<dd><span>￥<i id="'+productList[i].productId+'price">'+productList[i].productSpecList[0].price+'<i/></span><span>/'+productList[i].productUnit+'</span></dd>';
-		            			htmlCode +='<dd class="aa"><a href="javascript:void(0)" onclick="jian('+"'"+productList[i].productId+"'"+');" class="minus"></a><span id="'+productList[i].productId+'num">0</span> <a href="javascript:void(0)" onclick="jia('+"'"+productList[i].productId+"'"+');" class="plus"></a></dd></dl>';
+		            			htmlCode +='<dd class="aa"><a href="javascript:void(0)" onclick="jian('+"'"+productList[i].productId+"'"+');" class="minus"></a><span id="'+productList[i].productId+'num">'+num+'</span> <a href="javascript:void(0)" onclick="jia('+"'"+productList[i].productId+"'"+');" class="plus"></a></dd></dl>';
 		            		}
 		            		$("#ProductHtml").html("");
 		            		$("#ProductHtml").html(htmlCode);
