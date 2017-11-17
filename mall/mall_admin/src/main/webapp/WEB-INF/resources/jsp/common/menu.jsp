@@ -49,7 +49,7 @@
 	                  </a>
 	              </li >
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/product/tolist.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>菜品列表</cite>
 	                  </a>
@@ -64,13 +64,13 @@
 	          </a>
 	          <ul class="sub-menu">
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/order/to_today.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>今日订单</cite>
 	                  </a>
 	              </li >
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/order/to_history.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>历史订单</cite>
 	                  </a>
@@ -85,7 +85,7 @@
 	          </a>
 	          <ul class="sub-menu">
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/payment_record/tolist.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>支付流水</cite>
 	                  </a>

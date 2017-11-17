@@ -12,27 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mall.service.order.OrderService;
 
 @Controller
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/payment_record")
+public class PaymentRecordController {
 	
 	@Autowired
 	private OrderService orderService;
 	
-	Logger logger = Logger.getLogger(OrderController.class);
+	Logger logger = Logger.getLogger(PaymentRecordController.class);
 	
-	@RequestMapping(value="/to_today")
+	@RequestMapping(value="/tolist")
 	public String toTodayList(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
-		return "order/order_today";
-	}
-	
-	@RequestMapping(value="/to_history")
-	public String toHistoryList(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
-		return "order/order_history";
-	}
-	
-	@RequestMapping(value="/details")
-	public String details(String orderId,ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
-		return "order/order_details";
+		return "payment_record/payment_record_list";
 	}
 	
 	
