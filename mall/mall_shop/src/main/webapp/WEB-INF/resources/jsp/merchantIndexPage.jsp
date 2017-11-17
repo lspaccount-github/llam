@@ -40,9 +40,12 @@
 		<div class="order">
 			<!-- <img src="../images/shoppingcar.png" alt=""> -->
 			<span><i id="totalPrice">0</i>元</span>
-			<a href="#">去下单</a>
+			<a href="javascript:void(0)" onclick="toConfirmOrder();">去下单</a>
 		</div>
 	</div>
+	<form action="" method="post" id="productSubmit">
+		<input type="hidden" name="productInfo" value="" id="productInfo"/>
+	</form>
 </body>
 </html>
 
@@ -168,4 +171,14 @@ $(function(){
 		    });
 	}
 	
+	function toConfirmOrder(){
+		var shopCartLength = shopCartObj.length;
+		if(shopCartLength>0){
+			var strify = JSON.stringify(shopCartObj);
+			$("#productInfo").val(strify);
+			alert("马上提交");
+		}else{
+			alert("请选择商品。");
+		}
+	}
 </script>
