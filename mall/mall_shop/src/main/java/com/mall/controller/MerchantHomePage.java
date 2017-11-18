@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.mall.exception.BusinessException;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.merchant.Merchant;
+import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.product.Product;
 import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.service.merchant.MerchantService;
@@ -51,7 +55,8 @@ public class MerchantHomePage extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="orderPage")
-	public String orderPage(@RequestParam(required = true)String merchantId) throws Exception{
+	public String orderPage(String merchantId,String productinfo) throws Exception{
+		//如果productinfo不为空，则说明是其他页面跳转回来，并携带了之前的点餐商品
 		String returnPage = "merchantIndexPage";
 		//@RequestParam(required = true) 参数前面加这个表示参数为必填
 		try {
@@ -63,7 +68,21 @@ public class MerchantHomePage extends BaseController{
 		if(null==merchant){
 			throw new BusinessException("商户不存在或商户状态异常!");
 		}
-		request.setAttribute("merchant", merchant);
+		
+		int totalPrice  = 0;//总金额
+		if (null!=productinfo && !"".equals(productinfo.trim())){
+			JSONArray jsonArray=JSONArray.fromObject(productinfo);
+			for (Object object : jsonArray) {
+				JSONObject jsonObject2=JSONObject.fromObject(object);
+				OrderConfirm orderConfirm=(OrderConfirm)JSONObject.toBean(jsonObject2, OrderConfirm.class);
+				totalPrice+=orderConfirm.getNum()*orderConfirm.getPrice();
+			}
+			request.setAttribute("productinfo", productinfo);
+		}else{
+			request.setAttribute("productinfo","null");
+		}
+		
+		request.setAttribute("totalPrice", totalPrice);
 		//根据商户id查询商品分类
 		List<ProductClassify> productClassifyList = productClassifyService.getProductClassifyListByMerchantId(merchantId);
 		request.setAttribute("productClassifyList", productClassifyList);

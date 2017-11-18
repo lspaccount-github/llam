@@ -17,11 +17,11 @@
 			<ul>
 				<c:forEach items="${productClassifyList}" var="productClassify" varStatus="vs">
 					<c:if test="${vs.count == 1}">
-	       				<li class="current1"  onClick="getProduct(this,'${productClassify.classifyId}')"><a href="javascript:void(0)">${productClassify.classifyName}</a></li>
+	       				<li class="current1"  onClick="getProduct(this,'${productClassify.classifyId}')"><a href="javascript:void(0);">${productClassify.classifyName}</a></li>
 	       				<input id="initClassifyId" type="hidden" value="${productClassify.classifyId}"/>
 					</c:if>
 					<c:if test="${vs.count != 1}">
-	       				<li onClick="getProduct(this,'${productClassify.classifyId}')"><a href="javascript:void(0)">${productClassify.classifyName}</a></li>
+	       				<li onClick="getProduct(this,'${productClassify.classifyId}')"><a href="javascript:void(0);">${productClassify.classifyName}</a></li>
 					</c:if>
 				</c:forEach>
 			</ul>
@@ -39,11 +39,11 @@
 
 		<div class="order">
 			<!-- <img src="../images/shoppingcar.png" alt=""> -->
-			<span><i id="totalPrice">0</i>元</span>
+			<span><i id="totalPrice">${totalPrice}</i>元</span>
 			<a href="javascript:void(0)" onclick="toConfirmOrder();">去下单</a>
 		</div>
 	</div>
-	<form action="" method="post" id="productSubmit">
+	<form action="${pageContext.request.contextPath}/order/goToOrderConfirmPage.html" method="post" id="productSubmit">
 		<input type="hidden" name="productInfo" value="" id="productInfo"/>
 	</form>
 </body>
@@ -55,7 +55,7 @@ $(function(){
 	var classifyId=$("#initClassifyId").val();
 	getProductAjax(classifyId);
 }); 
-
+	
 	function getProduct(objThis,classifyId){
 		var liClass= $(objThis).attr('class');
 		if("current1"==liClass){
@@ -67,8 +67,14 @@ $(function(){
 		}
 	}
 	
-	var shopCartObj = [];
-	var shopCartPrice = 0;
+	var shopCartPrice = ${totalPrice};
+	var shopCartObj = null;
+	var pi =  ${productinfo};
+	if(pi=="" || null ==pi || pi=="null"){
+		shopCartObj = [];	
+	}else{
+		shopCartObj = pi;
+	}
 	function jia(event){
 		var productId=event|| window.event;
 		var shopCartLength = shopCartObj.length;
@@ -84,14 +90,14 @@ $(function(){
 				}
 			}
 			if(!bool){
-				var prodJson = {"productId":productId,"num":1};
+				var prodJson = {"productId":productId,"num":1,"price":$("#"+productId+"price").text()};
 				shopCartObj.push(prodJson);
 				$("#"+productId+"num").text(1);
 				shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
 				$("#totalPrice").text(shopCartPrice);
 			}
 		}else{
-			var prodJson = {"productId":productId,"num":1};
+			var prodJson = {"productId":productId,"num":1,"price":$("#"+productId+"price").text()};
 			shopCartObj.push(prodJson);
 			$("#"+productId+"num").text(1);
 			shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
@@ -176,7 +182,7 @@ $(function(){
 		if(shopCartLength>0){
 			var strify = JSON.stringify(shopCartObj);
 			$("#productInfo").val(strify);
-			alert("马上提交");
+			$("#productSubmit").submit();
 		}else{
 			alert("请选择商品。");
 		}

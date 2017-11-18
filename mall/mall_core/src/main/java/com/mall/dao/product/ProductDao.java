@@ -1,9 +1,11 @@
 package com.mall.dao.product;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.mall.pojo.product.Product;
 import com.mall.pojo.product.ProductCriteria;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface ProductDao {
     int countByExample(ProductCriteria example);
@@ -29,4 +31,6 @@ public interface ProductDao {
     int updateByPrimaryKey(Product record);
     //根据商品分类id查询商品以及商品相关信息 shenwei 
 	List<Product> getProductAndProductRelevantByproductClassifyId(long productClassifyId);
+	//根据商品id查询商品以及商品相关信息 shenwei 
+	Product getProductAndProductRelevantByproductId(String productId);
 }

@@ -17,4 +17,9 @@
  	<select id="getProductAndProductRelevantByproductClassifyId" resultMap="BaseResultMap1" parameterType="java.lang.Long" >
     	SELECT * FROM ho_product p ,ho_product_spec ps WHERE p.product_id = ps.product_id AND p.classify_id = #{productClassifyId,jdbcType=BIGINT}
   </select>
+  
+  <!-- 根据商品id查询商品，并关联查询商品规格，主要用户校验商品 -->
+ 	<select id="getProductAndProductRelevantByproductId" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    	SELECT * FROM ho_product p ,ho_product_spec ps WHERE p.product_id = ps.product_id AND p.product_id = #{productId,jdbcType=VARCHAR}
+  </select>
 </mapper>
