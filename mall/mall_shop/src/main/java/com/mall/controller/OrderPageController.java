@@ -74,8 +74,24 @@ public class OrderPageController extends BaseController{
 		
 		//TODO 查询当前用户的信息，返回前台
 		//返回页面
-		
 		return "orderCheckPage";
 	}
 	
+	/**
+	 * 
+	 * @Title: submitOrder 
+	 * @Description: 提交订单方法
+	 * @param @param contacts
+	 * @param @param phone
+	 * @param @param position1
+	 * @param @param position2
+	 * @param @param productinfo
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="submitOrder")
+	public String submitOrder(String contacts,String phone,String position1,String position2,String productinfo){
+		return "";
+	}
 }

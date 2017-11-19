@@ -38,7 +38,7 @@
 	   		        <span>￥10.00</span>
 	   		    </li> -->
 	   		</ol>
-	   	 <form action="">
+	   	 <form action="${pageContext.request.contextPath}/order/submitOrder.html" method="post" id="submitOrder">
 	   	 <ul>
 	   		<li>
 	   			<span>姓名</span>
@@ -69,26 +69,35 @@
 	   			</div>
 	   		</li>
 	   	</ul>
+	   	<input type="hidden" id="productinfoh1" name="productinfo" value="" />
 	   	</form>
 	   </div>
 	  <div class="container_bottom">
 	  	<a href="javascript:void(0);" onclick="returnMerchantHomePageFun();"  class="return">返回</a>
 	  	<span>应付款<i>￥${totalPrice}</i></span>
-	  	<a href="javascript:void(0);" class="sure">确认订单</a>
+	  	<a href="javascript:void(0);" onclick="submitOrder();" class="sure">确认订单</a>
 	  </div>
 	</div>
 	<!-- 隐藏form 用户返回按钮 -->
 	<form action="${pageContext.request.contextPath}/merchantHomePage/orderPage.html" method="post" id="returnMerchantHomePage">
 		<input type="hidden" name="merchantId" value="20171112185000001" />
-		<input type="hidden" id="productinfoh1" name="productinfo" value="" />
+		<input type="hidden" id="productinfoh2" name="productinfo" value="" />
 	</form>
 </body>
 </html>
 
 <script>
+ 
 	var productinfoStr = ${productInfo};
+	//返回上一页方法
 	function returnMerchantHomePageFun(){
-		$("#productinfoh1").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
+		$("#productinfoh2").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
 		$("#returnMerchantHomePage").submit();
-	}		
+	}	
+	
+	//提交订单
+	function submitOrder(){
+		$("#productinfoh1").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
+		$("#productinfoh1").submit();
+	}
 </script>
