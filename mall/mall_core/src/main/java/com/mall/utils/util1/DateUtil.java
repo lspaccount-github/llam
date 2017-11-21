@@ -431,4 +431,63 @@ public class DateUtil {
 		return resultTimeStr;
 	}
 
+	/**
+	 * 
+	 * @Title: addDateMinut 
+	 * @Description: 指定字符串时间+分钟
+	 * @param @param day
+	 * @param @param x
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
+	public static Date addDateMinut(String day, int x) {  
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 24小时制  
+        Date date = null;  
+        try {  
+            date = format.parse(day);  
+        } catch (Exception ex) {  
+            ex.printStackTrace();  
+        }  
+        if (date == null)  
+            return null;  
+        Calendar cal = Calendar.getInstance();  
+        cal.setTime(date);  
+        cal.add(Calendar.MINUTE, x);// 24小时制  
+        date = cal.getTime();  
+        cal = null;  
+        return date;  
+    } 
+	
+	/**
+	 * 
+	 * @Title: addDateMinut 
+	 * @Description: 指定时间+分钟
+	 * @param @param day
+	 * @param @param x
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
+	public static Date addDateMinut(Date day, int x) {  
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 24小时制  
+        Date date = null;  
+        try {  
+            date = day;  
+        } catch (Exception ex) {  
+            ex.printStackTrace();  
+        }  
+        if (date == null)  
+            return null;  
+        Calendar cal = Calendar.getInstance();  
+        cal.setTime(date);  
+        cal.add(Calendar.MINUTE, x);// 24小时制  
+        date = cal.getTime();  
+        cal = null;  
+        return date;  
+    }
+	
+	public static void main(String[] args) {
+		System.out.println(addDateMinut(new Date(),15));
+	}
 }

@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.order.OrderDao;
+import com.mall.dao.order_address.OrderAddressDao;
+import com.mall.dao.order_product.OrderProductDao;
 import com.mall.dao.product.ProductDao;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order.OrderCriteria;
+import com.mall.pojo.order_address.OrderAddress;
+import com.mall.pojo.order_product.OrderProduct;
 import com.mall.pojo.product.Product;
 import com.mall.service.order.OrderService;
 
@@ -23,6 +27,11 @@ public class OrderServiceImpl implements OrderService{
 	private OrderDao orderDao;
 	@Autowired
 	private ProductDao productDao;
+	@Autowired
+	private OrderProductDao orderProductDao;
+	@Autowired
+	private OrderAddressDao orderAddressDao;
+	
 	
 	
 	@Override
@@ -38,6 +47,7 @@ public class OrderServiceImpl implements OrderService{
 		
 	}
 
+	
 	@Override
 	public List<OrderConfirm> checkOrder(List<OrderConfirm> orderConfirms) {
 		for (OrderConfirm orderConfirm : orderConfirms) {
@@ -51,6 +61,15 @@ public class OrderServiceImpl implements OrderService{
 			orderConfirm.setProduct(product);
 		}
 		return orderConfirms;
+	}
+
+	@Override
+	public void saveOrderAndOrderProduct(Order order,List<OrderProduct> orderProducts, OrderAddress orderAddress) {
+		orderDao.insertSelective(order);
+		orderAddressDao.insertSelective(orderAddress);
+		for (OrderProduct orderProduct : orderProducts) {
+			orderProductDao.insertSelective(orderProduct);
+		}
 	}
 	
 	

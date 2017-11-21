@@ -8,7 +8,7 @@ public class UUIDUtils {
 	 * 获取UUID
 	 */
 	public static String getUUID() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().replaceAll("[a-z|-]", "");
 	}
 
 	/**
@@ -22,4 +22,8 @@ public class UUIDUtils {
 		return s.replaceAll("[a-z|-]", "").substring(0, count);
 	}
 
+	public static void main(String[] args) {
+		System.out.println(getUUID());
+		System.out.println(getUUID(15));
+	}
 }

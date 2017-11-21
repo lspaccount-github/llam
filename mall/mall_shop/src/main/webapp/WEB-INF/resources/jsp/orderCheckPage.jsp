@@ -98,6 +98,6 @@
 	//提交订单
 	function submitOrder(){
 		$("#productinfoh1").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
-		$("#productinfoh1").submit();
+		$("#submitOrder").submit();
 	}
 </script>
