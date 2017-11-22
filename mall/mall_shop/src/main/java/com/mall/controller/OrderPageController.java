@@ -166,4 +166,19 @@ public class OrderPageController extends BaseController{
 		
 		return "payCheckPage";
 	}
+	
+	@RequestMapping(value="getOrderList")
+	public String getOrderList(){
+		//获取当前登陆人的id，根据当前登陆人的id  查询订单列表 
+		//订单对象中包含订单商品信息
+		String userid= "";
+		//orderService.getOrderList("");
+		return "";
+	}
+	
+	@RequestMapping(value="getOrderDetails")
+	public String getOrderDetails(){
+		//根据订单id查询订单详情
+		return "";
+	}
 }
