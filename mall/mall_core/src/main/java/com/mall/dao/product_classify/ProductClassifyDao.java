@@ -1,9 +1,11 @@
 package com.mall.dao.product_classify;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.pojo.product_classify.ProductClassifyCriteria;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface ProductClassifyDao {
     int countByExample(ProductClassifyCriteria example);
@@ -27,4 +29,14 @@ public interface ProductClassifyDao {
     int updateByPrimaryKeySelective(ProductClassify record);
 
     int updateByPrimaryKey(ProductClassify record);
+
+    /**
+	 * @Title: getProductClassifyListByMerchantId 
+	 * @Description: 根据商户id获取有上架商品商品分类list
+	 * @param @param merchantId
+	 * @param @return    设定文件 
+	 * @return List<ProductClassify>    返回类型 
+	 * @throws
+	 */
+	List<ProductClassify> getProductClassifyListByMerchantIdCommodity(String merchantId);
 }

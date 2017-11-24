@@ -27,10 +27,10 @@ i{font-style:normal;}
 .Rightside dl .aa .minus{ background: url(../images/icon1.png) no-repeat ;background-size:100%;}
 .Rightside dl .aa .plus{ background: url(../images/icon2.png) no-repeat ;background-size:100%;}
 .Rightside dl .aa span{margin: 0 10px;vertical-align: middle;font-size: 15px;}
-.order{width:100%;position: fixed;bottom: 0;border-top: 1px solid #e8e8e8;background: #fff;}
-.order span{width:70%;height: 30px;display: inline-block;float: left;text-align: center;line-height: 30px;color:#df7255;}
+.order{height:44px;width:100%;position: fixed;bottom: 0;background: #fff;}
+.order span{width:70%;height:43px;display: inline-block;float: left;text-align: center;line-height:43px;color:#df7255;border-top: 1px solid #e8e8e8;}
 .order span i{font-style:normal;}
-.order a{height: 30px;width:30%;display: inline-block;background:#df7255;line-height: 30px;text-align: center;float: right;color: #fff;}
+.order a{height: 44px;width:30%;display: inline-block;background:#df7255;line-height: 44px;text-align: center;float: right;color: #fff;}
 
 /* 请点餐页面 */
 

@@ -8,9 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.merchant.MerchantDao;
 import com.mall.dao.product_classify.ProductClassifyDao;
-import com.mall.exception.BusinessException;
-import com.mall.pojo.merchant.Merchant;
-import com.mall.pojo.merchant.MerchantCriteria;
 import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.pojo.product_classify.ProductClassifyCriteria;
 import com.mall.service.product_classify.ProductClassifyService;
@@ -45,6 +42,12 @@ public class ProductClassifyServiceImpl implements ProductClassifyService {
 		ProductClassifyCriteria criteria = new ProductClassifyCriteria();
 		criteria.createCriteria().andClassifyIdEqualTo(productClassifyId).andIsValidEqualTo(1);
 		return productClassifyDao.selectByExample(criteria).get(0);
+	}
+
+
+	@Override
+	public List<ProductClassify> getProductClassifyListByMerchantIdCommodity(String merchantId) {
+		return productClassifyDao.getProductClassifyListByMerchantIdCommodity(merchantId);
 	}
 
 }

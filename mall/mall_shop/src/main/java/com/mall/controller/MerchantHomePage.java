@@ -1,5 +1,6 @@
 package com.mall.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +70,15 @@ public class MerchantHomePage extends BaseController{
 			throw new BusinessException("商户不存在或商户状态异常!");
 		}
 		
-		int totalPrice  = 0;//总金额
+		int totalPrice  = 0;//如果productinfo不为空则总金额
+		List<OrderConfirm> confirms = new ArrayList<OrderConfirm>();//目前该list没有用到
 		if (null!=productinfo && !"".equals(productinfo.trim())){
 			JSONArray jsonArray=JSONArray.fromObject(productinfo);
 			for (Object object : jsonArray) {
 				JSONObject jsonObject2=JSONObject.fromObject(object);
 				OrderConfirm orderConfirm=(OrderConfirm)JSONObject.toBean(jsonObject2, OrderConfirm.class);
 				totalPrice+=orderConfirm.getNum()*orderConfirm.getPrice();
+				confirms.add(orderConfirm);
 			}
 			request.setAttribute("productinfo", productinfo);
 		}else{
@@ -84,7 +87,8 @@ public class MerchantHomePage extends BaseController{
 		
 		request.setAttribute("totalPrice", totalPrice);
 		//根据商户id查询商品分类
-		List<ProductClassify> productClassifyList = productClassifyService.getProductClassifyListByMerchantId(merchantId);
+		//List<ProductClassify> productClassifyList = productClassifyService.getProductClassifyListByMerchantId(merchantId);
+		List<ProductClassify> productClassifyList = productClassifyService.getProductClassifyListByMerchantIdCommodity(merchantId);
 		request.setAttribute("productClassifyList", productClassifyList);
 		} catch (Exception e) {
 			logger.error("====orderPage 根据商户id查询商户维护的商品分类和商品  异常====",e);

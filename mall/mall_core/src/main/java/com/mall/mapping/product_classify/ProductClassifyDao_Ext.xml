@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.dao.product_classify.ProductClassifyDao" >
+   <select id="getProductClassifyListByMerchantIdCommodity" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   	SELECT 
+	  * 
+	FROM
+	  ho_product_classify pc 
+	WHERE pc.`is_valid` = 1 
+	  AND 
+	  (SELECT 
+	    COUNT(1) 
+	  FROM
+	    ho_product p 
+	  WHERE pc.`classify_id` = p.`classify_id` AND p.product_status = 1) > 0 
+	  AND pc.`merchant_id` = #{merchantId,jdbcType=VARCHAR}
+  </select>
+</mapper>

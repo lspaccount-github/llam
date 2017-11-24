@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -9,7 +10,9 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/base.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/index.css">	
-	<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/js/layer_mobile/need/layer.css">	
+		<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/common/js/layer_mobile/layer.js" type="text/javascript"></script>
 	</head>
 <body>
 	<div class="container">
@@ -38,8 +41,10 @@
 		</div>
 
 		<div class="order">
-			<!-- <img src="../images/shoppingcar.png" alt=""> -->
-			<span><i id="totalPrice">${totalPrice}</i>元</span>
+			<span>
+				<%-- <img src="${pageContext.request.contextPath}/common/images/n-cart.png" style="width: 36px;height: 36px;" alt=""> --%>
+				<i id="totalPrice">${totalPrice}</i>元
+			</span>
 			<a href="javascript:void(0)" onclick="toConfirmOrder();">去下单</a>
 		</div>
 	</div>
@@ -147,7 +152,12 @@ $(function(){
 		        success : function(data, textStatus, jqXHR) {
 		            if ('success' == textStatus) {
 		            	if(data.flag=="0"){
-		            		$("#ProductHtml").html(data.message);
+		            		//$("#ProductHtml").html(data.message);
+		            		//信息框
+				        	  layer.open({
+				        	    content: data.message
+				        	    ,btn: '确定'
+				        	  });
 		            		return;
 		            	}else{
 		            		var productList = eval('(' + data.productList + ')'); 
@@ -172,7 +182,11 @@ $(function(){
 		            }
 		        },
 		        error : function(XMLHttpRequest, textStatus, errorThrown) {
-		            alert("系统异常！！！！");
+		        	//信息框
+		        	  layer.open({
+		        	    content: '系统异常,请稍后重试！'
+		        	    ,btn: '确定'
+		        	  });
 		        }
 		    });
 	}
@@ -184,7 +198,11 @@ $(function(){
 			$("#productInfo").val(strify);
 			$("#productSubmit").submit();
 		}else{
-			alert("请选择商品。");
+		  //信息框
+      	  layer.open({
+      	    content: '请选择商品！'
+      	    ,btn: '确定'
+      	  });
 		}
 	}
 </script>

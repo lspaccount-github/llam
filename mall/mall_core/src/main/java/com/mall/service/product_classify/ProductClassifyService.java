@@ -2,7 +2,6 @@ package com.mall.service.product_classify;
 
 import java.util.List;
 
-
 import com.mall.pojo.product_classify.ProductClassify;
 
 /**
@@ -25,6 +24,16 @@ public interface ProductClassifyService {
 	 * @throws
 	 */
 	public List<ProductClassify> getProductClassifyListByMerchantId(String merchantId);
+	
+	/**
+	 * @Title: getProductClassifyListByMerchantId 
+	 * @Description: 根据商户id获取有上架商品商品分类list
+	 * @param @param merchantId
+	 * @param @return    设定文件 
+	 * @return List<ProductClassify>    返回类型 
+	 * @throws
+	 */
+	public List<ProductClassify> getProductClassifyListByMerchantIdCommodity(String merchantId);
 	
 	/**
 	 * 
