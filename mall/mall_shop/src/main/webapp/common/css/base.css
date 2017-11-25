@@ -33,7 +33,7 @@ input,textarea{
     resize: none;
     outline: none;
     /*只对ios 浏览器  清除默认样式*/
-    -webkit-appearance: none;
+    /* -webkit-appearance: none; */
 }
 
 /*清除浮动*/

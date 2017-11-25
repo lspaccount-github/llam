@@ -1,5 +1,6 @@
 package com.mall.pojo.payment_record;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -287,52 +288,52 @@ public class PaymentRecordCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyEqualTo(Double value) {
+        public Criteria andPayMoneyEqualTo(BigDecimal value) {
             addCriterion("pay_money =", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyNotEqualTo(Double value) {
+        public Criteria andPayMoneyNotEqualTo(BigDecimal value) {
             addCriterion("pay_money <>", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyGreaterThan(Double value) {
+        public Criteria andPayMoneyGreaterThan(BigDecimal value) {
             addCriterion("pay_money >", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyGreaterThanOrEqualTo(Double value) {
+        public Criteria andPayMoneyGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("pay_money >=", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyLessThan(Double value) {
+        public Criteria andPayMoneyLessThan(BigDecimal value) {
             addCriterion("pay_money <", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyLessThanOrEqualTo(Double value) {
+        public Criteria andPayMoneyLessThanOrEqualTo(BigDecimal value) {
             addCriterion("pay_money <=", value, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyIn(List<Double> values) {
+        public Criteria andPayMoneyIn(List<BigDecimal> values) {
             addCriterion("pay_money in", values, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyNotIn(List<Double> values) {
+        public Criteria andPayMoneyNotIn(List<BigDecimal> values) {
             addCriterion("pay_money not in", values, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyBetween(Double value1, Double value2) {
+        public Criteria andPayMoneyBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("pay_money between", value1, value2, "payMoney");
             return (Criteria) this;
         }
 
-        public Criteria andPayMoneyNotBetween(Double value1, Double value2) {
+        public Criteria andPayMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("pay_money not between", value1, value2, "payMoney");
             return (Criteria) this;
         }

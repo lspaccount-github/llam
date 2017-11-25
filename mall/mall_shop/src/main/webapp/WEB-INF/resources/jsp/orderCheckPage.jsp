@@ -9,7 +9,9 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/base.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/index.css">	
-	<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/js/layer_mobile/need/layer.css">	
+		<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/common/js/layer_mobile/layer.js" type="text/javascript"></script>
 	</head>
 <body>
 	<div class="container">
@@ -18,7 +20,7 @@
 	   			<c:forEach items="${orderConfirms}" var="orderConfirms" varStatus="vs">
 					<li>
 	   				<span>${orderConfirms.product.productName}</span>
-	   		        <span>*<b>${orderConfirms.num}</b></span>
+	   		        <span>X<b>${orderConfirms.num}</b></span>
 	   		        <span>￥${orderConfirms.price}</span>
 	   		    </li>
 				</c:forEach>
@@ -42,11 +44,11 @@
 	   	 <ul>
 	   		<li>
 	   			<span>姓名</span>
-	   		    <input type="text" name="contacts" id=""  placeholder="杨蜜儿">  			
+	   		    <input type="text" name="contacts" id="name" maxlength="20" style="color:#999;"  value="${orderAddress.contacts}">  			
 	   		</li>
 	   		<li>
 	   			<span>联系电话</span>	   			
-	   			<input type="text" name="phone" id="" placeholder="123321123321">	
+	   			<input type="tel" name="phone" id="phone" maxlength="11" style="color:#999;"  value="${orderAddress.phone}">	
 	   		</li>
 	   		<li>
 	   			<span>方位</span>
@@ -87,7 +89,50 @@
 </html>
 
 <script>
- 
+	var name = '${orderAddress.contacts}';
+	var phone = '${orderAddress.phone}';
+	//获取焦点
+ 	$('#name').on('focus',function(){
+ 		if($('#name').val()=="" || $('#name').val()==null || $('#name').val()=="请输入姓名" || $('#name').val()==name){
+ 			$('#name').val("");
+ 		}
+ 		$('#name').css('color','#000');
+ 	});
+ 	//失去焦点
+ 	$('#name').on('blur',function(){
+ 		if($('#name').val()=="" || $('#name').val()==null || $('#name').val()=="请输入姓名" || $('#name').val()==name){
+ 			$('#name').val(name);
+ 			$('#name').css('color','#999');
+ 		}else{
+ 			$('#name').css('color','#000');
+ 		}
+ 	});
+ 	
+ 	//获取焦点
+ 	$('#phone').on('focus',function(){
+ 		if($('#phone').val()=="" || $('#phone').val()==null || $('#phone').val()=="请输入联系电话" || $('#phone').val()==phone){
+ 			$('#phone').val("");
+ 		}
+ 		$('#phone').css('color','#000');
+ 	});
+ 	//失去焦点
+ 	$('#phone').on('blur',function(){
+ 		if($('#phone').val()=="" || $('#phone').val()==null|| $('#phone').val()=="请输入联系电话" || $('#phone').val()==phone){
+ 			$('#phone').val(phone);
+ 			$('#phone').css('color','#999');
+ 		}else{
+ 			$('#phone').css('color','#000');
+ 		}
+ 	});
+ 	
+ 	$('#phone').keyup(function(){  
+        var c=$(this);  
+        if(/[^\d]/.test(c.val())){//替换非数字字符  
+          var temp_amount=c.val().replace(/[^\d]/g,'');  
+          $(this).val(temp_amount);  
+        }  
+     })   
+ 	
 	var productinfoStr = ${productInfo};
 	//返回上一页方法
 	function returnMerchantHomePageFun(){
@@ -97,7 +142,54 @@
 	
 	//提交订单
 	function submitOrder(){
+		if($('#name').val()=="" || $('#name').val()==null || $('#name').val()=="请输入姓名"){
+			//信息框
+	      	  layer.open({
+	      	    content: '请输入姓名！'
+	      	    ,btn: '确定'
+	      	  });
+			return;
+ 		}
+		if($('#phone').val()=="" || $('#phone').val()==null || $('#phone').val()=="请输入联系电话"){
+			//信息框
+	      	  layer.open({
+	      	    content: '请输入联系电话！'
+	      	    ,btn: '确定'
+	      	  });
+			return;
+ 		}
 		$("#productinfoh1").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
-		$("#submitOrder").submit();
+		/* $("#submitOrder").submit(); */
+		///////////////////////////////////////////////////
+		var param = {"contacts":$('#name').val(),"phone":$('#phone').val(),"productinfo":$("#productinfoh1").val(),"position1":$("#position1").val(),"position2":$("#position2").val()};
+		 $.ajax({
+		        url : '${pageContext.request.contextPath}/order/submitOrder.html',
+		        type : "post",
+		        dataType : "json",
+		        data : param,
+		        cache : false,
+		        async : false,
+		        success : function(data, textStatus, jqXHR) {
+		            if ('success' == textStatus) {
+		            	if(data.flag=="0"){
+		            		//信息框
+				        	  layer.open({
+				        	    content: data.message
+				        	    ,btn: '确定'
+				        	  });
+		            		return;
+		            	}else{
+		            		window.location.href = "${pageContext.request.contextPath}/order/goToOrderPay.html?orderId="+data.orderId;
+		            	}
+		            }
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		        	//信息框
+		        	  layer.open({
+		        	    content: '系统异常,请稍后重试！'
+		        	    ,btn: '确定'
+		        	  });
+		        }
+		    });
 	}
 </script>

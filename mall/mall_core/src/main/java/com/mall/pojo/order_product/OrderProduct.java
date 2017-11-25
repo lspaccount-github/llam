@@ -1,6 +1,7 @@
 package com.mall.pojo.order_product;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class OrderProduct implements Serializable {
     /**
@@ -66,7 +67,7 @@ public class OrderProduct implements Serializable {
     /**
      * 价格
      */
-    private Double price;
+    private BigDecimal price;
 
     private static final long serialVersionUID = 1L;
 
@@ -166,11 +167,11 @@ public class OrderProduct implements Serializable {
         this.spceName = spceName == null ? null : spceName.trim();
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

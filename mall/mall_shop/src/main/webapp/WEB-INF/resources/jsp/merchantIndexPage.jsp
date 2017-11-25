@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/js/layer_mobile/need/layer.css">	
 		<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/common/js/layer_mobile/layer.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/common/js/Tools.js" type="text/javascript"></script>
 	</head>
 <body>
 	<div class="container">
@@ -90,7 +91,8 @@ $(function(){
 					shopCartObj[i].num = shopCartObj[i].num+1;
 					bool = true;
 					$("#"+productId+"num").text(shopCartObj[i].num);
-					shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+					shopCartPrice = toDecimalNum(shopCartPrice)+toDecimalNum($("#"+productId+"price").text());//+计算
+					shopCartPrice=toDecimalStr(shopCartPrice);
 					$("#totalPrice").text(shopCartPrice);
 				}
 			}
@@ -98,14 +100,16 @@ $(function(){
 				var prodJson = {"productId":productId,"num":1,"price":$("#"+productId+"price").text()};
 				shopCartObj.push(prodJson);
 				$("#"+productId+"num").text(1);
-				shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+				shopCartPrice = toDecimalNum(shopCartPrice)+toDecimalNum($("#"+productId+"price").text());//+计算
+				shopCartPrice=toDecimalStr(shopCartPrice);
 				$("#totalPrice").text(shopCartPrice);
 			}
 		}else{
 			var prodJson = {"productId":productId,"num":1,"price":$("#"+productId+"price").text()};
 			shopCartObj.push(prodJson);
 			$("#"+productId+"num").text(1);
-			shopCartPrice = shopCartPrice+parseInt($("#"+productId+"price").text());
+			shopCartPrice = toDecimalNum(shopCartPrice)+toDecimalNum($("#"+productId+"price").text());//+计算
+			shopCartPrice=toDecimalStr(shopCartPrice);
 			$("#totalPrice").text(shopCartPrice);
 		}
 	}
@@ -119,7 +123,8 @@ $(function(){
 					if(shopCartObj[i].num==1){
 						shopCartObj.splice(i,1)
 						$("#"+productId+"num").text(0);
-						shopCartPrice = shopCartPrice-parseInt($("#"+productId+"price").text());
+						shopCartPrice = toDecimalNum(shopCartPrice)-toDecimalNum($("#"+productId+"price").text());//-计算
+						shopCartPrice=toDecimalStr(shopCartPrice);
 						$("#totalPrice").text(shopCartPrice);
 						break;
 					}else if(shopCartObj[i].num<=0){
@@ -127,7 +132,8 @@ $(function(){
 					}else{
 						shopCartObj[i].num = shopCartObj[i].num -1;
 						$("#"+productId+"num").text(shopCartObj[i].num);
-						shopCartPrice = shopCartPrice-parseInt($("#"+productId+"price").text());
+						shopCartPrice = toDecimalNum(shopCartPrice)-toDecimalNum($("#"+productId+"price").text());//-计算
+						shopCartPrice=toDecimalStr(shopCartPrice);
 						$("#totalPrice").text(shopCartPrice);
 					}
 				}

@@ -24,7 +24,7 @@
                         <dt>支付方式</dt>
                         <dd>
                               <span>餐卡支付</span>
-                              <label><input name="Fruit" type="radio" value="" /></label>
+                              <label><input name="Fruit" type="radio"  checked="checked"/></label>
                         </dd>
                        <!--  <dd>
                               <span>微信支付</span>
@@ -33,7 +33,7 @@
                   </dl>
                  </form>
             </div>
-            <div class="btn"><button>确定</button></div>
+            <div class="btn"><button id="button_id">确定</button></div>
 	     
       </div>
 </body>
@@ -76,7 +76,9 @@ function getRTime(){
 	if(t<0){
 		//关闭倒计时
 		endDaoJiShiTimer();
-		alert("结束了");
+		$("#button_id").attr('disabled',true);
+		$('#button_id').css('border','1px solid #999');
+		$('#button_id').css('background','#999');
 	}
 }
 

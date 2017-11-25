@@ -1,5 +1,6 @@
 package com.mall.pojo.product_spec;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -286,52 +287,52 @@ public class ProductSpecCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andPriceEqualTo(Double value) {
+        public Criteria andPriceEqualTo(BigDecimal value) {
             addCriterion("price =", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceNotEqualTo(Double value) {
+        public Criteria andPriceNotEqualTo(BigDecimal value) {
             addCriterion("price <>", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceGreaterThan(Double value) {
+        public Criteria andPriceGreaterThan(BigDecimal value) {
             addCriterion("price >", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceGreaterThanOrEqualTo(Double value) {
+        public Criteria andPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("price >=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceLessThan(Double value) {
+        public Criteria andPriceLessThan(BigDecimal value) {
             addCriterion("price <", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceLessThanOrEqualTo(Double value) {
+        public Criteria andPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("price <=", value, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceIn(List<Double> values) {
+        public Criteria andPriceIn(List<BigDecimal> values) {
             addCriterion("price in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceNotIn(List<Double> values) {
+        public Criteria andPriceNotIn(List<BigDecimal> values) {
             addCriterion("price not in", values, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceBetween(Double value1, Double value2) {
+        public Criteria andPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("price between", value1, value2, "price");
             return (Criteria) this;
         }
 
-        public Criteria andPriceNotBetween(Double value1, Double value2) {
+        public Criteria andPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("price not between", value1, value2, "price");
             return (Criteria) this;
         }
@@ -346,52 +347,52 @@ public class ProductSpecCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeEqualTo(Double value) {
+        public Criteria andLunchFeeEqualTo(BigDecimal value) {
             addCriterion("lunch_fee =", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeNotEqualTo(Double value) {
+        public Criteria andLunchFeeNotEqualTo(BigDecimal value) {
             addCriterion("lunch_fee <>", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeGreaterThan(Double value) {
+        public Criteria andLunchFeeGreaterThan(BigDecimal value) {
             addCriterion("lunch_fee >", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeGreaterThanOrEqualTo(Double value) {
+        public Criteria andLunchFeeGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("lunch_fee >=", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeLessThan(Double value) {
+        public Criteria andLunchFeeLessThan(BigDecimal value) {
             addCriterion("lunch_fee <", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeLessThanOrEqualTo(Double value) {
+        public Criteria andLunchFeeLessThanOrEqualTo(BigDecimal value) {
             addCriterion("lunch_fee <=", value, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeIn(List<Double> values) {
+        public Criteria andLunchFeeIn(List<BigDecimal> values) {
             addCriterion("lunch_fee in", values, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeNotIn(List<Double> values) {
+        public Criteria andLunchFeeNotIn(List<BigDecimal> values) {
             addCriterion("lunch_fee not in", values, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeBetween(Double value1, Double value2) {
+        public Criteria andLunchFeeBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("lunch_fee between", value1, value2, "lunchFee");
             return (Criteria) this;
         }
 
-        public Criteria andLunchFeeNotBetween(Double value1, Double value2) {
+        public Criteria andLunchFeeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("lunch_fee not between", value1, value2, "lunchFee");
             return (Criteria) this;
         }

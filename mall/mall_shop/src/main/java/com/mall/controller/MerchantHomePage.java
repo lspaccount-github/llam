@@ -1,5 +1,6 @@
 package com.mall.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,14 +71,14 @@ public class MerchantHomePage extends BaseController{
 			throw new BusinessException("商户不存在或商户状态异常!");
 		}
 		
-		int totalPrice  = 0;//如果productinfo不为空则总金额
+		BigDecimal totalPrice = new BigDecimal(0);//如果productinfo不为空则总金额
 		List<OrderConfirm> confirms = new ArrayList<OrderConfirm>();//目前该list没有用到
 		if (null!=productinfo && !"".equals(productinfo.trim())){
 			JSONArray jsonArray=JSONArray.fromObject(productinfo);
 			for (Object object : jsonArray) {
 				JSONObject jsonObject2=JSONObject.fromObject(object);
 				OrderConfirm orderConfirm=(OrderConfirm)JSONObject.toBean(jsonObject2, OrderConfirm.class);
-				totalPrice+=orderConfirm.getNum()*orderConfirm.getPrice();
+				totalPrice=totalPrice.add(new BigDecimal(orderConfirm.getNum()).multiply(orderConfirm.getPrice()));
 				confirms.add(orderConfirm);
 			}
 			request.setAttribute("productinfo", productinfo);

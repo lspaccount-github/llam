@@ -1,6 +1,7 @@
 package com.mall.pojo.order;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order implements Serializable {
@@ -17,7 +18,7 @@ public class Order implements Serializable {
     /**
      * 订单金额
      */
-    private Double orderMoney;
+    private BigDecimal orderMoney;
 
     /**
      * 支付方式
@@ -67,11 +68,11 @@ public class Order implements Serializable {
         this.orderStatus = orderStatus;
     }
 
-    public Double getOrderMoney() {
+    public BigDecimal getOrderMoney() {
         return orderMoney;
     }
 
-    public void setOrderMoney(Double orderMoney) {
+    public void setOrderMoney(BigDecimal orderMoney) {
         this.orderMoney = orderMoney;
     }
 

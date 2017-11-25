@@ -1,6 +1,7 @@
 package com.mall.pojo.payment_record;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PaymentRecord implements Serializable {
@@ -17,7 +18,7 @@ public class PaymentRecord implements Serializable {
     /**
      * 支付金额
      */
-    private Double payMoney;
+    private BigDecimal payMoney;
 
     /**
      * 支付状态
@@ -67,11 +68,11 @@ public class PaymentRecord implements Serializable {
         this.payMode = payMode;
     }
 
-    public Double getPayMoney() {
+    public BigDecimal getPayMoney() {
         return payMoney;
     }
 
-    public void setPayMoney(Double payMoney) {
+    public void setPayMoney(BigDecimal payMoney) {
         this.payMoney = payMoney;
     }
 

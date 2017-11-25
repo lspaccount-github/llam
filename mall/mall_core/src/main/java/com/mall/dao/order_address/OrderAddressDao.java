@@ -1,9 +1,11 @@
 package com.mall.dao.order_address;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_address.OrderAddressCriteria;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OrderAddressDao {
     int countByExample(OrderAddressCriteria example);
@@ -27,4 +29,6 @@ public interface OrderAddressDao {
     int updateByPrimaryKeySelective(OrderAddress record);
 
     int updateByPrimaryKey(OrderAddress record);
+
+	OrderAddress getOrderAddressByTimeDESCRow1();
 }

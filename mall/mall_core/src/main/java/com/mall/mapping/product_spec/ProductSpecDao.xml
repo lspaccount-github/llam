@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.mall.pojo.product_spec.ProductSpec" >
     <id column="spce_id" property="spceId" jdbcType="BIGINT" />
     <result column="spce_name" property="spceName" jdbcType="VARCHAR" />
-    <result column="price" property="price" jdbcType="DOUBLE" />
-    <result column="lunch_fee" property="lunchFee" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="lunch_fee" property="lunchFee" jdbcType="DECIMAL" />
     <result column="current_inventory" property="currentInventory" jdbcType="BIGINT" />
     <result column="max_inventory" property="maxInventory" jdbcType="BIGINT" />
     <result column="product_id" property="productId" jdbcType="VARCHAR" />
@@ -113,8 +113,8 @@
     insert into ho_product_spec (spce_id, spce_name, price, 
       lunch_fee, current_inventory, max_inventory, 
       product_id)
-    values (#{spceId,jdbcType=BIGINT}, #{spceName,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{lunchFee,jdbcType=DOUBLE}, #{currentInventory,jdbcType=BIGINT}, #{maxInventory,jdbcType=BIGINT}, 
+    values (#{spceId,jdbcType=BIGINT}, #{spceName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{lunchFee,jdbcType=DECIMAL}, #{currentInventory,jdbcType=BIGINT}, #{maxInventory,jdbcType=BIGINT}, 
       #{productId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mall.pojo.product_spec.ProductSpec" >
@@ -150,10 +150,10 @@
         #{spceName,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        #{price,jdbcType=DOUBLE},
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="lunchFee != null" >
-        #{lunchFee,jdbcType=DOUBLE},
+        #{lunchFee,jdbcType=DECIMAL},
       </if>
       <if test="currentInventory != null" >
         #{currentInventory,jdbcType=BIGINT},
@@ -182,10 +182,10 @@
         spce_name = #{record.spceName,jdbcType=VARCHAR},
       </if>
       <if test="record.price != null" >
-        price = #{record.price,jdbcType=DOUBLE},
+        price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.lunchFee != null" >
-        lunch_fee = #{record.lunchFee,jdbcType=DOUBLE},
+        lunch_fee = #{record.lunchFee,jdbcType=DECIMAL},
       </if>
       <if test="record.currentInventory != null" >
         current_inventory = #{record.currentInventory,jdbcType=BIGINT},
@@ -205,8 +205,8 @@
     update ho_product_spec
     set spce_id = #{record.spceId,jdbcType=BIGINT},
       spce_name = #{record.spceName,jdbcType=VARCHAR},
-      price = #{record.price,jdbcType=DOUBLE},
-      lunch_fee = #{record.lunchFee,jdbcType=DOUBLE},
+      price = #{record.price,jdbcType=DECIMAL},
+      lunch_fee = #{record.lunchFee,jdbcType=DECIMAL},
       current_inventory = #{record.currentInventory,jdbcType=BIGINT},
       max_inventory = #{record.maxInventory,jdbcType=BIGINT},
       product_id = #{record.productId,jdbcType=VARCHAR}
@@ -221,10 +221,10 @@
         spce_name = #{spceName,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
-        price = #{price,jdbcType=DOUBLE},
+        price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="lunchFee != null" >
-        lunch_fee = #{lunchFee,jdbcType=DOUBLE},
+        lunch_fee = #{lunchFee,jdbcType=DECIMAL},
       </if>
       <if test="currentInventory != null" >
         current_inventory = #{currentInventory,jdbcType=BIGINT},
@@ -241,8 +241,8 @@
   <update id="updateByPrimaryKey" parameterType="com.mall.pojo.product_spec.ProductSpec" >
     update ho_product_spec
     set spce_name = #{spceName,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DOUBLE},
-      lunch_fee = #{lunchFee,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DECIMAL},
+      lunch_fee = #{lunchFee,jdbcType=DECIMAL},
       current_inventory = #{currentInventory,jdbcType=BIGINT},
       max_inventory = #{maxInventory,jdbcType=BIGINT},
       product_id = #{productId,jdbcType=VARCHAR}

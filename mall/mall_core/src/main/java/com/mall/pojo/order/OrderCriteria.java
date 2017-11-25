@@ -1,5 +1,6 @@
 package com.mall.pojo.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -287,52 +288,52 @@ public class OrderCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyEqualTo(Double value) {
+        public Criteria andOrderMoneyEqualTo(BigDecimal value) {
             addCriterion("order_money =", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyNotEqualTo(Double value) {
+        public Criteria andOrderMoneyNotEqualTo(BigDecimal value) {
             addCriterion("order_money <>", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyGreaterThan(Double value) {
+        public Criteria andOrderMoneyGreaterThan(BigDecimal value) {
             addCriterion("order_money >", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyGreaterThanOrEqualTo(Double value) {
+        public Criteria andOrderMoneyGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("order_money >=", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyLessThan(Double value) {
+        public Criteria andOrderMoneyLessThan(BigDecimal value) {
             addCriterion("order_money <", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyLessThanOrEqualTo(Double value) {
+        public Criteria andOrderMoneyLessThanOrEqualTo(BigDecimal value) {
             addCriterion("order_money <=", value, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyIn(List<Double> values) {
+        public Criteria andOrderMoneyIn(List<BigDecimal> values) {
             addCriterion("order_money in", values, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyNotIn(List<Double> values) {
+        public Criteria andOrderMoneyNotIn(List<BigDecimal> values) {
             addCriterion("order_money not in", values, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyBetween(Double value1, Double value2) {
+        public Criteria andOrderMoneyBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_money between", value1, value2, "orderMoney");
             return (Criteria) this;
         }
 
-        public Criteria andOrderMoneyNotBetween(Double value1, Double value2) {
+        public Criteria andOrderMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("order_money not between", value1, value2, "orderMoney");
             return (Criteria) this;
         }

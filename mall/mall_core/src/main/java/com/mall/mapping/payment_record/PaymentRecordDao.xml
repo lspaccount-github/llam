@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.mall.pojo.payment_record.PaymentRecord" >
     <id column="pay_code" property="payCode" jdbcType="VARCHAR" />
     <result column="pay_mode" property="payMode" jdbcType="INTEGER" />
-    <result column="pay_money" property="payMoney" jdbcType="DOUBLE" />
+    <result column="pay_money" property="payMoney" jdbcType="DECIMAL" />
     <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="VARCHAR" />
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
@@ -117,7 +117,7 @@
       pay_status, order_id, pay_time, 
       pay_complete_time, user_id, hospital_card_code
       )
-    values (#{payCode,jdbcType=VARCHAR}, #{payMode,jdbcType=INTEGER}, #{payMoney,jdbcType=DOUBLE}, 
+    values (#{payCode,jdbcType=VARCHAR}, #{payMode,jdbcType=INTEGER}, #{payMoney,jdbcType=DECIMAL}, 
       #{payStatus,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
       #{payCompleteTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, #{hospitalCardCode,jdbcType=VARCHAR}
       )
@@ -161,7 +161,7 @@
         #{payMode,jdbcType=INTEGER},
       </if>
       <if test="payMoney != null" >
-        #{payMoney,jdbcType=DOUBLE},
+        #{payMoney,jdbcType=DECIMAL},
       </if>
       <if test="payStatus != null" >
         #{payStatus,jdbcType=INTEGER},
@@ -199,7 +199,7 @@
         pay_mode = #{record.payMode,jdbcType=INTEGER},
       </if>
       <if test="record.payMoney != null" >
-        pay_money = #{record.payMoney,jdbcType=DOUBLE},
+        pay_money = #{record.payMoney,jdbcType=DECIMAL},
       </if>
       <if test="record.payStatus != null" >
         pay_status = #{record.payStatus,jdbcType=INTEGER},
@@ -228,7 +228,7 @@
     update ho_payment_record
     set pay_code = #{record.payCode,jdbcType=VARCHAR},
       pay_mode = #{record.payMode,jdbcType=INTEGER},
-      pay_money = #{record.payMoney,jdbcType=DOUBLE},
+      pay_money = #{record.payMoney,jdbcType=DECIMAL},
       pay_status = #{record.payStatus,jdbcType=INTEGER},
       order_id = #{record.orderId,jdbcType=VARCHAR},
       pay_time = #{record.payTime,jdbcType=TIMESTAMP},
@@ -246,7 +246,7 @@
         pay_mode = #{payMode,jdbcType=INTEGER},
       </if>
       <if test="payMoney != null" >
-        pay_money = #{payMoney,jdbcType=DOUBLE},
+        pay_money = #{payMoney,jdbcType=DECIMAL},
       </if>
       <if test="payStatus != null" >
         pay_status = #{payStatus,jdbcType=INTEGER},
@@ -272,7 +272,7 @@
   <update id="updateByPrimaryKey" parameterType="com.mall.pojo.payment_record.PaymentRecord" >
     update ho_payment_record
     set pay_mode = #{payMode,jdbcType=INTEGER},
-      pay_money = #{payMoney,jdbcType=DOUBLE},
+      pay_money = #{payMoney,jdbcType=DECIMAL},
       pay_status = #{payStatus,jdbcType=INTEGER},
       order_id = #{orderId,jdbcType=VARCHAR},
       pay_time = #{payTime,jdbcType=TIMESTAMP},

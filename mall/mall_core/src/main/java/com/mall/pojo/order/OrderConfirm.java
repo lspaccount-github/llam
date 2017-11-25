@@ -1,6 +1,7 @@
 package com.mall.pojo.order;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import com.mall.pojo.product.Product;
 
@@ -26,7 +27,7 @@ public class OrderConfirm implements Serializable {
    /**
     * 商品价格
     */
-   private Double price;
+   private BigDecimal price;
    
    /**
     * 商品对象
@@ -49,11 +50,11 @@ public void setNum(int num) {
 	this.num = num;
 }
 
-public Double getPrice() {
+public BigDecimal getPrice() {
 	return price;
 }
 
-public void setPrice(Double price) {
+public void setPrice(BigDecimal price) {
 	this.price = price;
 }
 

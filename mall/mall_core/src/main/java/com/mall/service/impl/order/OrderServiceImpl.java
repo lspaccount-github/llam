@@ -1,6 +1,5 @@
 package com.mall.service.impl.order;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
 	public List<OrderConfirm> checkOrder(List<OrderConfirm> orderConfirms) {
 		for (OrderConfirm orderConfirm : orderConfirms) {
 			Product product= productDao.getProductAndProductRelevantByproductId(orderConfirm.getProductId());
-			if(new BigDecimal(product.getProductSpecList().get(0).getPrice()).compareTo(new BigDecimal(product.getProductSpecList().get(0).getPrice()))!=0){
+			if(0!=product.getProductSpecList().get(0).getPrice().compareTo(orderConfirm.getPrice())){
 				throw new ParameterException("商品价格发生变化，请重新选择。");
 			}
 			if(product.getProductSpecList().get(0).getCurrentInventory()<orderConfirm.getNum()){
