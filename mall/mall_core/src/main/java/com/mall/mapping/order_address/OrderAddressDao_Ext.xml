@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mall.dao.order_address.OrderAddressDao" >
+	<!-- 根据urderId查询当前人时间最近的一条收货地址 -->
   <select id="getOrderAddressByTimeDESCRow1" resultMap="BaseResultMap" >
    		SELECT 
 		  oa.* 
@@ -10,5 +11,9 @@
 		WHERE oa.`order_id` = o.`order_id` 
 		ORDER BY o.`create_time` DESC 
 		LIMIT 1 
+  </select>
+  <!-- 根据orderid查询订单收货地址 -->
+  <select id="selectOrderAddressByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+   		SELECT * FROM ho_order_address oa WHERE oa.`order_id` = #{orderId,jdbcType=VARCHAR}
   </select>
 </mapper>

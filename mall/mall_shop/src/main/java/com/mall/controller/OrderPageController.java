@@ -245,14 +245,20 @@ public class OrderPageController extends BaseController{
 	public String getOrderList(){
 		//获取当前登陆人的id，根据当前登陆人的id  查询订单列表 
 		//订单对象中包含订单商品信息
-		String userid= "";
-		//orderService.getOrderList("");
-		return "";
+		String userid= "199309110311";
+		try {
+			List<Order> orderList = orderService.getOrderListByUserId(userid);
+			request.setAttribute("orderList", orderList);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return "orderListPage";
 	}
 	
-	@RequestMapping(value="getOrderDetails")
-	public String getOrderDetails(){
-		//根据订单id查询订单详情
-		return "";
+	@RequestMapping(value="goToOrderDtail")
+	public String goToOrderDtail(String orderId){
+		Order order=orderService.getOrderByOderIdLazy(orderId);
+		request.setAttribute("order", order);
+		return "orderDtailPage";
 	}
 }

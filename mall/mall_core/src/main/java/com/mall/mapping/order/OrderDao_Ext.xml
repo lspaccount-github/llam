@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.dao.order.OrderDao" >
+  	<resultMap id="BaseResultMap1" type="com.mall.pojo.order.Order" extends="BaseResultMap"> 
+	 	<association property="orderProducts"  
+        	select="com.mall.dao.order_product.OrderProductDao.selectOrderProductsByOrderId" column="order_Id" >  
+    	</association> 
+    	<association property="orderAddress"  
+        	select="com.mall.dao.order_address.OrderAddressDao.selectOrderAddressByOrderId" column="order_Id" >  
+    	</association> 
+	</resultMap>
+  	
+  	<select id="getOrderListByUserId" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    	SELECT * FROM ho_order o WHERE o.`user_id` = #{userid,jdbcType=VARCHAR}
+  	</select>
+  	<!-- 根据orderid查询订单信息，并懒加载订单相关信息 -->
+  	<select id="getOrderByOderIdLazy" resultMap="BaseResultMap1" parameterType="java.lang.String" >
+    	SELECT * FROM ho_order o WHERE o.`order_id` = #{orderId,jdbcType=VARCHAR}
+  	</select>
+</mapper>

@@ -70,6 +70,18 @@ public class OrderServiceImpl implements OrderService{
 			orderProductDao.insertSelective(orderProduct);
 		}
 	}
+
+
+	@Override
+	public List<Order> getOrderListByUserId(String userid) {
+		return orderDao.getOrderListByUserId(userid);
+	}
+
+
+	@Override
+	public Order getOrderByOderIdLazy(String orderId) {
+		return orderDao.getOrderByOderIdLazy(orderId);
+	}
 	
 	
 }

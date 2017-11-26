@@ -3,6 +3,10 @@ package com.mall.pojo.order;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import com.mall.pojo.order_address.OrderAddress;
+import com.mall.pojo.order_product.OrderProduct;
 
 public class Order implements Serializable {
     /**
@@ -49,6 +53,16 @@ public class Order implements Serializable {
      * 订单备注
      */
     private String remark;
+    
+    /**
+     * 订单商品list
+     */
+    private List<OrderProduct> orderProducts;
+    
+    /**
+     * 订单收货地址
+     */
+    private OrderAddress orderAddress;
 
     private static final long serialVersionUID = 1L;
 
@@ -143,4 +157,22 @@ public class Order implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+	public List<OrderProduct> getOrderProducts() {
+		return orderProducts;
+	}
+
+	public void setOrderProducts(List<OrderProduct> orderProducts) {
+		this.orderProducts = orderProducts;
+	}
+
+	public OrderAddress getOrderAddress() {
+		return orderAddress;
+	}
+
+	public void setOrderAddress(OrderAddress orderAddress) {
+		this.orderAddress = orderAddress;
+	}
+    
+    
 }

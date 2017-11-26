@@ -1,9 +1,11 @@
 package com.mall.dao.order;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderCriteria;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OrderDao {
     int countByExample(OrderCriteria example);
@@ -27,4 +29,9 @@ public interface OrderDao {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+	List<Order> getOrderListByUserId(String userid);
+	
+	//根据orderid查询订单信息，并懒加载订单相关信息
+	Order getOrderByOderIdLazy(String orderId);
 }

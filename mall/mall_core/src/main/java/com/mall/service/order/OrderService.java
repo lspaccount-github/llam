@@ -10,6 +10,15 @@ import com.mall.pojo.order_product.OrderProduct;
 
 public interface OrderService {
 
+	/**
+	 * 
+	 * @Title: getOrderByOderId 
+	 * @Description: 根据orderid查询订单信息，不懒加载订单相关信息
+	 * @param @param orderId
+	 * @param @return    设定文件 
+	 * @return Order    返回类型 
+	 * @throws
+	 */
 	public Order getOrderByOderId(String orderId);
 
 	/**
@@ -34,4 +43,25 @@ public interface OrderService {
 	 * @throws
 	 */
 	public void saveOrderAndOrderProduct(Order order,List<OrderProduct> orderProducts, OrderAddress orderAddress);
+
+	/**
+	 * 
+	 * @Title: getOrderListByUserId 
+	 * @Description: 根据userID查询该用户下所有订单
+	 * @param @param userid    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	public List<Order> getOrderListByUserId(String userid);
+
+	/**
+	 * 
+	 * @Title: getOrderByOderIdLazy 
+	 * @Description: 根据orderid查询订单信息，并懒加载订单相关信息
+	 * @param @param orderId
+	 * @param @return    设定文件 
+	 * @return Order    返回类型 
+	 * @throws
+	 */
+	public Order getOrderByOderIdLazy(String orderId);
 }
