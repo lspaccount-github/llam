@@ -26,7 +26,7 @@
 	                   <div><span><fmt:formatDate value="${order.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span><span>医院食堂</span></div>
 	                 </div>
 	                 <div class="right">
-	                   <div>${order.orderStatus}</div>
+	                   <div>${order.orderStatusView}</div>
 	                   <span>￥${order.orderMoney}</span>
 	                 </div>
 	               </li>

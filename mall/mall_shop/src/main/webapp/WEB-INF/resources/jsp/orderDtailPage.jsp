@@ -24,7 +24,8 @@
               <p>电话: <span>${order.orderAddress.phone}</span></p>
               <p>送餐地址：<span>${order.orderAddress.detailAddress}</span></p>
             </div>
-            <div class="handle">${order.orderStatus}</div>
+           <%--  ${order.orderStatus} --%>
+            <div class="handle">${order.orderStatusView}</div>
           </div>  
           <div class="calculate">
             <ul>

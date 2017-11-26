@@ -3,7 +3,9 @@ package com.mall.pojo.order;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
@@ -80,6 +82,7 @@ public class Order implements Serializable {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+        this.orderStatusView = orderStatusMap.get(orderStatus);
     }
 
     public BigDecimal getOrderMoney() {
@@ -174,5 +177,35 @@ public class Order implements Serializable {
 		this.orderAddress = orderAddress;
 	}
     
-    
+    //=============常量区==================
+	public static final Integer ORDER_ORDERSTATUS_DAI_ZHI_FU = 1; 
+	public static final Integer ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN = 2; 
+	public static final Integer ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG = 3; 
+	public static final Integer ORDER_ORDERTYPE_DIN_DAN_YI_QU_XIAO = 4; 
+	public static final Integer ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG = 5; 
+	
+	public static final String ORDER_ORDERSTATUS_DAI_ZHI_FU_VIEW = "待支付";
+	public static final String ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN_VIEW = "待商家确认"; 
+	public static final String ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG_VIEW = "订单处理中"; 
+	public static final String ORDER_ORDERTYPE_DIN_DAN_YI_QU_XIAO_VIEW = "订单已取消";
+	public static final String ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG_VIEW = "订单已完成";
+	
+	private static final Map<Integer, String> orderStatusMap = new HashMap<Integer, String>();
+	static{
+		orderStatusMap.put(ORDER_ORDERSTATUS_DAI_ZHI_FU, ORDER_ORDERSTATUS_DAI_ZHI_FU_VIEW);
+		orderStatusMap.put(ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN, ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN_VIEW);
+		orderStatusMap.put(ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG, ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG_VIEW);
+		orderStatusMap.put(ORDER_ORDERTYPE_DIN_DAN_YI_QU_XIAO, ORDER_ORDERTYPE_DIN_DAN_YI_QU_XIAO_VIEW);
+		orderStatusMap.put(ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG, ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG_VIEW);
+	}
+	
+	/**
+	 * 订单状态显示值
+	 */
+	private String orderStatusView;
+
+	public String getOrderStatusView() {
+		return orderStatusView;
+	}
+	
 }
