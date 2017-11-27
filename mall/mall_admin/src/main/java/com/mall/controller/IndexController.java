@@ -23,13 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.mall.utils.util.MyUtil;
 import com.mall.utils.util.ValidateCode;
 
 /**
@@ -86,6 +83,7 @@ public class IndexController {
         	returnMap.put("msg", "验证码错误");
         	return returnMap;
         }
+        //通过org.apache.shiro.SecurityUtils可以查询当前执行用户：
 		Subject currentUser =  SecurityUtils.getSubject();
 		String msg = "";
 		if(!currentUser.isAuthenticated()) {
