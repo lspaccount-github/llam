@@ -5,10 +5,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">  
  	
     <!-- myBatis文件 -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
+    
+    
+    <!-- mysql -->
+	<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource1" />
 		<!-- 加载载mybatis核心配置文件 -->
-		<property name="configLocation" value="classpath:config/mybatis-config.xml" />
+		<property name="configLocation" value="classpath:config/mybatis-config1.xml" />
 		<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件,所以此地引入,mybatis-config配置文件将不用再引入 -->
 		<property name="mapperLocations" value="classpath:/com/mall/mapping/*/*.xml" />
 	</bean>
@@ -16,6 +19,22 @@
 	<!-- 扫描 basePackage下所有的接口，根据对应的mapper.xml为其生成代理类-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.mall.dao" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory1" />
+	</bean>
+	
+	
+	 <!--sqlserver文件 -->
+	<bean id="sqlSessionFactory2" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource2" />
+		<!-- 加载载mybatis核心配置文件 -->
+		<property name="configLocation" value="classpath:config/mybatis-config2.xml" />
+		<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件,所以此地引入,mybatis-config配置文件将不用再引入 -->
+		<property name="mapperLocations" value="classpath:/com/sqlserver/mapping/*/*.xml" />
+	</bean>
+
+	<!-- 扫描 basePackage下所有的接口，根据对应的mapper.xml为其生成代理类-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.sqlserver.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory2" />
 	</bean>
 </beans>  
