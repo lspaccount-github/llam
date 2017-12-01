@@ -80,7 +80,7 @@ public class IndexController {
         String validateCode = (String) req.getSession().getAttribute("validateCode");
         if(StringUtils.isBlank(randomcode) || StringUtils.isBlank(validateCode) || !randomcode.equals(validateCode)){
         	returnMap.put("code", 0);
-        	returnMap.put("msg", "验证码错误");
+        	returnMap.put("msg", "验证码输入错误！");
         	return returnMap;
         }
         //通过org.apache.shiro.SecurityUtils可以查询当前执行用户：

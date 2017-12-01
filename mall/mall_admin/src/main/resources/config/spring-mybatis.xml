@@ -15,7 +15,8 @@
 
 	<!-- 扫描 basePackage下所有的接口，根据对应的mapper.xml为其生成代理类-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.mall.dao" />
+		<property name="basePackage" value="com.*.dao" />
+		<!-- <property name="basePackage" value="com.sqlserver.dao" /> -->
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
 </beans>  

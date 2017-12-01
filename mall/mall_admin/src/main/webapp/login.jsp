@@ -29,9 +29,9 @@
             <input name="password" lay-verify="required" value="123456"  placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
             <div>
-            <input name="randomCode" lay-verType="msg" style="width:160px;float:left;" lay-verify="required" value=""  placeholder="眼障人士,请勿登录"  type="text" class="layui-input">
+            <input name="randomCode" maxlength="4" lay-verType="msg" style="width:160px;float:left;" lay-verify="required" value=""  placeholder="请输入验证码"  type="text" class="layui-input">
             </div>
-            <img id="validateCodeImg" style="padding-top: 10px; padding-right: 0px;padding-bottom: 1px;padding-left: 20px;" src="${pageContext.request.contextPath}/validateCode.do" />&nbsp;&nbsp;<a href="#" onclick="javascript:reloadValidateCode();">看不清？</a>
+            <img id="validateCodeImg" onclick="javascript:reloadValidateCode();" style="padding-top: 10px; padding-right: 0px;padding-bottom: 1px;padding-left: 20px;" src="${pageContext.request.contextPath}/validateCode.do" />&nbsp;&nbsp;<a href="#" onclick="javascript:reloadValidateCode();">看不清？</a>
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
