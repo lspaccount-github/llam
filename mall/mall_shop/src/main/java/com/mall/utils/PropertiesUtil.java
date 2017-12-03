@@ -1,17 +1,11 @@
-package com.mall.utils.util1;
+package com.mall.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * 读取配置文件
- * 
- * @author Mr.hu
- * 
- */
 public class PropertiesUtil {
-
+	
 	/**
 	 * 
 	 * @Title: getParameter 
@@ -24,15 +18,14 @@ public class PropertiesUtil {
 	 */
 	public static String getParameter(String key, String propertyFileName) {
 		Properties pro = new Properties();
-		InputStream in = PropertiesUtil.class.getClassLoader().getResourceAsStream("/" + propertyFileName + ".properties");
+		InputStream in = PropertiesUtil.class.getClassLoader().getResourceAsStream("properties/" + propertyFileName + ".properties");
 		String parameter = "";
 		try {
 			pro.load(in);
-			parameter = pro.getProperty(key, "#");
+			parameter = pro.getProperty(key);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return parameter;
 	}
-	
 }

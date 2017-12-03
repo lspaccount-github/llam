@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -22,6 +25,7 @@ import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
+import com.mall.pojo.user.User;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.order.OrderService;
 import com.mall.service.order_address.OrderAddressService;
@@ -67,7 +71,21 @@ public class OrderPageController extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="goToOrderConfirmPage")
-	public String goToOrderConfirmPage(@RequestParam(required = true)String productInfo){
+	public String goToOrderConfirmPage(HttpServletRequest req, HttpServletResponse resp,@RequestParam(required = true)String productInfo){
+		//判断是否验证
+		User onlineObject = getOnlineObject(req, resp);
+		if(null!=onlineObject && null!=onlineObject.getUserid() 
+				&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+				&& !onlineObject.getUserSysId().equals("")){
+			//验证通过不处理
+		}else{
+			String countPath=req.getContextPath();   
+			String uri=req.getRequestURI();         
+			uri=uri.replace(countPath, "");
+			uri+="?productInfo="+productInfo;
+			req.getSession().setAttribute("requestUrl",uri);
+			return "redirect:/user/validate.html";
+		}
 		//1首先把json数据转换为对象
 		List<OrderConfirm> orderConfirms = new ArrayList<OrderConfirm>(); 
 		JSONArray jsonArray=JSONArray.fromObject(productInfo);
@@ -118,9 +136,21 @@ public class OrderPageController extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="submitOrder")
-	public void submitOrder(String contacts,String phone,String position1,String position2,String productinfo){
+	public void submitOrder(HttpServletRequest req, HttpServletResponse resp,
+			String contacts,String phone,String position1,String position2,String productinfo){
 		Map<String,String> map = new HashMap<String,String>();
 		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
 			//入参校验
 			if(StringUtils.isBlank(contacts) || StringUtils.isBlank(phone)
 					|| StringUtils.isBlank(position1) || StringUtils.isBlank(position2) 
@@ -217,7 +247,22 @@ public class OrderPageController extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="goToOrderPay")
-	public String goToOrderPay(String orderId){
+	public String goToOrderPay(HttpServletRequest req, HttpServletResponse resp,String orderId){
+		//判断是否验证
+		User onlineObject = getOnlineObject(req, resp);
+		if(null!=onlineObject && null!=onlineObject.getUserid() 
+				&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+				&& !onlineObject.getUserSysId().equals("")){
+			//验证通过不处理
+		}else{
+			String countPath=req.getContextPath(); 
+			String uri=req.getRequestURI();  
+			uri=uri.replace(countPath, "");
+			uri+="?orderId="+orderId;
+			req.getSession().setAttribute("requestUrl",uri);
+			return "redirect:/user/validate.html";
+		}
+		
 		if(StringUtils.isBlank(orderId)){
 			exp(request, new ParameterException("参数错误！"));
 		}
@@ -242,7 +287,21 @@ public class OrderPageController extends BaseController{
 	
 	
 	@RequestMapping(value="getOrderList")
-	public String getOrderList(){
+	public String getOrderList(HttpServletRequest req, HttpServletResponse resp){
+		//判断是否验证
+		User onlineObject = getOnlineObject(req, resp);
+		if(null!=onlineObject && null!=onlineObject.getUserid() 
+			&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+			&& !onlineObject.getUserSysId().equals("")){
+		//验证通过不处理
+		}else{
+			String countPath=req.getContextPath();      
+			String uri=req.getRequestURI();    
+			
+			uri=uri.replace(countPath, "");
+			req.getSession().setAttribute("requestUrl",uri);
+			return "redirect:/user/validate.html";
+		}
 		//获取当前登陆人的id，根据当前登陆人的id  查询订单列表 
 		//订单对象中包含订单商品信息
 		String userid= "199309110311";
@@ -256,9 +315,24 @@ public class OrderPageController extends BaseController{
 	}
 	
 	@RequestMapping(value="goToOrderDtail")
-	public String goToOrderDtail(String orderId){
+	public String goToOrderDtail(HttpServletRequest req, HttpServletResponse resp,String orderId){
+		//判断是否验证
+		User onlineObject = getOnlineObject(req, resp);
+		if(null!=onlineObject && null!=onlineObject.getUserid() 
+				&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+				&& !onlineObject.getUserSysId().equals("")){
+			//验证通过不处理
+		}else{
+			String countPath=req.getContextPath(); 
+			String uri=req.getRequestURI();  
+			uri=uri.replace(countPath, "");
+			uri+="?orderId="+orderId;
+			req.getSession().setAttribute("requestUrl",uri);
+			return "redirect:/user/validate.html";
+		}
 		Order order=orderService.getOrderByOderIdLazy(orderId);
 		request.setAttribute("order", order);
+		request.setAttribute("avatar", onlineObject.getAvatar());
 		return "orderDtailPage";
 	}
 }

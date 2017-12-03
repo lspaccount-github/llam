@@ -129,7 +129,7 @@ $(function(){
 	        i--
 	        $(".mm_box li").eq(i).removeClass("mmdd");
 	        i==0;
-	        }
+	      }
 	      //alert(i);
 	    });
 	  //============支付弹窗结束============    

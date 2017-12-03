@@ -12,12 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mall.exception.BusinessException;
 import com.mall.exception.ParameterException;
+import com.mall.pojo.user.User;
 
 /**
  * @ClassName: BaseController
@@ -152,4 +152,25 @@ public class BaseController  {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: getOnlineObject 
+	 * @Description: 获取当前登陆对象
+	 * @param @param request
+	 * @param @param exception
+	 * @param @return    设定文件 
+	 * @return User    返回类型 
+	 * @throws
+	 */
+	public User getOnlineObject(HttpServletRequest req, HttpServletResponse resp){
+		HttpSession session2 = req.getSession();
+		if(null==session2){
+			return null;
+		}
+		Object attribute = session2.getAttribute("onlineObject");
+		if(null==attribute){
+			return null;
+		}
+		return (User)attribute;
+	}
 }

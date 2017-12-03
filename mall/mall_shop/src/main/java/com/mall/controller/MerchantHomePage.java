@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -23,6 +26,7 @@ import com.mall.pojo.merchant.Merchant;
 import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.product.Product;
 import com.mall.pojo.product_classify.ProductClassify;
+import com.mall.pojo.user.User;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
@@ -57,7 +61,22 @@ public class MerchantHomePage extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="orderPage")
-	public String orderPage(String merchantId,String productinfo) throws Exception{
+	public String orderPage(HttpServletRequest req, HttpServletResponse resp,String merchantId,String productinfo) throws Exception{
+		//判断是否验证
+		User onlineObject = getOnlineObject(req, resp);
+		if(null!=onlineObject && null!=onlineObject.getUserid() 
+				&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+				&& !onlineObject.getUserSysId().equals("")){
+			//验证通过不处理
+		}else{
+			String countPath=req.getContextPath();      //  /mall_shop
+			String uri=req.getRequestURI();             //  /mall_shop/merchantHomePage/orderPage.html
+			//StringBuffer url=req.getRequestURL();       //	http://localhost:8080/mall_shop/merchantHomePage/orderPage.html
+			uri=uri.replace(countPath, "");
+			uri+="?merchantId="+merchantId;
+			req.getSession().setAttribute("requestUrl",uri);
+			return "redirect:/user/validate.html";
+		}
 		//如果productinfo不为空，则说明是其他页面跳转回来，并携带了之前的点餐商品
 		String returnPage = "merchantIndexPage";
 		//@RequestParam(required = true) 参数前面加这个表示参数为必填
@@ -109,7 +128,7 @@ public class MerchantHomePage extends BaseController{
 	@RequestMapping(value="getProductByProductClassifyId")
 	public void getProductByProductClassifyId(@RequestParam(required = true)String productClassifyId){
 		Map<String,Object> map = new HashMap<String, Object>();
-		try {
+		try { 
 			if(StringUtils.isBlank(productClassifyId)){
 				map.put("flag","0");
 				map.put("message","系统参数异常！");

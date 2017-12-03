@@ -1,13 +1,17 @@
 package com.mall.service.impl.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.order_log.OrderLogDao;
+import com.mall.dao.user.UserDao;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.order_log.OrderLog;
 import com.mall.pojo.user.User;
+import com.mall.pojo.user.UserCriteria;
 import com.mall.service.user.UserService;
 import com.sqlserver.dao.user.UserInfoDao;
 
@@ -20,6 +24,8 @@ public class UserServiceImpl implements UserService {
 	private UserInfoDao userInfoDao;
 	@Autowired
 	private OrderLogDao OrderLogDao;
+	@Autowired
+	private UserDao userDao;
 	
 	@Override
 	public void insert()  {
@@ -35,8 +41,8 @@ public class UserServiceImpl implements UserService {
 			System.out.println("OrderLog insert");
 			
 			User user = new User();
-			user.setUserId("112112");
-			user.setUserName("aaaaaaa");
+			//user.setUserId("112112");
+			//user.setUserName("aaaaaaa");
 			user.setUserType((long)1);
 			userInfoDao.insert(user);
 			
@@ -46,10 +52,29 @@ public class UserServiceImpl implements UserService {
 			System.out.println(e);
 			throw new ParameterException("故意的2");
 		}
-		
-		
-		
-		
+	}
+
+	@Override
+	public User getUserByuserid(String userid) {
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.createCriteria().andUseridEqualTo(userid);
+		List<User> selectByExample = userDao.selectByExample(userCriteria);
+		if(null!=selectByExample && selectByExample.size()>0){
+			return selectByExample.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public void updateByUserSysIdAndUserId(User userDetail) {
+		UserCriteria userCriteria = new UserCriteria();
+		userCriteria.createCriteria().andUseridEqualTo(userDetail.getUserid()).andUserSysIdEqualTo(userDetail.getUserSysId());
+		userDao.updateByExample(userDetail, userCriteria);
+	}
+
+	@Override
+	public void insertService(User userDetail) {
+		userDao.insertSelective(userDetail);
 	}
 	
 	

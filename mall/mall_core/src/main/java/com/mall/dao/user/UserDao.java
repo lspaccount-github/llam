@@ -10,7 +10,7 @@ public interface UserDao {
 
     int deleteByExample(UserCriteria example);
 
-    int deleteByPrimaryKey(String userId);
+    int deleteByPrimaryKey(String userSysId);
 
     int insert(User record);
 
@@ -18,7 +18,7 @@ public interface UserDao {
 
     List<User> selectByExample(UserCriteria example);
 
-    User selectByPrimaryKey(String userId);
+    User selectByPrimaryKey(String userSysId);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserCriteria example);
 

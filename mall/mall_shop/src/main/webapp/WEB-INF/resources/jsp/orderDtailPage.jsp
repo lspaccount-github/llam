@@ -18,7 +18,7 @@
 <body>
 	<div class="container">
           <div class="order_status">
-            <div><img src="${pageContext.request.contextPath}/common/images/name.png" alt=""></div>
+            <div><img src="${avatar}" alt=""></div>
             <div>
               <p>姓名: <span>${order.orderAddress.contacts}</span></p>
               <p>电话: <span>${order.orderAddress.phone}</span></p>

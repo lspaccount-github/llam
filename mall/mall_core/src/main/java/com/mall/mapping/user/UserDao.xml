@@ -2,8 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mall.dao.user.UserDao" >
   <resultMap id="BaseResultMap" type="com.mall.pojo.user.User" >
-    <id column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <id column="user_sys_id" property="userSysId" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="user_type" property="userType" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -66,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      user_id, user_name, user_type
+      user_sys_id, userid, name, gender, department, position, avatar, mobile, email, user_type
     </if>
     <if test="fields != null" >
       ${fields}
@@ -91,13 +98,13 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
-    user_id,user_name,user_type
+    user_sys_id,userid,name,gender,department,position,avatar,mobile,email,user_type
     from ho_user
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_sys_id = #{userSysId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ho_user
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_sys_id = #{userSysId,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.mall.pojo.user.UserCriteria" >
     delete from ho_user
@@ -106,30 +113,76 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mall.pojo.user.User" >
-    insert into ho_user (user_id, user_name, user_type
-      )
-    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userType,jdbcType=BIGINT}
-      )
+    insert into ho_user (user_sys_id, userid, name, 
+      gender, department, position, 
+      avatar, mobile, email, 
+      user_type)
+    values (#{userSysId,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{department,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.mall.pojo.user.User" >
     insert into ho_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
+      <if test="userSysId != null" >
+        user_sys_id,
       </if>
-      <if test="userName != null" >
-        user_name,
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="email != null" >
+        email,
       </if>
       <if test="userType != null" >
         user_type,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
+      <if test="userSysId != null" >
+        #{userSysId,jdbcType=VARCHAR},
       </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
       </if>
       <if test="userType != null" >
         #{userType,jdbcType=BIGINT},
@@ -145,11 +198,32 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update ho_user
     <set >
-      <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=VARCHAR},
+      <if test="record.userSysId != null" >
+        user_sys_id = #{record.userSysId,jdbcType=VARCHAR},
       </if>
-      <if test="record.userName != null" >
-        user_name = #{record.userName,jdbcType=VARCHAR},
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+        gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.department != null" >
+        department = #{record.department,jdbcType=VARCHAR},
+      </if>
+      <if test="record.position != null" >
+        position = #{record.position,jdbcType=VARCHAR},
+      </if>
+      <if test="record.avatar != null" >
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
       </if>
       <if test="record.userType != null" >
         user_type = #{record.userType,jdbcType=BIGINT},
@@ -161,8 +235,15 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update ho_user
-    set user_id = #{record.userId,jdbcType=VARCHAR},
-      user_name = #{record.userName,jdbcType=VARCHAR},
+    set user_sys_id = #{record.userSysId,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=INTEGER},
+      department = #{record.department,jdbcType=VARCHAR},
+      position = #{record.position,jdbcType=VARCHAR},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
       user_type = #{record.userType,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -171,19 +252,47 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.mall.pojo.user.User" >
     update ho_user
     <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="userType != null" >
         user_type = #{userType,jdbcType=BIGINT},
       </if>
     </set>
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_sys_id = #{userSysId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mall.pojo.user.User" >
     update ho_user
-    set user_name = #{userName,jdbcType=VARCHAR},
+    set userid = #{userid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      department = #{department,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       user_type = #{userType,jdbcType=BIGINT}
-    where user_id = #{userId,jdbcType=VARCHAR}
+    where user_sys_id = #{userSysId,jdbcType=VARCHAR}
   </update>
 </mapper>
