@@ -62,6 +62,13 @@ public class MerchantHomePage extends BaseController{
 	 */
 	@RequestMapping(value="orderPage")
 	public String orderPage(HttpServletRequest req, HttpServletResponse resp,String merchantId,String productinfo) throws Exception{
+		//测试用
+		User user = new User();
+		user.setUserid("15811025389");
+		user.setUserSysId("2017120318261366812372440476");
+		user.setAvatar("http://p.qlogo.cn/bizmail/ObW8rPcn8icRtD3Hh8vUprZpV20UZ9RtZ9JfyjIFjnKoeMeZWeq0HKQ/0");
+		req.getSession().setAttribute("onlineObject", user);
+		
 		//判断是否验证
 		User onlineObject = getOnlineObject(req, resp);
 		if(null!=onlineObject && null!=onlineObject.getUserid() 
@@ -126,9 +133,21 @@ public class MerchantHomePage extends BaseController{
 	 * @throws
 	 */
 	@RequestMapping(value="getProductByProductClassifyId")
-	public void getProductByProductClassifyId(@RequestParam(required = true)String productClassifyId){
+	public void getProductByProductClassifyId(HttpServletRequest req, HttpServletResponse resp,@RequestParam(required = true)String productClassifyId){
 		Map<String,Object> map = new HashMap<String, Object>();
 		try { 
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			
 			if(StringUtils.isBlank(productClassifyId)){
 				map.put("flag","0");
 				map.put("message","系统参数异常！");

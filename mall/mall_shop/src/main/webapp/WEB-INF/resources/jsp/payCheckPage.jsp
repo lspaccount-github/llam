@@ -10,7 +10,9 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/base.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/css/index.css">
 		<link rel="stylesheet"  href="${pageContext.request.contextPath}/common/css/lanren.css">	
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/common/js/layer_mobile/need/layer.css">	
 		<script src="${pageContext.request.contextPath}/common/js/jquery/jquery-1.10.1.js" type="text/javascript"></script>
+		<script src="${pageContext.request.contextPath}/common/js/layer_mobile/layer.js" type="text/javascript"></script>
 	</head>
 <body>
 	<div class="container">
@@ -43,8 +45,8 @@
   <div class="srzfmm_box">
     <div class="qsrzfmm_bt clear_wl"> <img src="${pageContext.request.contextPath}/common/images/xx_03.jpg" class="tx close fl" > <span>支付</span> </div>
     <div class="zfmmxx_shop">
-      <div class="mz">卡号<span>123456789101</span></div>
-      <div class="wxzf_price">￥11.90</div>
+      <div class="mz">卡号<span id="cardNum">123456789101</span></div>
+      <div class="wxzf_price">￥${totalPrice}</div>
     </div>
 
     <ul class="mm_box">
@@ -96,7 +98,53 @@ $(function(){
 	//============支付弹窗开始============
 	//出现浮动层
 	  $(".btn").click(function(){
-	    $(".ftc_wzsf").show();
+		  //弹出支付窗口，需要去校验该用户是否绑卡，如果没有绑卡，则弹出绑卡按钮
+		   $.ajax({
+		        url : '${pageContext.request.contextPath}/BindingCard/check.html',
+		        type : "post",
+		        dataType : "json",
+		        data : param,
+		        cache : false,
+		        async : false,
+		        success : function(data, textStatus, jqXHR) {
+		            if ('success' == textStatus) {
+		            	if(data.flag=="0"){
+		            		//信息框
+				        	  layer.open({
+				        	    content: data.message
+				        	    ,btn: '确定'
+				        	  });
+		            		return;
+		            	}else if(data.flag=="1"){
+		            		$("#cardNum").html(data.hospitalCardCode);
+		            		$(".ftc_wzsf").show();
+		            		return;
+		            	}else if(data.flag=="2"){
+		            		layer.open({
+		            			className: '../layer_mobile/need/aaa'
+		            			,content: '<p>'+data.message+'<p>'
+		            			,btn: ['确定']
+		            			,shade: 'background-color: rgba(0,0,0,.5)'
+		            			,shadeClose:false
+		            			,success: function(elem){
+		            			 console.log("layer");
+		            			}  
+		            			,yes: function(index){
+		            			  alert('确定');
+		            			  layer.close(index);
+		            			}
+		            	   });
+		            	}
+		            }
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		        	//信息框
+		        	  layer.open({
+		        	    content: '系统异常,请稍后重试！'
+		        	    ,btn: '确定'
+		        	  });
+		        }
+		    });
 	    });
 	  //关闭浮动
 	  $(".close").click(function(){
