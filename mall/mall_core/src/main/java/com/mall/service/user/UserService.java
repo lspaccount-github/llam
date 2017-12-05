@@ -6,7 +6,6 @@ import com.mall.pojo.user.User;
 
 public interface UserService {
 
-	void insert();
 	/**
 	 * 
 	 * @Title: getUserByuserid 

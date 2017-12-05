@@ -64,4 +64,20 @@ public interface OrderService {
 	 * @throws
 	 */
 	public Order getOrderByOderIdLazy(String orderId);
+	
+	
+	//*************************后台方法*****************************
+	
+	/**
+	 * 
+	 * @Title: getOrderList 
+	 * @Description: 查询某商户下的所以订单
+	 * @param @param merchantId
+	 * @param @return    设定文件 
+	 * @return List<Order>    返回类型 
+	 * @throws
+	 */
+	public List<Order> getOrderListByMerchantid(String merchantId);
+	
+	
 }

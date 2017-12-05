@@ -8,12 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.dao.order_log.OrderLogDao;
 import com.mall.dao.user.UserDao;
-import com.mall.exception.ParameterException;
-import com.mall.pojo.order_log.OrderLog;
 import com.mall.pojo.user.User;
 import com.mall.pojo.user.UserCriteria;
 import com.mall.service.user.UserService;
-import com.sqlserver.dao.user.UserInfoDao;
 
 
 @Service
@@ -21,13 +18,11 @@ import com.sqlserver.dao.user.UserInfoDao;
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	private UserInfoDao userInfoDao;
-	@Autowired
 	private OrderLogDao OrderLogDao;
 	@Autowired
 	private UserDao userDao;
 	
-	@Override
+	/*@Override
 	public void insert()  {
 		try {
 			System.out.println("=================");
@@ -52,7 +47,7 @@ public class UserServiceImpl implements UserService {
 			System.out.println(e);
 			throw new ParameterException("故意的2");
 		}
-	}
+	}*/
 
 	@Override
 	public User getUserByuserid(String userid) {

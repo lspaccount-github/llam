@@ -1,5 +1,6 @@
 package com.mall.service.hospitalCard;
 
+import com.mall.pojo.ZgXy_CardInfo.ZgXyCardInfo;
 import com.mall.pojo.hospital_card.HospitalCard;
 
 
@@ -22,5 +23,29 @@ public interface HospitalCardService {
 	 * @throws
 	 */
 	public HospitalCard checkUser(String userSysId);
+
+	/**
+	 * 
+	 * @Title: queryCardBySqlServer 
+	 * @Description: 根据用户名，卡号，密码 查询sqlserver库
+	 * @param @param name
+	 * @param @param hospitalCardCode
+	 * @param @param paymentPassword
+	 * @param @return    设定文件 
+	 * @return ZgXyCardInfo    返回类型 
+	 * @throws
+	 */
+	public ZgXyCardInfo queryCardBySqlServer(String name,String hospitalCardCode, String paymentPassword);
+
+	/**
+	 * 
+	 * @Title: addBindingCard 
+	 * @Description: 插入餐卡信息 
+	 * @param @param hospitalCard
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int addBindingCard(HospitalCard hospitalCard);
 	
 }

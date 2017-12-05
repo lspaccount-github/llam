@@ -79,9 +79,15 @@
   <div class="hbbj"></div>
 </div>     
 </div>
-<input type="password" id="payPassWord" style="display:none"/>
+<input type="text" id="payPassWord" style="display:none" value=""/>
 </body>
 </html>
+
+<style>
+.layui-m-layerbtn{width: 100%;border:none;background: #fff;margin-bottom: 8px;}
+.layui-m-layerbtn span[yes]{width: 90%;margin:0 auto;background: #da4231;border-radius: 5px;height:40px;line-height:40px;color: #fff;font-size:18px;font-weight: bold;}
+.layui-m-layercont {padding: 25px 30px;line-height:27px;text-align:left;font-size:19px;}
+</style>
 
 <script>
 var orderId = ${orderId};//订单id
@@ -103,7 +109,6 @@ $(function(){
 		        url : '${pageContext.request.contextPath}/BindingCard/check.html',
 		        type : "post",
 		        dataType : "json",
-		        data : param,
 		        cache : false,
 		        async : false,
 		        success : function(data, textStatus, jqXHR) {
@@ -130,7 +135,8 @@ $(function(){
 		            			 console.log("layer");
 		            			}  
 		            			,yes: function(index){
-		            			  alert('确定');
+		            			  //alert('确定');跳转绑卡页面
+		            			  window.location.href="${pageContext.request.contextPath}/BindingCard/bindingCardPage.html?orderId="+orderId;
 		            			  layer.close(index);
 		            			}
 		            	   });
@@ -160,12 +166,25 @@ $(function(){
 	    //----
 	    var i = 0;
 	    $(".nub_ggg li a").click(function(){
-	    	$("#payPassWord").val($("#payPassWord").val()+$(this).text());
-	      i++
+	      i++;
 	      if(i<6){
 	        $(".mm_box li").eq(i-1).addClass("mmdd");
+		       var ps = $(this).text();
+		       var payPassWord = $("#payPassWord").val(); 
+		       $("#payPassWord").val(payPassWord+ps);
+	        
+	        }else if(i>6){
+	        	//i回归为0，清空输入的所有密码
+	        	for(var j = i;j>=0;j--){
+	        		$(".mm_box li").eq(j).removeClass("mmdd");
+				}
+	        	i=0;
+	        	$("#payPassWord").val("");
 	        }else{
 	          $(".mm_box li").eq(i-1).addClass("mmdd");
+	          var ps = $(this).text();
+		      var payPassWord = $("#payPassWord").val(); 
+		      $("#payPassWord").val(payPassWord+ps);
 	          setTimeout(function(){
 	        	  alert("调用ajax校验支付密码，并进行支付操作");
 	          },500);
@@ -174,9 +193,12 @@ $(function(){
 	    
 	    $(".nub_ggg li .del").click(function(){
 	      if(i>0){
-	        i--
+	        i--;
+	        var payPassWord = $("#payPassWord").val(); 
+		    $("#payPassWord").val(payPassWord.substring(0,payPassWord.Length-1));
 	        $(".mm_box li").eq(i).removeClass("mmdd");
-	        i==0;
+	      }else{
+	    	  i=0;
 	      }
 	      //alert(i);
 	    });

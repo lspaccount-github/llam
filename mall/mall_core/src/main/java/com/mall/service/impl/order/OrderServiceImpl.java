@@ -82,6 +82,15 @@ public class OrderServiceImpl implements OrderService{
 	public Order getOrderByOderIdLazy(String orderId) {
 		return orderDao.getOrderByOderIdLazy(orderId);
 	}
+
+
+	@Override
+	public List<Order> getOrderListByMerchantid(String merchantId) {
+		OrderCriteria orderCriteria = new OrderCriteria();
+		orderCriteria.createCriteria().andMerchantIdEqualTo(merchantId);
+		List<Order> selectByExample = orderDao.selectByExample(orderCriteria);
+		return selectByExample;
+	}
 	
 	
 }
