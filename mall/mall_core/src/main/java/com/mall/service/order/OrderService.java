@@ -2,10 +2,12 @@ package com.mall.service.order;
 
 import java.util.List;
 
+import com.mall.pojo.hospital_card.HospitalCard;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
+import com.mall.pojo.user.User;
 
 
 public interface OrderService {
@@ -65,6 +67,30 @@ public interface OrderService {
 	 */
 	public Order getOrderByOderIdLazy(String orderId);
 	
+	/**
+	 * 
+	 * @Title: getOrderByOrderIdAndUserId 
+	 * @Description: 根据订单id或用户id查询订单
+	 * @param @param orderId
+	 * @param @param userSysId
+	 * @param @return    设定文件 
+	 * @return Order    返回类型 
+	 * @throws
+	 */
+	public Order getOrderByOrderIdAndUserId(String orderId, String userSysId);
+	
+	/**
+	 * 
+	 * @Title: payment 
+	 * @Description: 订单支付扣款
+	 * @param @param onlineObject
+	 * @param @param order
+	 * @param @param hospitalCard
+	 * @param @return    设定文件 
+	 * @return boolean    返回类型 
+	 * @throws
+	 */
+	public boolean payment(User onlineObject, Order order,HospitalCard hospitalCard);
 	
 	//*************************后台方法*****************************
 	
@@ -78,6 +104,6 @@ public interface OrderService {
 	 * @throws
 	 */
 	public List<Order> getOrderListByMerchantid(String merchantId);
-	
-	
+
+
 }

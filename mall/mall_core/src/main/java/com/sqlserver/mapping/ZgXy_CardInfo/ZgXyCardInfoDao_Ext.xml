@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sqlserver.dao.ZgXy_CardInfo.ZgXyCardInfoDao" >
+  <update id="payment" parameterType="java.util.Map">
+  	update ZgXy_CardInfo  set Stye = Stye-6.9 where Rymc = '樊宏' and Rymm = '1234' and Kh = 'BWJKCQJMBNARGLGTFEFY' and Stye-6.9>0
+  </update>
+</mapper>

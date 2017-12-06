@@ -47,5 +47,17 @@ public interface HospitalCardService {
 	 * @throws
 	 */
 	public int addBindingCard(HospitalCard hospitalCard);
+
+	/**
+	 * 
+	 * @Title: getHospitalCardByUserIdAndPassword 
+	 * @Description: 根据用户id和密码查询绑卡信息 
+	 * @param @param userSysId
+	 * @param @param password
+	 * @param @return    设定文件 
+	 * @return HospitalCard    返回类型 
+	 * @throws
+	 */
+	public HospitalCard getHospitalCardByUserIdAndPassword(String userSysId,String password);
 	
 }

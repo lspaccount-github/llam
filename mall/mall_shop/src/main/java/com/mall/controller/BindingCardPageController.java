@@ -1,5 +1,6 @@
 package com.mall.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mall.pojo.ZgXy_CardInfo.ZgXyCardInfo;
 import com.mall.pojo.hospital_card.HospitalCard;
+import com.mall.pojo.order.Order;
 import com.mall.pojo.user.User;
 import com.mall.service.hospitalCard.HospitalCardService;
+import com.mall.service.order.OrderService;
+import com.mall.utils.util1.DateUtil;
 
 /**
  * 
@@ -32,6 +36,8 @@ public class BindingCardPageController extends BaseController{
 	
 	@Autowired
 	private HospitalCardService hospitalCardService;
+	@Autowired
+	private OrderService orderService;
 	
 	/**
 	 * 校验当前登陆用户是否绑定餐卡
@@ -108,6 +114,18 @@ public class BindingCardPageController extends BaseController{
 	}
 	
 	
+	/**
+	 * 
+	 * @Title: addBindingCard 
+	 * @Description: 绑定餐卡，添加餐卡
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param name
+	 * @param @param hospitalCardCode
+	 * @param @param paymentPassword    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="addBindingCard")
 	public void addBindingCard(HttpServletRequest req, HttpServletResponse resp,String name,String hospitalCardCode,String paymentPassword){
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -124,17 +142,17 @@ public class BindingCardPageController extends BaseController{
 				return;
 			}
 			//判断入参
-			if(""==name || null==name){
+			if("".equals(name) || null==name){
 				map.put("flag","0");
 				map.put("message","请输入姓名!");
 				return;
 			}
-			if(""==hospitalCardCode || null==hospitalCardCode){
+			if("".equals(hospitalCardCode) || null==hospitalCardCode){
 				map.put("flag","0");
 				map.put("message","请输入餐卡卡号!");
 				return;
 			}
-			if(""==paymentPassword || null==paymentPassword){
+			if("".equals(paymentPassword) || null==paymentPassword){
 				map.put("flag","0");
 				map.put("message","请输入支付密码!");
 				return;
@@ -172,5 +190,85 @@ public class BindingCardPageController extends BaseController{
 		}finally{
 			outJson(map);
 		}
+	}
+	
+	/**
+	 * 
+	 * @Title: debit 
+	 * @Description:支付
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param password
+	 * @param @param orderId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="debit")
+	public void debit(HttpServletRequest req, HttpServletResponse resp,String password,String orderId){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			//判断入参
+			if("".equals(password) || null==password){
+				map.put("flag","0");
+				map.put("message","请输入支付密码!");
+				return;
+			}
+			if("".equals(orderId) || null==orderId){
+				map.put("flag","1");
+				map.put("message","参数错误!");
+				return;
+			}
+			//首先根据当前登陆人id和orderid查询订单是否存在
+			Order order= orderService.getOrderByOrderIdAndUserId(orderId,onlineObject.getUserSysId());
+			if(null==order){
+				map.put("flag","1");
+				map.put("message","查询该笔订单不存在!");
+				return;
+			}
+			//判断订单是否超过15分钟支付
+			//计算时间差
+			Date addDateMinut = DateUtil.addDateMinut(order.getCreateTime(),15);
+			long i=addDateMinut.getTime()-new Date().getTime();//订单加15分钟的时间  减去  当前时间  
+			if(i<=0){
+				map.put("flag","1");
+				map.put("message","该笔订单支付时间已经超过15分钟!");
+				//TODO 更新订单状态
+				return;
+			}
+			//判断订单状态是否为待支付
+			if(!order.getOrderStatus().equals(Order.ORDER_ORDERSTATUS_DAI_ZHI_FU)){
+				map.put("flag","1");
+				map.put("message","订单状态以发生变化!");
+				return;
+			}
+			//判断该用户是否绑卡（根据用户id和密码查询）
+			HospitalCard hospitalCard= hospitalCardService.getHospitalCardByUserIdAndPassword(onlineObject.getUserSysId(),password);
+			if(null==hospitalCard){
+				map.put("flag","1");
+				map.put("message","您还未绑定餐卡，或密码输入错误!");
+				return;
+			}
+			//调用扣款server，在server中做两个库的更新操作，保证事物的唯一性
+			boolean bool=orderService.payment(onlineObject,order,hospitalCard);
+			
+		} catch (Exception e) {
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
+	
 	}
 }

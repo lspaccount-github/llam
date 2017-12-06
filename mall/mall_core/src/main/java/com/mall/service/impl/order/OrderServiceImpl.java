@@ -1,7 +1,10 @@
 package com.mall.service.impl.order;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +14,16 @@ import com.mall.dao.order_address.OrderAddressDao;
 import com.mall.dao.order_product.OrderProductDao;
 import com.mall.dao.product.ProductDao;
 import com.mall.exception.ParameterException;
+import com.mall.pojo.hospital_card.HospitalCard;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
 import com.mall.pojo.product.Product;
+import com.mall.pojo.user.User;
 import com.mall.service.order.OrderService;
+import com.sqlserver.dao.ZgXy_CardInfo.ZgXyCardInfoDao;
 
 @Service
 @Transactional
@@ -30,8 +36,10 @@ public class OrderServiceImpl implements OrderService{
 	private OrderProductDao orderProductDao;
 	@Autowired
 	private OrderAddressDao orderAddressDao;
+	@Autowired
+	private ZgXyCardInfoDao zgXyCardInfoDao;
 	
-	
+	Logger logger = Logger.getLogger(OrderServiceImpl.class);
 	
 	@Override
 	public Order getOrderByOderId(String orderId) {
@@ -90,6 +98,45 @@ public class OrderServiceImpl implements OrderService{
 		orderCriteria.createCriteria().andMerchantIdEqualTo(merchantId);
 		List<Order> selectByExample = orderDao.selectByExample(orderCriteria);
 		return selectByExample;
+	}
+
+
+	@Override
+	public Order getOrderByOrderIdAndUserId(String orderId, String userSysId) {
+		OrderCriteria orderCriteria = new OrderCriteria();
+		orderCriteria.createCriteria().andOrderIdEqualTo(orderId).andUserIdEqualTo(userSysId);
+		List<Order> selectByExample = orderDao.selectByExample(orderCriteria);
+		if(null!=selectByExample && selectByExample.size()>0){
+			return selectByExample.get(0);
+		}else{
+			return null;
+		}
+		
+	}
+
+
+	@Override
+	public boolean payment(User onlineObject, Order order,HospitalCard hospitalCard) {
+		try {
+			/**
+			 * 1:访问sqlserver完成扣款
+			 * 2:向sqlserver插入支付记录
+			 * 3:修改订单状态
+			 * 4:插入mysql支付记录
+			 */
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("userName",hospitalCard.getName());
+			map.put("hospitalCardCode", hospitalCard.getHospitalCardCode());
+			map.put("paymentPassword",hospitalCard.getPaymentPassword());
+			map.put("paymentMoney", order.getOrderMoney());
+			int i=zgXyCardInfoDao.payment(map);
+			
+			return true;
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+		
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.sqlserver.dao.ZgXy_CardInfo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface ZgXyCardInfoDao {
     int updateByPrimaryKeySelective(ZgXyCardInfo record);
 
     int updateByPrimaryKey(ZgXyCardInfo record);
+
+	int payment(Map<String, Object> map);
 }

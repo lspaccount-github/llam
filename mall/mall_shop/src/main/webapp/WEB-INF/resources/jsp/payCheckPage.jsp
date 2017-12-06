@@ -57,7 +57,7 @@
       <li></li>
       <li></li>
     </ul>
-    <button class="btn1">确定</button>
+    <!-- <button class="btn1">确定</button> -->
   </div>
   <div class="numb_box">
     <div class="xiaq_tb"> <img src="${pageContext.request.contextPath}/common/images/jftc_14.jpg" height="10"> </div>
@@ -186,7 +186,39 @@ $(function(){
 		      var payPassWord = $("#payPassWord").val(); 
 		      $("#payPassWord").val(payPassWord+ps);
 	          setTimeout(function(){
-	        	  alert("调用ajax校验支付密码，并进行支付操作");
+	        	  //alert("调用ajax校验支付密码，并进行支付操作");
+	        	  //ajax扣款操作
+	        	  var dataJson = {"password":$("#payPassWord").val(),"orderId":orderId}; 
+	        	  $.ajax({
+	  		        url : '${pageContext.request.contextPath}/BindingCard/debit.html',
+	  		        type : "post",
+	  		        dataType : "json",
+	  		      	data:dataJson,
+	  		        cache : false,
+	  		        async : false,
+	  		        success : function(data, textStatus, jqXHR) {
+	  		            if ('success' == textStatus) {
+	  		            	if(data.flag=="0"){
+	  		            		//信息框
+	  				        	  layer.open({
+	  				        	    content: data.message
+	  				        	    ,btn: '确定'
+	  				        	  });
+	  		            		return;
+	  		            	}else if(data.flag=="1"){
+	  		            		alert("支付成功");
+	  		            		return;
+	  		            	}
+	  		            }
+	  		        },
+	  		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+	  		        	//信息框
+	  		        	  layer.open({
+	  		        	    content: '系统异常,请稍后重试！'
+	  		        	    ,btn: '确定'
+	  		        	  });
+	  		        }
+	  		    });
 	          },500);
 	       }
 	    });
@@ -198,9 +230,14 @@ $(function(){
 		    $("#payPassWord").val(payPassWord.substring(0,payPassWord.Length-1));
 	        $(".mm_box li").eq(i).removeClass("mmdd");
 	      }else{
+	    	 //i回归为0，清空输入的所有密码
+	        for(var j = 0;j < 6;j++){
+	        	$(".mm_box li").eq(j).removeClass("mmdd");
+			}
+	        $("#payPassWord").val("");
 	    	  i=0;
+	    	  return;
 	      }
-	      //alert(i);
 	    });
 	  //============支付弹窗结束============    
 })

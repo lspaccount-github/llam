@@ -54,5 +54,17 @@ public class HospitalCardServiceImpl implements HospitalCardService{
 		return hospitalCardDao.insertSelective(hospitalCard);
 	}
 
+	@Override
+	public HospitalCard getHospitalCardByUserIdAndPassword(String userSysId,String password) {
+		HospitalCardCriteria criteria = new HospitalCardCriteria();
+		criteria.createCriteria().andUserIdEqualTo(userSysId).andPaymentPasswordEqualTo(password).andStatusEqualTo(1);
+		List<HospitalCard> selectByExample = hospitalCardDao.selectByExample(criteria);
+		if(null!=selectByExample && selectByExample.size()>0){
+			return selectByExample.get(0);
+		}else{
+			return null;
+		}
+	}
+
 
 }
