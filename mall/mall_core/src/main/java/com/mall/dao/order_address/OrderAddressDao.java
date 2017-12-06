@@ -30,7 +30,7 @@ public interface OrderAddressDao {
 
     int updateByPrimaryKey(OrderAddress record);
 
-	OrderAddress getOrderAddressByTimeDESCRow1();
+	OrderAddress getOrderAddressByTimeDESCRow1(String userSysId);
 	
 	//根据orderid查询订单收货地址
 	OrderAddress selectOrderAddressByOrderId(String orderId);

@@ -16,8 +16,8 @@ public  class OrderAddressServiceImpl implements OrderAddressService {
 	private OrderAddressDao orderAddressDao;
 	
 	@Override
-	public OrderAddress getOrderAddressByTimeDESCRow1() {
-		return orderAddressDao.getOrderAddressByTimeDESCRow1();
+	public OrderAddress getOrderAddressByTimeDESCRow1(String userSysId) {
+		return orderAddressDao.getOrderAddressByTimeDESCRow1(userSysId);
 	}
 
  

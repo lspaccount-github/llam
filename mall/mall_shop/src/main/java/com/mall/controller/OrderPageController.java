@@ -105,18 +105,14 @@ public class OrderPageController extends BaseController{
 		request.setAttribute("productInfo", productInfo);
 		request.setAttribute("totalPrice", totalPrice);
 		
-		//TODO 查询当前用户的最近一次订单的收货地址
-		OrderAddress orderAddress = orderAddressService.getOrderAddressByTimeDESCRow1();
-		orderAddress = null;
+		//查询当前用户的最近一次订单的收货地址
+		OrderAddress orderAddress = orderAddressService.getOrderAddressByTimeDESCRow1(onlineObject.getUserSysId());
 		if(null==orderAddress || null==orderAddress.getOrderAddress()){
 			orderAddress = new OrderAddress();
 			orderAddress.setContacts("请输入姓名");
 			orderAddress.setPhone("请输入联系电话");
-		}else{
-			orderAddress.setContacts("身啊啊的为");
-			orderAddress.setPhone("15811025389");
 		}
-		//TODO 查询当前用户的最近一次订单的收货地址
+		//set收货地址
 		request.setAttribute("orderAddress", orderAddress);
 		//返回页面
 		return "orderCheckPage";
@@ -187,13 +183,13 @@ public class OrderPageController extends BaseController{
 			//计算总价格
 			BigDecimal totalPrice = new BigDecimal(0);
 			List<OrderProduct> orderProducts = new ArrayList<OrderProduct>();
-			String orderId = UUIDUtils.getUUID(15);
+			String orderId = UUIDUtils.getID();
 			orderConfirms = orderService.checkOrder(orderConfirms);
 			for (OrderConfirm orderConfirm : orderConfirms) {
 				totalPrice=totalPrice.add(new BigDecimal(orderConfirm.getNum()).multiply(orderConfirm.getPrice()));
 				
 				OrderProduct orderProduct = new OrderProduct();
-				orderProduct.setOrderProductId(Long.parseLong(UUIDUtils.getUUID(15)));
+				//orderProduct.setOrderProductId(Long.parseLong(UUIDUtils.getUUID(15)));
 				orderProduct.setOrderId(orderId);
 				orderProduct.setProductId(orderConfirm.getProductId());
 				orderProduct.setProductName(orderConfirm.getProduct().getProductName());
@@ -209,15 +205,15 @@ public class OrderPageController extends BaseController{
 			//保存订单
 			Order order = new Order();
 			order.setOrderId(orderId);		
-			order.setOrderStatus(1);
+			order.setOrderStatus(Order.ORDER_ORDERSTATUS_DAI_ZHI_FU);
 			order.setOrderMoney(totalPrice);
-			order.setUserId("");//TODO 
+			order.setUserId(onlineObject.getUserSysId()); 
 			order.setCreateTime(new Date());
 			order.setMerchantId("20171112185000001");
 			
 			//封装收货地址对象
 			OrderAddress orderAddress = new OrderAddress();
-			orderAddress.setOrderAddress(Long.parseLong(UUIDUtils.getUUID(15)));
+			//orderAddress.setOrderAddress(Long.parseLong(UUIDUtils.getUUID(15)));
 			orderAddress.setOrderId(orderId);
 			orderAddress.setContacts(contacts);
 			orderAddress.setPhone(phone);

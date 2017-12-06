@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mall.dao.order_address.OrderAddressDao" >
 	<!-- 根据urderId查询当前人时间最近的一条收货地址 -->
-  <select id="getOrderAddressByTimeDESCRow1" resultMap="BaseResultMap" >
+  <select id="getOrderAddressByTimeDESCRow1" resultMap="BaseResultMap" parameterType="java.lang.String">
    		SELECT 
 		  oa.* 
 		FROM
 		  ho_order_address oa,
 		  ho_order o 
-		WHERE oa.`order_id` = o.`order_id` 
+		WHERE oa.`order_id` = o.`order_id` and o.`user_id`=#{userSysId,jdbcType=VARCHAR}
 		ORDER BY o.`create_time` DESC 
 		LIMIT 1 
   </select>

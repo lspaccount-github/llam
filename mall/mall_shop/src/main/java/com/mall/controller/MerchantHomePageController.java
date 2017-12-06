@@ -33,17 +33,17 @@ import com.mall.service.product_classify.ProductClassifyService;
 
 /**
  * 
- * @ClassName: MerchantHomePage
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @ClassName: MerchantHomePageController
+ * @Description: 首页controller
  * @author ShenWei 
  * @date 2017年11月12日 下午8:23:05
  *
  */
 @Controller
 @RequestMapping("/merchantHomePage")
-public class MerchantHomePage extends BaseController{
+public class MerchantHomePageController extends BaseController{
 
-	Logger logger = Logger.getLogger(MerchantHomePage.class);
+	Logger logger = Logger.getLogger(MerchantHomePageController.class);
 	
 	@Autowired
 	private ProductClassifyService productClassifyService;
@@ -62,7 +62,7 @@ public class MerchantHomePage extends BaseController{
 	 */
 	@RequestMapping(value="orderPage")
 	public String orderPage(HttpServletRequest req, HttpServletResponse resp,String merchantId,String productinfo) throws Exception{
-		//测试用
+		//TODO 测试用，投产时注掉
 		User user = new User();
 		user.setUserid("15811025389");
 		user.setUserSysId("2017120318261366812372440476");
@@ -78,7 +78,6 @@ public class MerchantHomePage extends BaseController{
 		}else{
 			String countPath=req.getContextPath();      //  /mall_shop
 			String uri=req.getRequestURI();             //  /mall_shop/merchantHomePage/orderPage.html
-			//StringBuffer url=req.getRequestURL();       //	http://localhost:8080/mall_shop/merchantHomePage/orderPage.html
 			uri=uri.replace(countPath, "");
 			uri+="?merchantId="+merchantId;
 			req.getSession().setAttribute("requestUrl",uri);

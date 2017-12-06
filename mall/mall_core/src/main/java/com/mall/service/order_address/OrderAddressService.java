@@ -14,7 +14,7 @@ public interface OrderAddressService {
 	 * @return OrderAddress    返回类型 
 	 * @throws
 	 */
-	public OrderAddress getOrderAddressByTimeDESCRow1();
+	public OrderAddress getOrderAddressByTimeDESCRow1(String userSysId);
 
 	
 }
