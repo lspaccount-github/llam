@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.mall.pojo.hospital_card.HospitalCard;
+
 public class PaymentRecord implements Serializable {
     /**
      * 支付编号
@@ -49,6 +51,11 @@ public class PaymentRecord implements Serializable {
      * 医院餐卡卡号
      */
     private String hospitalCardCode;
+    
+    /**
+     * 医院餐卡表
+     */
+    private HospitalCard hospitalCard;
 
     private static final long serialVersionUID = 1L;
 
@@ -143,4 +150,13 @@ public class PaymentRecord implements Serializable {
         sb.append("]");
         return sb.toString();
     }
+
+	public HospitalCard getHospitalCard() {
+		return hospitalCard;
+	}
+
+	public void setHospitalCard(HospitalCard hospitalCard) {
+		this.hospitalCard = hospitalCard;
+	}
+    
 }

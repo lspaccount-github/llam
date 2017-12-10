@@ -5,9 +5,11 @@ import java.util.List;
 import com.mall.pojo.hospital_card.HospitalCard;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
+import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
 import com.mall.pojo.user.User;
+import com.mall.utils.pageUtil.Pagination;
 
 
 public interface OrderService {
@@ -104,6 +106,17 @@ public interface OrderService {
 	 * @throws
 	 */
 	public List<Order> getOrderListByMerchantid(String merchantId);
+
+	/**
+	 * 
+	 * @Title: selectOrderToTodayList 
+	 * @Description: 今日订单
+	 * @param @param orderCriteria
+	 * @param @return    设定文件 
+	 * @return Pagination    返回类型 
+	 * @throws
+	 */
+	public Pagination selectOrderToTodayList(OrderCriteria orderCriteria);
 
 
 }

@@ -80,6 +80,7 @@
 </div>     
 </div>
 <input type="text" id="payPassWord" style="display:none" value=""/>
+<input type="hidden" id="orderId" value="${orderId}" />
 </body>
 </html>
 
@@ -136,7 +137,7 @@ $(function(){
 		            			}  
 		            			,yes: function(index){
 		            			  //alert('确定');跳转绑卡页面
-		            			  window.location.href="${pageContext.request.contextPath}/BindingCard/bindingCardPage.html?orderId="+orderId;
+		            			  window.location.href="${pageContext.request.contextPath}/BindingCard/bindingCardPage.html?orderId="+$("#orderId").val();
 		            			  layer.close(index);
 		            			}
 		            	   });
@@ -188,7 +189,7 @@ $(function(){
 	          setTimeout(function(){
 	        	  //alert("调用ajax校验支付密码，并进行支付操作");
 	        	  //ajax扣款操作
-	        	  var dataJson = {"password":$("#payPassWord").val(),"orderId":orderId}; 
+	        	  var dataJson = {"password":$("#payPassWord").val(),"orderId":$("#orderId").val()}; 
 	        	  $.ajax({
 	  		        url : '${pageContext.request.contextPath}/BindingCard/debit.html',
 	  		        type : "post",
@@ -199,6 +200,13 @@ $(function(){
 	  		        success : function(data, textStatus, jqXHR) {
 	  		            if ('success' == textStatus) {
 	  		            	if(data.flag=="0"){
+	  		            		 //i回归为0，清空输入的所有密码
+		  		      	        for(var j = 0;j < 6;j++){
+		  		      	        	$(".mm_box li").eq(j).removeClass("mmdd");
+		  		      			}
+		  		      	        $("#payPassWord").val("");
+		  		      	    	  i=0;
+	  		      	    	   
 	  		            		//信息框
 	  				        	  layer.open({
 	  				        	    content: data.message
@@ -206,7 +214,14 @@ $(function(){
 	  				        	  });
 	  		            		return;
 	  		            	}else if(data.flag=="1"){
-	  		            		alert("支付成功");
+	  		            		layer.open({
+	  		            		    content: data.message
+	  		            		    ,btn: ['确定']
+	  		            		    ,yes: function(index){
+	  		            		    	window.location.href="${pageContext.request.contextPath}/order/goToOrderDtail.html?orderId="+$("#orderId").val();
+	  		            		      layer.close(index);
+	  		            		    }
+	  		            		  });
 	  		            		return;
 	  		            	}
 	  		            }

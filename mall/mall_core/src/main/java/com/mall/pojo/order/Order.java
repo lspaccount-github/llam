@@ -190,7 +190,7 @@ public class Order implements Serializable {
 	public static final String ORDER_ORDERTYPE_DIN_DAN_YI_QU_XIAO_VIEW = "订单已取消";
 	public static final String ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG_VIEW = "订单已完成";
 	
-	private static final Map<Integer, String> orderStatusMap = new HashMap<Integer, String>();
+	public static final Map<Integer, String> orderStatusMap = new HashMap<Integer, String>();
 	static{
 		orderStatusMap.put(ORDER_ORDERSTATUS_DAI_ZHI_FU, ORDER_ORDERSTATUS_DAI_ZHI_FU_VIEW);
 		orderStatusMap.put(ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN, ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN_VIEW);

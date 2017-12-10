@@ -1,5 +1,6 @@
 package com.mall.service.impl.order;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mall.dao.order.OrderDao;
 import com.mall.dao.order_address.OrderAddressDao;
 import com.mall.dao.order_product.OrderProductDao;
+import com.mall.dao.payment_record.PaymentRecordDao;
 import com.mall.dao.product.ProductDao;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.hospital_card.HospitalCard;
@@ -20,9 +22,12 @@ import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
+import com.mall.pojo.payment_record.PaymentRecord;
 import com.mall.pojo.product.Product;
 import com.mall.pojo.user.User;
 import com.mall.service.order.OrderService;
+import com.mall.utils.pageUtil.Pagination;
+import com.mall.utils.util1.UUIDUtils;
 import com.sqlserver.dao.ZgXy_CardInfo.ZgXyCardInfoDao;
 
 @Service
@@ -38,6 +43,8 @@ public class OrderServiceImpl implements OrderService{
 	private OrderAddressDao orderAddressDao;
 	@Autowired
 	private ZgXyCardInfoDao zgXyCardInfoDao;
+	@Autowired
+	private PaymentRecordDao paymentRecordDao;
 	
 	Logger logger = Logger.getLogger(OrderServiceImpl.class);
 	
@@ -124,12 +131,33 @@ public class OrderServiceImpl implements OrderService{
 			 * 3:修改订单状态
 			 * 4:插入mysql支付记录
 			 */
+			//1
 			Map<String,Object> map = new HashMap<String, Object>();
 			map.put("userName",hospitalCard.getName());
 			map.put("hospitalCardCode", hospitalCard.getHospitalCardCode());
 			map.put("paymentPassword",hospitalCard.getPaymentPassword());
 			map.put("paymentMoney", order.getOrderMoney());
 			int i=zgXyCardInfoDao.payment(map);
+			//TODO 注释2
+			
+			//3
+			OrderCriteria orderCriteria = new OrderCriteria();
+			orderCriteria.createCriteria().andOrderIdEqualTo(order.getOrderId());
+			order.setOrderStatus(Order.ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN);
+			orderDao.updateByExampleSelective(order, orderCriteria);
+			//4
+			PaymentRecord paymentRecord = new PaymentRecord();
+			paymentRecord.setPayCode(UUIDUtils.getID());
+			paymentRecord.setPayMode(1);
+			paymentRecord.setPayMoney(order.getOrderMoney());
+			paymentRecord.setPayStatus(1);//已支付
+			paymentRecord.setOrderId(order.getOrderId());
+			Date date = new Date();
+			paymentRecord.setPayTime(date);
+			paymentRecord.setPayCompleteTime(date);
+			paymentRecord.setUserId(onlineObject.getUserSysId());
+			paymentRecord.setHospitalCardCode(hospitalCard.getHospitalCardCode());
+			paymentRecordDao.insertSelective(paymentRecord);
 			
 			return true;
 		} catch (Exception e) {
@@ -137,6 +165,23 @@ public class OrderServiceImpl implements OrderService{
 			return false;
 		}
 		
+	}
+
+//------------------------------------后台方法分割线---------------------------------------------
+	@Override
+	public Pagination selectOrderToTodayList(OrderCriteria orderCriteria) {
+		// 创建 分页对象
+		Pagination pagination = new Pagination(orderCriteria.getPageNo(),
+				orderCriteria.getPageSize(), orderDao.countByExample(orderCriteria));
+		
+		//查询数据
+		List<Order> orderList = orderDao.selectByExample(orderCriteria);
+		for (Order order : orderList) {
+			OrderAddress orderAddress = orderAddressDao.selectOrderAddressByOrderId(order.getOrderId());
+			order.setOrderAddress(orderAddress);
+		}
+		pagination.setList(orderList);
+		return pagination;
 	}
 	
 	

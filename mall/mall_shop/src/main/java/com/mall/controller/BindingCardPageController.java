@@ -214,7 +214,7 @@ public class BindingCardPageController extends BaseController{
 					&& !onlineObject.getUserSysId().equals("")){
 				//验证通过不处理
 			}else{
-				map.put("flag","0");
+				map.put("flag","1");
 				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
 				return;
 			}
@@ -255,13 +255,17 @@ public class BindingCardPageController extends BaseController{
 			//判断该用户是否绑卡（根据用户id和密码查询）
 			HospitalCard hospitalCard= hospitalCardService.getHospitalCardByUserIdAndPassword(onlineObject.getUserSysId(),password);
 			if(null==hospitalCard){
-				map.put("flag","1");
+				map.put("flag","0");
 				map.put("message","您还未绑定餐卡，或密码输入错误!");
 				return;
 			}
 			//调用扣款server，在server中做两个库的更新操作，保证事物的唯一性
 			boolean bool=orderService.payment(onlineObject,order,hospitalCard);
-			
+			if(bool==true){
+				map.put("flag","1");
+				map.put("message","支付成功!");
+				return;
+			}
 		} catch (Exception e) {
 			map.put("flag","0");
 			map.put("message","系统异常，请稍后重试！");
