@@ -35,6 +35,7 @@ public class BaseController  {
         this.session = request.getSession();  
     }  
     
+   
     /**
      * 写出json格式数据
      * @param object
@@ -42,7 +43,11 @@ public class BaseController  {
     public void outJson(Object object) {
 		try {
 			String json = JSON.toJSONString(object);
-			response.setContentType("text/html;charset=utf-8");
+			//设置页面不缓存
+			response.setContentType("application/json");
+		    response.setHeader("Pragma", "No-cache");
+		    response.setHeader("Cache-Control", "no-cache");
+		    response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
 			response.getWriter().flush();
 			response.getWriter().close();

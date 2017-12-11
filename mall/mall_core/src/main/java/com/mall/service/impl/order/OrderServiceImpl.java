@@ -183,6 +183,12 @@ public class OrderServiceImpl implements OrderService{
 		pagination.setList(orderList);
 		return pagination;
 	}
+
+
+	@Override
+	public int selectOrderCountByCriteria(OrderCriteria orderCriteria) {
+		return orderDao.countByExample(orderCriteria);
+	}
 	
 	
 }

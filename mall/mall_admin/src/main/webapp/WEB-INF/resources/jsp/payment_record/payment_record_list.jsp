@@ -52,13 +52,31 @@
 					<th>订单编号</th>
 					<th>支付时间</th>
 					<th>付款会员</th>
-					<th>支付方式</th>
-					<th>支付状态</th>
-					<th>操作</th>
+					<th>支付金额</th>
+					<!-- <th>支付方式</th> -->
+					<!-- <th>支付状态</th> -->
+					<!-- <th>操作</th> -->
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<c:choose>
+			   <c:when test="${pagination.list!=null && pagination.list.size()>0}">  
+			       <c:forEach items="${pagination.list}" var="paymentRecord">
+						<tr>
+						<td>${paymentRecord.payCode}</td>
+						<td>${paymentRecord.hospitalCardCode}</td>
+						<td>${paymentRecord.orderId}</td>
+						<td><fmt:formatDate value="${paymentRecord.payTime}" type="both"/></td>
+						<td>${paymentRecord.hospitalCard.name}</td>
+						<td>${paymentRecord.payMoney}</td>
+					</tr>
+				</c:forEach>
+			   </c:when>
+			   <c:otherwise> 
+			    	<td colspan="6" align="center">没有查询到信息</td>
+			   </c:otherwise>
+			</c:choose>
+				<!-- <tr>
 					<td>20171117114536754550</td>
 					<td>20171117114536754551</td>
 					<td>20171117114536754552</td>
@@ -71,7 +89,7 @@
 							<i class="layui-icon">&#xe63c;</i>
 						</a>
 					</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
 		<div class="page">

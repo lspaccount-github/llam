@@ -117,6 +117,17 @@ public interface OrderService {
 	 * @throws
 	 */
 	public Pagination selectOrderToTodayList(OrderCriteria orderCriteria);
+	
+	/**
+	 * 
+	 * @Title: selectOrderCountByCriteria 
+	 * @Description:根据查询条件，查询条数 
+	 * @param @param orderCriteria
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int selectOrderCountByCriteria(OrderCriteria orderCriteria);
 
 
 }

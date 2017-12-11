@@ -3,6 +3,7 @@ package com.mall.controller;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +22,19 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mall.pojo.order.OrderCriteria;
+import com.mall.pojo.order.OrderCriteria.Criteria;
+import com.mall.service.order.OrderService;
 import com.mall.utils.util.ValidateCode;
+import com.mall.utils.util1.DateUtil;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 /**
  * 首页
@@ -36,8 +43,10 @@ import com.mall.utils.util.ValidateCode;
  * @date 2017年2月9日
  */
 @Controller
-public class IndexController {
+public class IndexController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+	@Autowired
+	private OrderService orderService;
 	
 	/**
 	 * 后台首页
@@ -50,6 +59,34 @@ public class IndexController {
 	public String home(HttpServletRequest request, HttpServletResponse response,Model model) {
 		return "common/home";
 	}
+	
+	@RequestMapping("/indexData")
+	public void indexData(HttpServletRequest request, HttpServletResponse response,Model model) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		Data data = new Data();
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			//TODO 未完成
+			//已完成订单  (总数，今日，昨日，本周，本月)
+			OrderCriteria orderCriteria = new OrderCriteria();
+			Criteria criteria = orderCriteria.createCriteria();
+			
+			//今日
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtil.getTodayStartTime());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtil.getTodayEndTime());
+			int i = orderService.selectOrderCountByCriteria(orderCriteria);
+			
+			
+		} catch (Exception e) {
+			logger.error(e.toString());
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
+	}
+	
 	
 	/**
 	 * 获取验证码

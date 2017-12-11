@@ -14,11 +14,11 @@
                     <thead>
                         <tr>
                             <th>统计</th>
-                            <th>资讯库</th>
-                            <th>图片库</th>
-                            <th>产品库</th>
-                            <th>用户</th>
-                            <th>管理员</th>
+                            <th>已完成订单</th>
+                            <th>待商家确认订单</th>
+                            <th>已支付金额</th>
+                            <!-- <th>用户</th>
+                            <th>管理员</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -27,44 +27,44 @@
                             <td>92</td>
                             <td>9</td>
                             <td>0</td>
-                            <td>8</td>
-                            <td>20</td>
+                            <!-- <td>8</td>
+                            <td>20</td> -->
                         </tr>
                         <tr>
                             <td>今日</td>
                             <td>0</td>
                             <td>0</td>
                             <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <!-- <td>0</td>
+                            <td>0</td> -->
                         </tr>
                         <tr>
                             <td>昨日</td>
                             <td>0</td>
                             <td>0</td>
                             <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <!-- <td>0</td>
+                            <td>0</td> -->
                         </tr>
                         <tr>
                             <td>本周</td>
                             <td>2</td>
                             <td>0</td>
                             <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <!-- <td>0</td>
+                            <td>0</td> -->
                         </tr>
                         <tr>
                             <td>本月</td>
                             <td>2</td>
                             <td>0</td>
                             <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <!-- <td>0</td>
+                            <td>0</td> -->
                         </tr>
                     </tbody>
                 </table>
-                <table class="layui-table">
+                <!-- <table class="layui-table">
                 <thead>
                     <tr>
                         <th colspan="2" scope="col">服务器信息</th>
@@ -164,20 +164,69 @@
                         <td>NETWORK SERVICE</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
               </div>
             </fieldset>
             <blockquote class="layui-elem-quote layui-quote-nm">北京航天医院</blockquote>
             
         </div>
+        
+        <script type="text/javascript">
+      /*  $.ajax({
+	        url : '${pageContext.request.contextPath}/home/indexData.html',
+	        type : "post",
+	        dataType : "json",
+	        cache : false,
+	        async : false,
+	        success : function(data, textStatus, jqXHR) {
+	            if ('success' == textStatus) {
+	            	if(data.flag=="0"){
+	            		//信息框
+			        	  layer.open({
+			        	    content: data.message
+			        	    ,btn: '确定'
+			        	  });
+	            		return;
+	            	}else if(data.flag=="1"){
+	            		$("#cardNum").html(data.hospitalCardCode);
+	            		$(".ftc_wzsf").show();
+	            		return;
+	            	}else if(data.flag=="2"){
+	            		layer.open({
+	            			className: '../layer_mobile/need/aaa'
+	            			,content: '<p>'+data.message+'<p>'
+	            			,btn: ['确定']
+	            			,shade: 'background-color: rgba(0,0,0,.5)'
+	            			,shadeClose:false
+	            			,success: function(elem){
+	            			 console.log("layer");
+	            			}  
+	            			,yes: function(index){
+	            			  //alert('确定');跳转绑卡页面
+	            			  window.location.href="${pageContext.request.contextPath}/BindingCard/bindingCardPage.html?orderId="+$("#orderId").val();
+	            			  layer.close(index);
+	            			}
+	            	   });
+	            	}
+	            }
+	        },
+	        error : function(XMLHttpRequest, textStatus, errorThrown) {
+	        	//信息框
+	        	  layer.open({
+	        	    content: '系统异常,请稍后重试！'
+	        	    ,btn: '确定'
+	        	  });
+	        }
+	    });*/
+        </script>
         <script>
-        var _hmt = _hmt || [];
+       /*  var _hmt = _hmt || [];
         (function() {
           var hm = document.createElement("script");
           hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
           var s = document.getElementsByTagName("script")[0]; 
           s.parentNode.insertBefore(hm, s);
-        })();
+        })(); */
         </script>
 </body>
 </html>
