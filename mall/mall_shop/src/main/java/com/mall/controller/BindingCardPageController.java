@@ -2,6 +2,7 @@ package com.mall.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mall.pojo.ZgXy_CardInfo.ZgXyCardInfo;
+import com.mall.pojo.ZgXy_CardInfo.ZgXyCardInfoCriteria;
 import com.mall.pojo.hospital_card.HospitalCard;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.user.User;
 import com.mall.service.hospitalCard.HospitalCardService;
 import com.mall.service.order.OrderService;
+import com.mall.service.zgXyCardInfo.ZgXyCardInfoService;
 import com.mall.utils.util1.DateUtil;
 
 /**
@@ -38,6 +41,8 @@ public class BindingCardPageController extends BaseController{
 	private HospitalCardService hospitalCardService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private ZgXyCardInfoService zgXyCardInfoService;
 	
 	/**
 	 * 校验当前登陆用户是否绑定餐卡
@@ -110,7 +115,9 @@ public class BindingCardPageController extends BaseController{
 			return "redirect:/user/validate.html";
 		}
 		req.setAttribute("orderId", orderId);
-		return "bindingCardPage";
+		
+		//return "bindingCardPage";//姓名，餐卡卡号，密码，确认密码
+		return "bindingCardPage1";//先根据姓名，人员编号查询，看有几张卡，如果有一张则直接绑定，若有多张卡，则提示输入卡号
 	}
 	
 	
@@ -191,6 +198,7 @@ public class BindingCardPageController extends BaseController{
 			outJson(map);
 		}
 	}
+	
 	
 	/**
 	 * 
@@ -274,5 +282,147 @@ public class BindingCardPageController extends BaseController{
 			outJson(map);
 		}
 	
+	}
+	
+	//////////////////////////////////////另一种绑卡/////////////////////////////////////
+	@RequestMapping(value="addBindingCard1-1")
+	public void addBindingCard11(HttpServletRequest req, HttpServletResponse resp,String name,String Rybh,String hospitalCardCode){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			//判断入参
+			if("".equals(name) || null==name){
+				map.put("flag","0");
+				map.put("message","请输入姓名!");
+				return;
+			}
+			if("".equals(Rybh) || null==Rybh){
+				map.put("flag","0");
+				map.put("message","请输入人员编号!");
+				return;
+			}
+			if("".equals(hospitalCardCode) || null==hospitalCardCode){
+				map.put("flag","0");
+				map.put("message","请输入餐卡卡号!");
+				return;
+			}
+			
+			//连接sqlserver数据库，查询该卡是否存在
+			ZgXyCardInfoCriteria zgXyCardInfoCriteria = new ZgXyCardInfoCriteria();
+			zgXyCardInfoCriteria.createCriteria().andRymcEqualTo(name).andRybhEqualTo(Rybh).andTmpstrEqualTo(hospitalCardCode);
+			List<ZgXyCardInfo> selectByExample = zgXyCardInfoService.selectByExample(zgXyCardInfoCriteria);
+			if(null!=selectByExample && selectByExample.size()>1){
+				map.put("flag","2");
+				map.put("message","请输入您的餐卡卡号！");
+				return;
+			}else if(null!=selectByExample && selectByExample.size()==1){
+				//插入自己数据卡信息
+				ZgXyCardInfo zgXyCardInfo = selectByExample.get(0);
+				HospitalCard hospitalCard = new HospitalCard();
+				hospitalCard.setHospitalCardCode(zgXyCardInfo.getTmpstr());
+				hospitalCard.setName(name);
+				hospitalCard.setPaymentPassword(zgXyCardInfo.getRymm());
+				hospitalCard.setUserId(onlineObject.getUserSysId());
+				hospitalCard.setStatus(1);
+				int i = hospitalCardService.addBindingCard(hospitalCard);
+				if(i<=0){
+					map.put("flag","0");
+					map.put("message","绑定餐卡失败，请稍后重试！");
+					return;
+				}else{
+					map.put("flag","1");
+					map.put("message","绑定成功了！");
+					return;
+				}
+			}else{
+				map.put("flag","0");
+				map.put("message","查询不到您的餐卡信息，请联系管理员！");
+				return;
+			}
+		} catch (Exception e) {
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
+	}
+	
+	@RequestMapping(value="addBindingCard1")
+	public void addBindingCard1(HttpServletRequest req, HttpServletResponse resp,String name,String Rybh){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			//判断入参
+			if("".equals(name) || null==name){
+				map.put("flag","0");
+				map.put("message","请输入姓名!");
+				return;
+			}
+			if("".equals(Rybh) || null==Rybh){
+				map.put("flag","0");
+				map.put("message","请输入人员编号!");
+				return;
+			}
+			
+			//连接sqlserver数据库，查询该卡是否存在
+			ZgXyCardInfoCriteria zgXyCardInfoCriteria = new ZgXyCardInfoCriteria();
+			zgXyCardInfoCriteria.createCriteria().andRymcEqualTo(name).andRybhEqualTo(Rybh);
+			List<ZgXyCardInfo> selectByExample = zgXyCardInfoService.selectByExample(zgXyCardInfoCriteria);
+			if(null!=selectByExample && selectByExample.size()>1){
+				map.put("flag","2");
+				map.put("message","请输入您的餐卡卡号！");
+				return;
+			}else if(null!=selectByExample && selectByExample.size()==1){
+				//插入自己数据卡信息
+				ZgXyCardInfo zgXyCardInfo = selectByExample.get(0);
+				HospitalCard hospitalCard = new HospitalCard();
+				hospitalCard.setHospitalCardCode(zgXyCardInfo.getTmpstr());
+				hospitalCard.setName(name);
+				hospitalCard.setPaymentPassword(zgXyCardInfo.getRymm());
+				hospitalCard.setUserId(onlineObject.getUserSysId());
+				hospitalCard.setStatus(1);
+				int i = hospitalCardService.addBindingCard(hospitalCard);
+				if(i<=0){
+					map.put("flag","0");
+					map.put("message","绑定餐卡失败，请稍后重试！");
+					return;
+				}else{
+					map.put("flag","1");
+					map.put("message","绑定成功了！");
+					return;
+				}
+			}else{
+				map.put("flag","0");
+				map.put("message","查询不到您的餐卡信息，请联系管理员！");
+				return;
+			}
+		} catch (Exception e) {
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
 	}
 }
