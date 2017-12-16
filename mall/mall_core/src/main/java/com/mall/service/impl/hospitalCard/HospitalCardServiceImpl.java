@@ -57,7 +57,7 @@ public class HospitalCardServiceImpl implements HospitalCardService{
 	@Override
 	public HospitalCard getHospitalCardByUserIdAndPassword(String userSysId,String password) {
 		HospitalCardCriteria criteria = new HospitalCardCriteria();
-		criteria.createCriteria().andUserIdEqualTo(userSysId).andPaymentPasswordEqualTo(password).andStatusEqualTo(1);
+		criteria.createCriteria().andUserIdEqualTo(userSysId).andStatusEqualTo(1);
 		List<HospitalCard> selectByExample = hospitalCardDao.selectByExample(criteria);
 		if(null!=selectByExample && selectByExample.size()>0){
 			return selectByExample.get(0);

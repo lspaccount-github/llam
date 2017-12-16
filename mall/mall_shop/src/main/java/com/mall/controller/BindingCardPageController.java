@@ -418,6 +418,7 @@ public class BindingCardPageController extends BaseController{
 				return;
 			}
 		} catch (Exception e) {
+			System.out.println(e);
 			map.put("flag","0");
 			map.put("message","系统异常，请稍后重试！");
 			return;

@@ -35,10 +35,124 @@
             </ul>
             <div>总金额 : <span>￥${order.orderMoney}</span></div>
           </div>
+        <c:if test="${order.orderStatus == 1}">  
+	          <div class="cancle">
+	              <span><a href="javascript:void(0);" onclick="cancelOrder('${order.orderId}')">取消订单</a></span>
+	              <c:if test="${timeDifference > 3}">
+	              		<span><a href="${pageContext.request.contextPath}/order/goToOrderPay.html?orderId=${order.orderId}" id="goToPay">去支付(还剩<em id="d_m">0</em>分<em id="d_s">00</em>秒)</a></span>
+	              </c:if>
+	              <c:if test="${timeDifference < 3}">
+	              		<span><a href="javascript:void(0);"  disabled="true" style="border:1px solid #999;background:#999;">去支付<em>(还剩0分0秒)</em></a></span>
+	              </c:if>
+	          </div>
+        </c:if> 
       </div>
 </body>
 </html>
 
 <script>
+var timeDifference = ${timeDifference};//毫秒时间差
+$(function(){
+	pushHistory(); 
+	window.addEventListener("popstate", function(e) { 
+		window.location.href = "${pageContext.request.contextPath}/order/goToOrderDtail.html?orderId=${order.orderId}";
+	}, false); 
+	t=timeDifference;
+	startDaoJiShiTimer();   
+})
+function pushHistory() { 
+	var state = { 
+	title: "title", 
+	url: "#"
+	}; 
+	window.history.pushState(state, "title", "#"); 
+} 
+var daoJiShiTimer;
+var time=1000;//一秒时间
+var t = 0;
+
+//开启倒计时
+function startDaoJiShiTimer(){
+	//清除页面定时器
+	window.clearTimeout(daoJiShiTimer);
+	//定时器
+	daoJiShiTimer = setInterval(getRTime,time);
+}
+
+function getRTime(){
+	t = parseInt(t);
+	var d = Math.floor(t/1000/60/60/24);
+	var h = Math.floor(t/1000/60/60%24);
+	var m = Math.floor(t/1000/60%60);
+	var s = Math.floor(t/1000%60);
 	
+	//$("#d_d").html(d);
+	if(s<0 || m<0 || h<0 || d<0){
+		$("#d_h").html("00");
+		$("#d_m").html("00");
+		$("#d_s").html("00");
+	}else{
+		$("#d_h").html(h);
+		$("#d_m").html(m);
+		$("#d_s").html(s);
+	}
+	
+	
+	t = t-time;
+	if(t<0){
+		//关闭倒计时
+		endDaoJiShiTimer();
+		$("#goToPay").attr('disabled',true);
+		$('#goToPay').css('border','1px solid #999');
+		$('#goToPay').css('background','#999');
+	}
+}
+
+//关闭倒计时
+function endDaoJiShiTimer(){
+	window.clearTimeout(daoJiShiTimer);
+}
+
+
+//取消订单方法
+	function cancelOrder(orderId){
+		var param = {"orderId":orderId};
+		 $.ajax({
+		        url : '${pageContext.request.contextPath}/order/cancelOrder.html',
+		        type : "post",
+		        dataType : "json",
+		        data : param,
+		        cache : false,
+		        async : false,
+		        success : function(data, textStatus, jqXHR) {
+		            if ('success' == textStatus) {
+		            	if(data.flag=="0"){
+		            		//信息框
+				        	  layer.open({
+				        	    content: data.message
+				        	    ,btn: '确定'
+				        	  });
+		            		return;
+		            	}else{
+		            		layer.open({
+		            			  title:'提示'
+		            			  ,content: data.message
+		            			  ,btn: '确定',
+		            			  shadeClose: false,
+		            			  yes: function(){
+		            				  location.reload();
+		            			  }
+		            			});
+		            	}
+		            }
+		        },
+		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+		        	//信息框
+		        	  layer.open({
+		        	    content: '系统异常,请稍后重试！'
+		        	    ,btn: '确定'
+		        	  });
+		        }
+		    });
+	}
 </script>

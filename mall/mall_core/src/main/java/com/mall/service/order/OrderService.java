@@ -94,6 +94,18 @@ public interface OrderService {
 	 */
 	public boolean payment(User onlineObject, Order order,HospitalCard hospitalCard);
 	
+	/**
+	 * 
+	 * @Title: updateByExampleSelective 
+	 * @Description: 根据条件更新数据
+	 * @param @param order
+	 * @param @param orderCriteria
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int updateByExampleSelective(Order order,OrderCriteria orderCriteria);
+	
 	//*************************后台方法*****************************
 	
 	/**

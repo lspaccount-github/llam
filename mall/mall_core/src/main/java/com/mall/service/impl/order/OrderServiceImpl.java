@@ -166,6 +166,10 @@ public class OrderServiceImpl implements OrderService{
 		}
 		
 	}
+	
+	public int updateByExampleSelective(Order order,OrderCriteria orderCriteria){
+		return orderDao.updateByExampleSelective(order, orderCriteria);
+	}
 
 //------------------------------------后台方法分割线---------------------------------------------
 	@Override

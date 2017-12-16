@@ -102,4 +102,11 @@ i{font-style:normal;}
 .calculate ul li span:nth-child(2){float: right;}
 .calculate div{float: right;padding-right: 10px;height: 40px;line-height: 40px;}
 .calculate div span{color:#df5f51;}
-.cancle a{float: right;color: #df5f51;margin-right: 10px;}
+
+/*订单想详情页面取消订单和去支付按钮样式*/
+.cancle{width: 100%;margin-top: 30px;}
+.cancle span{width:50%;float: left;}
+.cancle span a{;padding: 10px 20px;font-size: 13px;border: 1px solid #eaeaea;display: inline-block;font-style: normal;}
+.cancle span:nth-child(1) a{float: right;margin-right:43px;color: #999;}
+.cancle span:nth-child(2) a{float: left;margin-left:-11px;background: #df5f51;color: #fff;}
+em{font-style: normal;}

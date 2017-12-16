@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mall.exception.ParameterException;
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderConfirm;
+import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
 import com.mall.pojo.user.User;
@@ -327,8 +328,58 @@ public class OrderPageController extends BaseController{
 			return "redirect:/user/validate.html";
 		}
 		Order order=orderService.getOrderByOderIdLazy(orderId);
+		
+		//计算时间差
+		Date addDateMinut = DateUtil.addDateMinut(order.getCreateTime(),15);
+	
+		long i=addDateMinut.getTime()-new Date().getTime();//订单加15分钟的时间  减去  当前时间  
+		request.setAttribute("timeDifference",4000);
 		request.setAttribute("order", order);
 		request.setAttribute("avatar", onlineObject.getAvatar());
 		return "orderDtailPage";
+	}
+	
+	
+	@RequestMapping(value="cancelOrder")
+	public void cancelOrder(HttpServletRequest req, HttpServletResponse resp,String orderId){
+		Map<String,String> map = new HashMap<String,String>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			if(null==orderId && "".equals(orderId)){
+				map.put("flag","0");
+				map.put("message","参数异常，请稍后重试！");
+				return;
+			}
+			
+			Order order = new Order();
+			order.setOrderStatus(4);//订单已取消
+			OrderCriteria orderCriteria = new OrderCriteria();
+			orderCriteria.createCriteria().andOrderIdEqualTo(orderId).andUserIdEqualTo(onlineObject.getUserSysId()).andOrderStatusEqualTo(1);
+			int i = orderService.updateByExampleSelective(order, orderCriteria);
+			if(i>0){
+				map.put("flag","1");
+				map.put("message","订单已取消！");
+			}else{
+				map.put("flag","0");
+				map.put("message","订单取消失败，请稍后重试！");
+			}
+			
+		} catch (Exception e) {
+			logger.error("===订单取消异常====",e);
+			map.put("flag","0");
+			map.put("message","订单取消异常，请稍后重试！");
+		}finally{
+			outJson(map);
+		}
 	}
 }
