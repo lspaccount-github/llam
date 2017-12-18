@@ -34,6 +34,15 @@ public class Md5 {
 		
 		String encrypt = md5Encrypt(msg);  
 		System.out.println("加密后：" + encrypt);  
+		
+		
+		System.out.println("------------------------------");
+		String msg1 = "123456";  
+		System.out.println("加密前：" + msg1);  
+		
+		String encrypt1 = getMD5StringWithSalt(msg1, "19930911");
+		System.out.println("c14a40dc4dc4f152b98d48912747ee6b");
+		System.out.println("加密后：" + encrypt1);
 	}  
 	
 	protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };  

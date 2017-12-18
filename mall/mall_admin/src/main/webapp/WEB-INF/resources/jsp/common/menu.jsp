@@ -10,12 +10,12 @@
 	          </a>
 	          <ul class="sub-menu">
 	              <li>
-	                  <a _href="./admin/admin-list.html">
+	                  <a _href="${pageContext.request.contextPath}/admin/adminList.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>管理员列表</cite>
 	                  </a>
 	              </li >
-	              <li>
+	              <!-- <li>
 	                  <a _href="./admin/admin-role.html">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>角色管理</cite>
@@ -32,7 +32,7 @@
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>权限管理</cite>
 	                  </a>
-	              </li >
+	              </li > -->
 	          </ul>
 	      </li>
 	      <li>

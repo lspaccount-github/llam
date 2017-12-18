@@ -1,6 +1,7 @@
 package com.mall.utils.shiro;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,12 +17,17 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.mall.pojo.merchant.Merchant;
-import com.mall.pojo.merchant.Merchant.MerchantStatus;
+import com.mall.pojo.merchant_user.MerchantUser;
+import com.mall.pojo.merchant_user.MerchantUserCriteria;
+import com.mall.service.merchant_user.MerchantUserService;
 
 public class ShiroRealm extends AuthorizingRealm {
 
+	@Autowired
+	private MerchantUserService merchantUserService;
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
@@ -32,21 +38,25 @@ public class ShiroRealm extends AuthorizingRealm {
 		
 		//2. 从 UsernamePasswordToken 中来获取 username
 		String username = upToken.getUsername();
-		
 		//3. 调用数据库的方法, 从数据库中查询 username 对应的用户记录
-		//TODO 
-		Merchant merchant = new Merchant();
+		//TODO
+		MerchantUserCriteria userCriteria = new MerchantUserCriteria();
+		userCriteria.createCriteria().andLoginNameEqualTo(username).andStatusEqualTo(MerchantUser.MERCHANT_USER_STATUS_YOU_XIAO);
+		List<MerchantUser> merchantUserList = merchantUserService.selectByExample(userCriteria);
+		
+		
+		/*Merchant merchant = new Merchant();
 		merchant.setUsername("admin");
 		merchant.setPassword("038bdaf98f2037b31f1e75b5b4c9b26e");
-		merchant.setMerchantStatus(MerchantStatus.able.ordinal());
+		merchant.setMerchantStatus(MerchantStatus.able.ordinal());*/
 		//4. 若用户不存在, 则可以抛出 UnknownAccountException 异常
-		if(merchant == null){
+		if(merchantUserList == null || merchantUserList.size()<=0 || merchantUserList.size()>1){
 			throw new UnknownAccountException("用户不存在!");
 		}
-		
+		MerchantUser merchantUser = merchantUserList.get(0);
 		//5. 根据用户信息的情况, 决定是否需要抛出其他的 AuthenticationException 异常. 
-		if(merchant.getMerchantStatus() == null || !merchant.getMerchantStatus().equals(Merchant.MerchantStatus.able.ordinal())){
-			throw new LockedAccountException("用户被锁定");
+		if(merchantUser.getStatus() == null || !merchantUser.getStatus().equals(MerchantUser.MERCHANT_USER_STATUS_YOU_XIAO)){
+			throw new LockedAccountException("用户已失效!");
 		}
 		
 		//6. 根据用户的情况, 来构建 AuthenticationInfo 对象并返回. 通常使用的实现类为: SimpleAuthenticationInfo
@@ -54,7 +64,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		//1). principal: 认证的实体信息. 可以是 username, 也可以是数据表对应的用户的实体类对象. 
 		Object principal = username;
 		//2). credentials: 密码. 
-		Object credentials = merchant.getPassword();
+		Object credentials = merchantUser.getLoginPassword();
 		
 		//3). realmName: 当前 realm 对象的 name. 调用父类的 getName() 方法即可
 		String realmName = getName();
@@ -69,7 +79,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	public static void main(String[] args) {
 		String hashAlgorithmName = "MD5";
 		Object credentials = "123456";
-		Object salt = ByteSource.Util.bytes("user");;
+		Object salt = ByteSource.Util.bytes("admin");;
 		int hashIterations = 1024;
 		
 		Object result = new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations);
