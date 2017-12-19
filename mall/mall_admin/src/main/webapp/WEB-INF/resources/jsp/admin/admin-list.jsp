@@ -16,7 +16,7 @@
 	</div>
 	<div class="x-body">
 		<div class="layui-row">
-			<form class=" layui-col-md12 x-so" action="/mall_admin/order/to_history.do" method="get">
+			<form class=" layui-col-md12 x-so" action="/mall_admin/admin/adminList.do" method="post">
 				<input class="layui-input" placeholder="开始日" name="startTime" id="start" value="${startTime}">
 				<input class="layui-input" placeholder="截止日" name="endTime" id="end" value="${endTime}">
 				<input type="text" name="loginName" placeholder="请输入登陆名"  value="${loginName}"
@@ -97,7 +97,7 @@
 				elem : '#end' //指定元素
 			});
 		});
-			/*用户-停用or启用*/
+		/*用户-停用or启用*/
 	      function merchantUser_stop(flag,merchantUserId){
 				var str = "";
 				if("1"==flag){

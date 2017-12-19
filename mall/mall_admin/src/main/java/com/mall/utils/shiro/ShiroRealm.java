@@ -72,7 +72,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		ByteSource credentialsSalt = ByteSource.Util.bytes(username);
 		
 		SimpleAuthenticationInfo info = null; //new SimpleAuthenticationInfo(principal, credentials, realmName);
-		info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
+		info = new SimpleAuthenticationInfo(merchantUser, credentials, credentialsSalt, realmName);
 		return info;
 	}
 

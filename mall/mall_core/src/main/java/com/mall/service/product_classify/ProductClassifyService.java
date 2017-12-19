@@ -3,6 +3,8 @@ package com.mall.service.product_classify;
 import java.util.List;
 
 import com.mall.pojo.product_classify.ProductClassify;
+import com.mall.pojo.product_classify.ProductClassifyCriteria;
+import com.mall.utils.pageUtil.Pagination;
 
 /**
  * 
@@ -45,4 +47,49 @@ public interface ProductClassifyService {
 	 * @throws
 	 */
 	public ProductClassify getProductClassifyListByProductClassifyId(long productClassifyId);
+
+	/**
+	 * 
+	 * @Title: selectByExampleToPage 
+	 * @Description: 条件分页查询
+	 * @param @param productClassifyCriteria
+	 * @param @return    设定文件 
+	 * @return Pagination    返回类型 
+	 * @throws
+	 */
+	public Pagination selectByExampleToPage(ProductClassifyCriteria productClassifyCriteria);
+
+	/**
+	 * 
+	 * @Title: updateByExampleSelective 
+	 * @Description: 根据条件更新数据
+	 * @param @param productClassify
+	 * @param @param productClassifyCriteria
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int updateByExampleSelective(ProductClassify productClassify,ProductClassifyCriteria productClassifyCriteria);
+	
+	/**
+	 * 
+	 * @Title: deleteByExample 
+	 * @Description: 根据条件删除数据 
+	 * @param @param productClassifyCriteria
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int deleteByExample(ProductClassifyCriteria productClassifyCriteria);
+	
+	/**
+	 * 
+	 * @Title: insertSelective 
+	 * @Description: 插入数据
+	 * @param @param productClassify
+	 * @param @return    设定文件 
+	 * @return int    返回类型 
+	 * @throws
+	 */
+	public int insertSelective(ProductClassify productClassify);
 }

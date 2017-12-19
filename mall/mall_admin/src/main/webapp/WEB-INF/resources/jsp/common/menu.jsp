@@ -43,7 +43,7 @@
 	          </a>
 	          <ul class="sub-menu">
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/productClassify/tolist.do">
 	                      <i class="iconfont">&#xe6a7;</i>
 	                      <cite>菜品分类</cite>
 	                  </a>
