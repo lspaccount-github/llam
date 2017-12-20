@@ -1,8 +1,11 @@
 package com.mall.pojo.product;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.pojo.product_spec.ProductSpec;
 
 public class Product implements Serializable {
@@ -51,6 +54,11 @@ public class Product implements Serializable {
      */
     private List<ProductSpec> productSpecList;
     
+    /**
+     * 商品分类
+     */
+    private ProductClassify productClassify;
+    
     private static final long serialVersionUID = 1L;
 
     public String getProductId() {
@@ -75,6 +83,7 @@ public class Product implements Serializable {
 
     public void setProductStatus(Integer productStatus) {
         this.productStatus = productStatus;
+        this.productStatusView = productStatusMap.get(productStatus);
     }
 
     public String getProductName() {
@@ -116,8 +125,16 @@ public class Product implements Serializable {
     public void setMinBuyNum(Long minBuyNum) {
         this.minBuyNum = minBuyNum;
     }
+    
+    public ProductClassify getProductClassify() {
+		return productClassify;
+	}
 
-    @Override
+	public void setProductClassify(ProductClassify productClassify) {
+		this.productClassify = productClassify;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
@@ -154,4 +171,27 @@ public class Product implements Serializable {
 		this.num = num;
 	}
     
+	  //=============常量区==================
+  	public static final Integer PRODUCT__STATUS_SHANG_JIA = 1; 
+  	public static final Integer PRODUCT_STATUS_XIA_JIA = 2; 
+  	
+  	public static final String PRODUCT__STATUS_SHANG_JIA_VIEW = "已上架";
+  	public static final String PRODUCT_STATUS_XIA_JIA_VIEW = "已下架"; 
+  	
+  	public static final Map<Integer, String> productStatusMap = new HashMap<Integer, String>();
+  	static{
+  		productStatusMap.put(PRODUCT__STATUS_SHANG_JIA, PRODUCT__STATUS_SHANG_JIA_VIEW);
+  		productStatusMap.put(PRODUCT_STATUS_XIA_JIA, PRODUCT_STATUS_XIA_JIA_VIEW);
+  	}
+  	/**
+	 * 状态显示值
+	 */
+	private String productStatusView;
+
+	public String getProductStatusView() {
+		return productStatusView;
+	}
+
+	
+	
 }

@@ -26,7 +26,7 @@
 		</div>
 		<xblock>
 	        <button class="layui-btn" onclick="x_admin_show('添加菜品分类','${pageContext.request.contextPath}/productClassify/editOrAddToPage.do',420,200)"><i class="layui-icon"></i>添加</button>
-	        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+	        <span class="x-right" style="line-height:40px">共有数据：${pagination.totalCount} 条</span>
         </xblock>
 		<table class="layui-table">
 			<thead>
