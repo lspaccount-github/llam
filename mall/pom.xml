@@ -140,6 +140,14 @@
             <version>${spring.version}</version>
         </dependency>
         <!-- 引入Spring 依赖 end -->
+        
+          <!--jerson -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.18.1</version>
+		</dependency>
+		<!--jcaptcha -->
 
         <!-- 引用c3p0 依赖 start-->
         <dependency>

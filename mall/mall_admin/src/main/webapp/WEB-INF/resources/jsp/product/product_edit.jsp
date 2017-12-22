@@ -5,8 +5,8 @@
 <head>
 <%@ include file="../common/meta.jsp"%>
 <style>
-	.box1{ border-bottom: 1px solid #eaeaea;margin: 0 50px;padding: 10px 0;}
-	.box1 p{font-size: 20px;}
+	.box1{ border-bottom: 1px solid #eaeaea;padding: 10px 0;}
+	.title-p{font-size: 20px;}
 	.demo--radio{display:none;}
 .demo--radioInput{background-color:#fff;border:1px solid #3bb4f2;border-radius:100%;display:inline-block;height:16px;margin-right:10px;margin-top:-1px;vertical-align:middle;width:16px;line-height:1;}
 .demo--radio:checked + .demo--radioInput:after{background-color:#3bb4f2;border-radius:100%;content:"";display:inline-block;height:8px;margin:4px;width:8px;}
@@ -22,6 +22,7 @@
  <body>
     <div class="x-body">
         <form class="layui-form">
+        <p class="title-p">基本信息</p>
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">
                   <span class="x-red">*</span>菜品分类
@@ -46,7 +47,7 @@
           </div>
           <div class="layui-form-item layui-form-text">
               <label for="desc" class="layui-form-label">
-                 	 商品描述
+                 	<span class="x-red">*</span> 商品描述
               </label>
               <div class="layui-input-block">
                   <textarea placeholder="请输入商品描述" id="productRemark" name="productRemark" class="layui-textarea"></textarea>
@@ -56,121 +57,94 @@
               <label for="username" class="layui-form-label">
                   <span class="x-red">*</span>商品图片
               </label>
-              <div class="layui-input-inline">
-               <img class="layui-input" src="" alt="" height="100" width="100" class="input-img">
-              </div>
-               <input type="file" id="productName" name="productName" value="${product.productName}" required="" lay-verify="required"
-                  autocomplete="off" >
-          </div>
-          
-          
-          
-        <!-- ************************************************************************** -->  
-          <div class="layui-form-item">
-              <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>收货人
-              </label>
-              <div class="layui-input-inline">
-                  <input type="text" id="username" name="username" required="" lay-verify="required"
-                  autocomplete="off" class="layui-input">
-              </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="phone" class="layui-form-label">
-                  <span class="x-red">*</span>手机
-              </label>
-              <div class="layui-input-inline">
-                  <input type="text" id="phone" name="phone" required="" lay-verify="phone"
-                  autocomplete="off" class="layui-input">
+              <div class="">
+               <img src="${pageContext.request.contextPath}/common/images/moRenImage.jpg" id="allUrl" alt="" height="100" width="100" class="input-img" style="border: 1px solid #eaeaea; ">
+                <input type="file" style="margin-left: 30px;" id="pic" name="pic"  lay-verify="required"
+                  autocomplete="off" onchange="uploadPic();">
+                 <input type="hidden" id="pictureUrl" name="pictureUrl" value=""/> 
               </div>
           </div>
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>收货地址
+                  <span class="x-red">*</span>商品单位
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="username" name="username" required="" lay-verify="required"
+                  <input type="text" id="productUnit" name="productUnit" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+           <div class="layui-form-item box1">
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>最小购买数量
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="minBuyNum" name="minBuyNum" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
+              </div>
+          </div>
+          <p class="title-p">商品规格</p>
+           <div class="layui-form-item">
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>规格名称
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="spceName" name="spceName" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>配送物流
+                  <span class="x-red">*</span>价格
               </label>
               <div class="layui-input-inline">
-                  <select id="shipping" name="shipping" class="valid">
-                    <option value="shentong">申通物流</option>
-                    <option value="shunfeng">顺丰物流</option>
-                  </select>
+                  <input type="text" id="price" name="price" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">
-                  <span class="x-red">*</span>支付方式
+                  <span class="x-red">*</span>餐盒费
               </label>
               <div class="layui-input-inline">
-                  <select name="contrller">
-                    <option>支付方式</option>
-                    <option>支付宝</option>
-                    <option>微信</option>
-                    <option>货到付款</option>
-                  </select>
+                  <input type="text" id="lunchFee" name="lunchFee" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="L_email" class="layui-form-label">
-                  <span class="x-red">*</span>发票抬头
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>当前库存
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                  <input type="text" id="currentInventory" name="currentInventory" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
-              <div class="layui-form-mid layui-word-aux">
-                  <span class="x-red">*</span>
-              </div>
           </div>
-          <div class="layui-form-item layui-form-text">
-              <label for="desc" class="layui-form-label">
-                  商品增加
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">
+                  <span class="x-red">*</span>最大库存
               </label>
-              <div class="layui-input-block">
-                  <table class="layui-table">
-                    <tbody>
-                      <tr>
-                        <td>haier海尔 BC-93TMPF 93升单门冰箱</div></td>
-                        <td>0.01</div></td>
-                        <td>984</div></td>
-                        <td>1</td>
-                        <td>删除</td>
-                      </tr>
-                      <tr>
-                        <td>haier海尔 BC-93TMPF 93升单门冰箱</div></td>
-                        <td>0.01</div></td>
-                        <td>984</div></td>
-                        <td>1</td>
-                        <td>删除</td>
-                      </tr>
-                    </tbody>
-                  </table>
+              <div class="layui-input-inline">
+                  <input type="text" id="maxInventory" name="maxInventory" required="" lay-verify="required"
+                  autocomplete="off" class="layui-input">
               </div>
           </div>
-          <div class="layui-form-item layui-form-text">
-              <label for="desc" class="layui-form-label">
-                 	 描述
-              </label>
-              <div class="layui-input-block">
-                  <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea"></textarea>
-              </div>
-          </div>
+         
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>
               <button  class="layui-btn" lay-filter="add" lay-submit="">
-                  增加
+                	  增加
               </button>
           </div>
       </form>
     </div>
+  <%--  <form id='jform' action="${pageContext.request.contextPath}/upload/uploadPic.do"	 method="post"  target='frameFile' enctype="multipart/form-data">
+	</form> --%>
+	<form id= "uploadForm">  
+      <p >指定文件名： <input type="text" name="filename" value= ""/></p >  
+      <p >上传文件： <input type="file" name="pic"/></ p>  
+      <input type="button" value="上传" onclick="doUpload()" />  
+</form>  
     <script>
         layui.use(['form','layer'], function(){
             $ = layui.jquery;
@@ -231,19 +205,35 @@
 	  		        	  });
 	  		        }
 	  		    });
-            
-            
-            /* layer.alert("增加成功", {icon: 6},function () {
-                // 获得frame索引
-                var index = parent.layer.getFrameIndex(window.name);
-                //关闭当前frame
-                parent.layer.close(index);
-            }); */
             return false;
           });
-          
-          
         });
+        
+        //上传图片
+         /* function uploadPic() {
+        	 $('#jform').append($(this).parent().children());
+        	$("#jform").submit();
+   		 }   */
+   		function doUpload() {  
+   		     var formData = new FormData($( "#uploadForm" )[0]);  
+   		     $.ajax({  
+   		          url: '${pageContext.request.contextPath}/upload/uploadPic.do' ,  
+   		          type: 'POST',  
+   		          data: formData,  
+   		          async: false,  
+   		          cache: false,  
+   		          contentType: false,  
+   		          processData: false,  
+   		          success: function (data) {  
+   		        	 // 图片显示地址  
+                      $("#allUrl").attr("src", data.url);
+                      $("#pictureUrl").val(data.path); 
+   		          },  
+   		          error: function (returndata) {  
+   		              alert(returndata);  
+   		          }  
+   		     });  
+   		}  
     </script>
     <script>
    /*  var _hmt = _hmt || []; (function() {
