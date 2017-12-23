@@ -1,5 +1,6 @@
 package com.mall.service.impl.order;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -192,6 +193,12 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public int selectOrderCountByCriteria(OrderCriteria orderCriteria) {
 		return orderDao.countByExample(orderCriteria);
+	}
+
+
+	@Override
+	public BigDecimal sumorderMoneyByCriteria(OrderCriteria orderCriteria) {
+		return orderDao.sumorderMoneyByCriteria(orderCriteria);
 	}
 	
 	

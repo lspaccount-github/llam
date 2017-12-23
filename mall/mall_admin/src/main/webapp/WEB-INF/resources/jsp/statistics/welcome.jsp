@@ -6,7 +6,7 @@
 </head>
 <body>
  <div class="x-body">
-            <blockquote class="layui-elem-quote"><h1>欢迎使用&nbsp;北京航天医院点餐管理系统</h1></blockquote>
+            <blockquote class="layui-elem-quote"><h1>欢迎使用&nbsp;北京航天总医院点餐管理系统</h1></blockquote>
             <fieldset class="layui-elem-field">
               <legend>信息统计</legend>
               <div class="layui-field-box">
@@ -15,52 +15,34 @@
                         <tr>
                             <th>统计</th>
                             <th>已完成订单</th>
-                            <th>待商家确认订单</th>
                             <th>已支付金额</th>
-                            <!-- <th>用户</th>
-                            <th>管理员</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>总数</td>
-                            <td>92</td>
-                            <td>9</td>
-                            <td>0</td>
-                            <!-- <td>8</td>
-                            <td>20</td> -->
+                            <td id="yiWanCheng_total">-</td>
+                            <td id="yiWanCheng_total_money">-</td>
                         </tr>
                         <tr>
                             <td>今日</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <!-- <td>0</td>
-                            <td>0</td> -->
+                            <td id="yiWanCheng_today">-</td>
+                            <td id="yiWanCheng_today_money">-</td>
                         </tr>
                         <tr>
                             <td>昨日</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <!-- <td>0</td>
-                            <td>0</td> -->
+                            <td id="yiWanCheng_yesterDay">-</td>
+                            <td id="yiWanCheng_yesterDay_money">-</td>
                         </tr>
                         <tr>
                             <td>本周</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <!-- <td>0</td>
-                            <td>0</td> -->
+                            <td id="yiWanCheng_week">-</td>
+                            <td id="yiWanCheng_week_money">-</td>
                         </tr>
                         <tr>
                             <td>本月</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <!-- <td>0</td>
-                            <td>0</td> -->
+                            <td id="yiWanCheng_month">-</td>
+                            <td id="yiWanCheng_month_money">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -167,57 +149,55 @@
             </table> -->
               </div>
             </fieldset>
-            <blockquote class="layui-elem-quote layui-quote-nm">北京航天医院</blockquote>
+            <blockquote class="layui-elem-quote layui-quote-nm">北京航天总医院</blockquote>
             
         </div>
         
         <script type="text/javascript">
-      /*  $.ajax({
-	        url : '${pageContext.request.contextPath}/home/indexData.html',
-	        type : "post",
-	        dataType : "json",
-	        cache : false,
-	        async : false,
-	        success : function(data, textStatus, jqXHR) {
-	            if ('success' == textStatus) {
-	            	if(data.flag=="0"){
-	            		//信息框
-			        	  layer.open({
-			        	    content: data.message
-			        	    ,btn: '确定'
-			        	  });
-	            		return;
-	            	}else if(data.flag=="1"){
-	            		$("#cardNum").html(data.hospitalCardCode);
-	            		$(".ftc_wzsf").show();
-	            		return;
-	            	}else if(data.flag=="2"){
-	            		layer.open({
-	            			className: '../layer_mobile/need/aaa'
-	            			,content: '<p>'+data.message+'<p>'
-	            			,btn: ['确定']
-	            			,shade: 'background-color: rgba(0,0,0,.5)'
-	            			,shadeClose:false
-	            			,success: function(elem){
-	            			 console.log("layer");
-	            			}  
-	            			,yes: function(index){
-	            			  //alert('确定');跳转绑卡页面
-	            			  window.location.href="${pageContext.request.contextPath}/BindingCard/bindingCardPage.html?orderId="+$("#orderId").val();
-	            			  layer.close(index);
-	            			}
-	            	   });
-	            	}
-	            }
-	        },
-	        error : function(XMLHttpRequest, textStatus, errorThrown) {
-	        	//信息框
-	        	  layer.open({
-	        	    content: '系统异常,请稍后重试！'
-	        	    ,btn: '确定'
-	        	  });
-	        }
-	    });*/
+        $(function(){ 
+        	indexData();
+        }); 
+        function indexData(){
+        	 $.ajax({
+     	        url : '${pageContext.request.contextPath}/indexData.do',
+     	        type : "post",
+     	        dataType : "json",
+     	        cache : false,
+     	        async : false,
+     	        success : function(data, textStatus, jqXHR) {
+     	            if ('success' == textStatus) {
+     	            	if(data.flag=="0"){
+     	            		//信息框
+     			        	  layer.open({
+     			        	    content: data.message
+     			        	    ,btn: '确定'
+     			        	  });
+     	            		return;
+     	            	}else if(data.flag=="1"){
+                              $("#yiWanCheng_total").html(data.yiWanCheng_total);
+                              $("#yiWanCheng_total_money").html(data.yiWanCheng_total_money);
+                              $("#yiWanCheng_today").html(data.yiWanCheng_today);
+                              $("#yiWanCheng_today_money").html(data.yiWanCheng_today_money);
+                              $("#yiWanCheng_yesterDay").html(data.yiWanCheng_yesterDay);
+                              $("#yiWanCheng_yesterDay_money").html(data.yiWanCheng_yesterDay_money);
+                              $("#yiWanCheng_week").html(data.yiWanCheng_week);
+                              $("#yiWanCheng_week_money").html(data.yiWanCheng_week_money);
+                              $("#yiWanCheng_month").html(data.yiWanCheng_month);
+                              $("#yiWanCheng_month_money").html(data.yiWanCheng_month_money);
+     	            		return;
+     	            	}
+     	            }
+     	        },
+     	        error : function(XMLHttpRequest, textStatus, errorThrown) {
+     	        	//信息框
+     	        	  layer.open({
+     	        	    content: '系统异常,请稍后重试！'
+     	        	    ,btn: '确定'
+     	        	  });
+     	        }
+     	    });
+        }
+       
         </script>
         <script>
        /*  var _hmt = _hmt || [];

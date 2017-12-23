@@ -3,12 +3,16 @@ package com.mall.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mall.pojo.merchant_user.MerchantUser;
 import com.mall.pojo.merchant_user.MerchantUserCriteria;
+import com.mall.pojo.merchant_user.MerchantUserCriteria.Criteria;
 import com.mall.service.merchant_user.MerchantUserService;
 import com.mall.utils.pageUtil.Pagination;
 
@@ -144,4 +149,115 @@ public class AdminController extends BaseController{
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: toUpdatePasswordPage 
+	 * @Description: 跳转修改密码页面 
+	 * @param @param modelMap
+	 * @param @param request
+	 * @param @param response
+	 * @param @param merchantUserId
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="/toUpdatePasswordPage")
+	public String toUpdatePasswordPage(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,String merchantUserId) throws Exception{
+		MerchantUserCriteria merchantUserCriteria = new MerchantUserCriteria();
+		merchantUserCriteria.createCriteria().andMerchantUserIdEqualTo(merchantUserId);
+		List<MerchantUser> selectByExample = merchantUserService.selectByExample(merchantUserCriteria);
+		if(null!=selectByExample && selectByExample.size()>0){
+			modelMap.addAttribute("MerchantUser", selectByExample.get(0));
+		}
+		return "admin/admin_update_password";
+	
+	}
+	
+	/**
+	 * 
+	 * @Title: updatePassword 
+	 * @Description: 修改密码
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param oldpass 旧密码
+	 * @param @param newpass 新密码
+	 * @param @param repass 确认密码
+	 * @param @param merchantUserId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="updatePassword")
+	public void updatePassword(HttpServletRequest req, HttpServletResponse resp,
+			String oldpass,String newpass,String repass,String merchantUserId){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			MerchantUser merchantUser = (MerchantUser)SecurityUtils.getSubject().getPrincipal();
+			
+			MerchantUserCriteria merchantUserCriteria = new MerchantUserCriteria();
+			Criteria createCriteria = merchantUserCriteria.createCriteria();
+			if(null!=merchantUserId && ! "".equals(merchantUserId) ){
+				createCriteria.andMerchantUserIdEqualTo(merchantUserId);
+			}else{
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}
+			if(null!=oldpass && ! "".equals(oldpass) ){
+				createCriteria.andLoginPasswordEqualTo(getMd5Password(oldpass, merchantUser.getLoginName()));
+			}else{
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}
+			
+			if(null==newpass ||  "".equals(newpass) || null==repass ||  "".equals(repass)){
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}
+			
+			if(!repass.equals(newpass)){
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}
+			
+			if(!merchantUser.getMerchantUserId().equals(merchantUserId)){
+				map.put("flag","0");
+				map.put("message","请修改自己的密码!");
+				return;
+			}
+			
+			MerchantUser merchantUser2 = new MerchantUser();
+			merchantUser2.setLoginPassword(getMd5Password(repass, merchantUser.getLoginName()));
+			
+			int i = merchantUserService.updateByExampleSelective(merchantUser2, merchantUserCriteria);
+			if(i>0){
+				map.put("flag","1");
+				map.put("message","更新成功!");
+				return;
+			}else{
+				map.put("flag","0");
+				map.put("message","更新失败!");
+				return;
+			}
+			
+		} catch (Exception e) {
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
+	}
+	
+	private String getMd5Password(String passsword,String loginName){
+		String hashAlgorithmName = "MD5";
+		Object credentials = passsword;
+		Object salt = ByteSource.Util.bytes(loginName);
+		int hashIterations = 1024;
+		Object result = new SimpleHash(hashAlgorithmName, credentials, salt, hashIterations);
+		return  result.toString();
+	}
 }

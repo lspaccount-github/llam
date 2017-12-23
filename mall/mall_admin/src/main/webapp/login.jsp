@@ -20,16 +20,16 @@
 <body class="login-bg">
     
     <div class="login">
-        <div class="message">北京航天医院点菜系统——管理登录</div>
+        <div class="message">北京航天总医院点菜系统——管理登录</div>
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form">
-            <input name="username" placeholder="用户名" value="admin" type="text" lay-verify="required" class="layui-input" >
+            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" value="123456"  placeholder="密码"  type="password" class="layui-input">
+            <input name="password" lay-verify="required"   placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
             <div>
-            <input name="randomCode" maxlength="4" lay-verType="msg" style="width:160px;float:left;" lay-verify="required" value=""  placeholder="请输入验证码"  type="text" class="layui-input">
+            <input name="randomCode" id="randomCode" maxlength="4" lay-verType="msg" style="width:160px;float:left;" lay-verify="required" value=""  placeholder="请输入验证码"  type="text" class="layui-input">
             </div>
             <img id="validateCodeImg" onclick="javascript:reloadValidateCode();" style="padding-top: 10px; padding-right: 0px;padding-bottom: 1px;padding-left: 20px;" src="${pageContext.request.contextPath}/validateCode.do" />&nbsp;&nbsp;<a href="#" onclick="javascript:reloadValidateCode();">看不清？</a>
             <hr class="hr15">
@@ -55,6 +55,8 @@
             	        async : false,
             	        success : function(data, textStatus, jqXHR) {
             	            if(data.code==0){
+            	            	reloadValidateCode();
+            	            	$("#randomCode").val("");
             	            	layer.msg(data.msg,{icon: 2,time:1000});
             	            	return false;
             	            }
@@ -91,13 +93,13 @@
     <!-- 底部结束 -->
     <script>
     //百度统计可去掉
-    var _hmt = _hmt || [];
+   /*  var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
       hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
       var s = document.getElementsByTagName("script")[0]; 
       s.parentNode.insertBefore(hm, s);
-    })();
+    })(); */
     </script>
 </body>
 </html>

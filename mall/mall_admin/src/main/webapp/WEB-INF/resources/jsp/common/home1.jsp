@@ -4,7 +4,7 @@
 <html>
 <head>
 	<%@ include file="meta1.jsp" %>
-<title>北京航天医院点餐管理系统</title>
+<title>北京航天总医院点餐管理系统</title>
 </head>
 <body>
 	<%@ include file="header1.jsp" %>

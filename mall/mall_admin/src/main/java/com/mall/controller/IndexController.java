@@ -3,6 +3,7 @@ package com.mall.controller;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order.OrderCriteria.Criteria;
 import com.mall.service.order.OrderService;
 import com.mall.utils.util.ValidateCode;
-import com.mall.utils.util1.DateUtil;
+import com.mall.utils.util1.DateUtilsSw;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 /**
@@ -63,22 +65,93 @@ public class IndexController extends BaseController {
 	@RequestMapping("/indexData")
 	public void indexData(HttpServletRequest request, HttpServletResponse response,Model model) {
 		Map<String,Object> map = new HashMap<String, Object>();
+		
 		Data data = new Data();
 		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+		
+		OrderCriteria orderCriteria = new OrderCriteria();
+		
+		int num = 0;
+		BigDecimal money = new BigDecimal(0);
 		try {
-			//TODO 未完成
 			//已完成订单  (总数，今日，昨日，本周，本月)
-			OrderCriteria orderCriteria = new OrderCriteria();
-			Criteria criteria = orderCriteria.createCriteria();
-			
 			//今日
-			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtil.getTodayStartTime());
-			criteria.andCreateTimeLessThanOrEqualTo(DateUtil.getTodayEndTime());
-			int i = orderService.selectOrderCountByCriteria(orderCriteria);
+			Criteria criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getDayBegin());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getDayEnd());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			num = orderService.selectOrderCountByCriteria(orderCriteria);
+			map.put("yiWanCheng_today", num);
+			//昨日
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfYesterday());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfYesterDay());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			num = orderService.selectOrderCountByCriteria(orderCriteria);
+			map.put("yiWanCheng_yesterDay", num);
+			//本周
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfWeek());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfWeek());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			num = orderService.selectOrderCountByCriteria(orderCriteria);
+			map.put("yiWanCheng_week", num);
+			//本月
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfMonth());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfMonth());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			num = orderService.selectOrderCountByCriteria(orderCriteria);
+			map.put("yiWanCheng_month", num);
+			map.put("yiWanCheng_total",(Integer) map.get("yiWanCheng_today")+
+					(Integer)map.get("yiWanCheng_yesterDay")+
+					(Integer)map.get("yiWanCheng_week")+
+					(Integer)map.get("yiWanCheng_month"));
 			
 			
+			//已支付金额  (总数，今日，昨日，本周，本月)
+			//今日
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getDayBegin());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getDayEnd());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			money = orderService.sumorderMoneyByCriteria(orderCriteria);
+			map.put("yiWanCheng_today_money", null==money?new BigDecimal(0):money);
+			//昨日
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfYesterday());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfYesterDay());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			money = orderService.sumorderMoneyByCriteria(orderCriteria);
+			map.put("yiWanCheng_yesterDay_money",  null==money?new BigDecimal(0):money);
+			//本周
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfWeek());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfWeek());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			money = orderService.sumorderMoneyByCriteria(orderCriteria);
+			map.put("yiWanCheng_week_money",  null==money?new BigDecimal(0):money);
+			//本月
+			orderCriteria.clear();
+			criteria = orderCriteria.createCriteria();
+			criteria.andCreateTimeGreaterThanOrEqualTo(DateUtilsSw.getBeginDayOfMonth());
+			criteria.andCreateTimeLessThanOrEqualTo(DateUtilsSw.getEndDayOfMonth());
+			criteria.andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);
+			money = orderService.sumorderMoneyByCriteria(orderCriteria);
+			map.put("yiWanCheng_month_money",  null==money?new BigDecimal(0):money);
+			map.put("yiWanCheng_total_money",((BigDecimal)map.get("yiWanCheng_today_money"))
+					.add((BigDecimal)map.get("yiWanCheng_yesterDay_money"))
+					.add((BigDecimal)map.get("yiWanCheng_week_money"))
+					.add((BigDecimal)map.get("yiWanCheng_month_money")));
+			map.put("flag","1");
 		} catch (Exception e) {
-			logger.error(e.toString());
+			System.out.println(e);
 			map.put("flag","0");
 			map.put("message","系统异常，请稍后重试！");
 			return;

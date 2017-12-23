@@ -1,5 +1,6 @@
 package com.mall.dao.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,6 @@ public interface OrderDao {
 	
 	//根据orderid查询订单信息，并懒加载订单相关信息
 	Order getOrderByOderIdLazy(String orderId);
+	//安照条件 求和订单金额
+	BigDecimal sumorderMoneyByCriteria(OrderCriteria orderCriteria);
 }

@@ -1,5 +1,6 @@
 package com.mall.service.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.mall.pojo.hospital_card.HospitalCard;
@@ -140,6 +141,17 @@ public interface OrderService {
 	 * @throws
 	 */
 	public int selectOrderCountByCriteria(OrderCriteria orderCriteria);
+
+	/**
+	 * 
+	 * @Title: sumorderMoneyByCriteria 
+	 * @Description: 安照条件 求和订单金额
+	 * @param @param orderCriteria
+	 * @param @return    设定文件 
+	 * @return BigDecimal    返回类型 
+	 * @throws
+	 */
+	public BigDecimal sumorderMoneyByCriteria(OrderCriteria orderCriteria);
 
 
 }

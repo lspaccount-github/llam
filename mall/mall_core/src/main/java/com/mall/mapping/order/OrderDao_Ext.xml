@@ -17,4 +17,12 @@
   	<select id="getOrderByOderIdLazy" resultMap="BaseResultMap1" parameterType="java.lang.String" >
     	SELECT * FROM ho_order o WHERE o.`order_id` = #{orderId,jdbcType=VARCHAR}
   	</select>
+  	<!-- 安照条件 求和订单金额 -->
+  	<select id="sumorderMoneyByCriteria" resultType="java.math.BigDecimal" parameterType="com.mall.pojo.order.OrderCriteria"  >
+    	select sum(order_money)
+	    from ho_order
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+  	</select>
 </mapper>

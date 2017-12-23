@@ -61,6 +61,9 @@
 					                <i class="layui-icon">&#xe601;</i>
 					            </a>
 							</c:if>
+							 <a onclick="x_admin_show('修改密码','${pageContext.request.contextPath}/admin/toUpdatePasswordPage.do?merchantUserId=${merchantUser.merchantUserId}',600,400)" title="修改密码" href="javascript:;">
+				                <i class="layui-icon">&#xe631;</i>
+				             </a>
 			             <!--  <a title="编辑"  onclick="x_admin_show('编辑','admin-edit.html')" href="javascript:;">
 			                <i class="layui-icon">&#xe642;</i>
 			              </a> -->
