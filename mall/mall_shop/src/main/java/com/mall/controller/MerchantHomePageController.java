@@ -30,6 +30,7 @@ import com.mall.pojo.user.User;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
+import com.mall.utils.PropertiesUtil;
 
 /**
  * 
@@ -163,6 +164,7 @@ public class MerchantHomePageController extends BaseController{
 			List<Product> productList=productService.getProductAndProductRelevantByproductClassifyId(Long.parseLong(productClassifyId));
 			if(null!=productList && productList.size()>0){
 				map.put("productList",JSON.toJSONString(productList));
+				map.put("IMG_WEB",PropertiesUtil.getParameter("IMG_WEB","parameter"));
 				map.put("flag",1);
 			}else{
 				map.put("flag","0");

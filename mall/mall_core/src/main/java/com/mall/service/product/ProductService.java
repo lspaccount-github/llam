@@ -65,4 +65,26 @@ public interface ProductService {
 	 */
 	public Product selectProductByProductId(String productId);
 
+	/**
+	 * 
+	 * @Title: addProductAndProductSpec 
+	 * @Description: 添加商品以及商品规格
+	 * @param @param product
+	 * @param @return    设定文件 
+	 * @return boolean    返回类型 
+	 * @throws
+	 */
+	public boolean insertProductAndProductSpec(Product product);
+
+	/**
+	 * 
+	 * @Title: updateProductAndProductSpec 
+	 * @Description: 更新商品和商品规格
+	 * @param @param product
+	 * @param @return    设定文件 
+	 * @return boolean    返回类型 
+	 * @throws
+	 */
+	public boolean updateProductAndProductSpec(Product product);
+
 }

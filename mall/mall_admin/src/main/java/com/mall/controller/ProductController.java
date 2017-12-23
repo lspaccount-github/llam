@@ -25,6 +25,7 @@ import com.mall.service.order.OrderService;
 import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
 import com.mall.utils.pageUtil.Pagination;
+import com.mall.utils.util.PropertiesUtil;
 
 @Controller
 @RequestMapping("/product")
@@ -40,6 +41,20 @@ public class ProductController extends BaseController {
 	Logger logger = Logger.getLogger(OrderController.class);
 	private final static int size = 10;
 	
+	/**
+	 * 
+	 * @Title: toTodayList 
+	 * @Description: 跳转列表页面
+	 * @param @param modelMap
+	 * @param @param request
+	 * @param @param response
+	 * @param @param pageNo
+	 * @param @param product
+	 * @param @return
+	 * @param @throws ParseException    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="/tolist")
 	public String toTodayList(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,
 			Integer pageNo,@ModelAttribute("product") Product product) throws ParseException{
@@ -202,10 +217,22 @@ public class ProductController extends BaseController {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @Title: editOrAddToPage 
+	 * @Description: 跳转或修改页面
+	 * @param @param modelMap
+	 * @param @param request
+	 * @param @param response
+	 * @param @param productId
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="/editOrAddToPage")
-	public String editOrAddToPage(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,String productId) throws Exception{
-
+	public String editOrAddToPage(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,String productId,String flag) throws Exception{
+		//flag==3  表示为显示详情
 		//封装菜品分类select
 		MerchantUser merchantUser = (MerchantUser)SecurityUtils.getSubject().getPrincipal();
 		List<ProductClassify> productClassifyList = ProductClassifyService.getProductClassifyListByMerchantId(merchantUser.getMerchantId());
@@ -213,8 +240,9 @@ public class ProductController extends BaseController {
 		if(null!=productId && !"".equals(productId)){
 			logger.info("修改product");
 			Product product=ProductService.selectProductByProductId(productId);
+			product.setPictureUrl(PropertiesUtil.getParameter("IMG_WEB","parameter")+product.getPictureUrl());
 			modelMap.addAttribute("product", product);
-			modelMap.addAttribute("flag", "2");//修改
+			modelMap.addAttribute("flag",flag);//修改
 		}else{
 			logger.info("添加product");
 			modelMap.addAttribute("flag", "1");//新增
@@ -222,5 +250,49 @@ public class ProductController extends BaseController {
 		
 		return "product/product_edit";
 	
+	}
+
+	
+	@RequestMapping(value="editOrAdd")
+	public void editOrAdd(HttpServletRequest req, HttpServletResponse resp,String flag,Product product){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			MerchantUser merchantUser = (MerchantUser)SecurityUtils.getSubject().getPrincipal();
+
+			if(null==flag || "".equals(flag) || (!"1".equals(flag) && !"2".equals(flag))){
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}else if("1".equals(flag)){//新增
+				boolean bool=ProductService.insertProductAndProductSpec(product);
+				if(bool){
+					map.put("flag","1");
+					map.put("message","插入成功!");
+					return;
+				}else{
+					map.put("flag","0");
+					map.put("message","插入失败!");
+					return;
+				}
+			}else if("2".equals(flag)){//修改
+				boolean bool=ProductService.updateProductAndProductSpec(product);
+				if(bool){
+					map.put("flag","1");
+					map.put("message","修改成功!");
+					return;
+				}else{
+					map.put("flag","0");
+					map.put("message","修改失败!");
+					return;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
 	}
 }

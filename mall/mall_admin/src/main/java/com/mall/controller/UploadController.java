@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.mall.utils.util.PropertiesUtil;
 import com.sun.jersey.api.client.WebResource;
 
 /**
@@ -56,8 +57,9 @@ public class UploadController {
 		com.sun.jersey.api.client.Client client = new com.sun.jersey.api.client.Client();
 		
 		String path = "upload/" + name + "." + ext;
-		String url =  "http://localhost:8082/img-web/" + path;
-		//String url=PropertiesUtil.getParameter("IMG_WEB","parameter");
+		//String url =  "http://localhost:8082/img-web/" + path;
+		String url=PropertiesUtil.getParameter("IMG_WEB","parameter");
+		url+=path;
 		//发送图片
 		WebResource resource = client.resource(url);
 		//发送  网线发送  二进制   流  字符串

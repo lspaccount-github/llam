@@ -16,6 +16,7 @@ import com.mall.pojo.product_spec.ProductSpec;
 import com.mall.pojo.product_spec.ProductSpecCriteria;
 import com.mall.service.product.ProductService;
 import com.mall.utils.pageUtil.Pagination;
+import com.mall.utils.util1.UUIDUtils;
 
 @Service
 @Transactional
@@ -84,6 +85,33 @@ public class ProductServiceImpl implements ProductService {
 			return product;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean insertProductAndProductSpec(Product product) {
+		String id = UUIDUtils.getID();
+		product.setProductId(id);
+		product.setProductStatus(1);
+		int i=productDao.insertSelective(product);
+		ProductSpec productSpec = product.getProductSpec();
+		productSpec.setProductId(id);
+		int j=productSpecDao.insertSelective(productSpec);
+		if(i>=1&&j>=1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updateProductAndProductSpec(Product product) {
+		int i=productDao.updateByPrimaryKeySelective(product);
+		int j=productSpecDao.updateByPrimaryKeySelective(product.getProductSpec());
+		if(i>=1&&j>=1){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

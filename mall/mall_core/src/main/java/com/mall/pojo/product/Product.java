@@ -50,7 +50,7 @@ public class Product implements Serializable {
     private Long minBuyNum;
 
     /**
-     * 商品规格
+     * 商品规格list
      */
     private List<ProductSpec> productSpecList;
     
@@ -58,6 +58,11 @@ public class Product implements Serializable {
      * 商品分类
      */
     private ProductClassify productClassify;
+    
+    /**
+     * 商品规格
+     */
+    private ProductSpec productSpec;
     
     private static final long serialVersionUID = 1L;
 
@@ -132,6 +137,14 @@ public class Product implements Serializable {
 
 	public void setProductClassify(ProductClassify productClassify) {
 		this.productClassify = productClassify;
+	}
+
+	public ProductSpec getProductSpec() {
+		return productSpec;
+	}
+
+	public void setProductSpec(ProductSpec productSpec) {
+		this.productSpec = productSpec;
 	}
 
 	@Override

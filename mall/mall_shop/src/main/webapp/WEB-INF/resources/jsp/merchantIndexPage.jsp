@@ -177,7 +177,7 @@ $(function(){
 		            					}
 		            				}	
 		            			}
-		            			htmlCode +='<dl><dt><img src="../images/food.jpg"></dt>';
+		            			htmlCode +='<dl><dt><img src="'+data.IMG_WEB+productList[i].pictureUrl+'"></dt>';
 		            			htmlCode +='<dd><p>'+productList[i].productName+'</p></dd>';
 		            			htmlCode +='<dd><span>￥<i id="'+productList[i].productId+'price">'+productList[i].productSpecList[0].price+'<i/></span><span>/'+productList[i].productUnit+'</span></dd>';
 		            			htmlCode +='<dd class="aa"><a href="javascript:void(0)" onclick="jian('+"'"+productList[i].productId+"'"+');" class="minus"></a><span id="'+productList[i].productId+'num">'+num+'</span> <a href="javascript:void(0)" onclick="jia('+"'"+productList[i].productId+"'"+');" class="plus"></a></dd></dl>';

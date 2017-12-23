@@ -85,7 +85,9 @@
 					                <i class="layui-icon">&#xe601;</i>
 					            </a>
 							</c:if>
-							 <a title="编辑"  onclick="x_admin_show('编辑菜品','${pageContext.request.contextPath}/product/editOrAddToPage.do?productId=${product.productId}')" href="javascript:;">
+							<a title="查看详情"  onclick="x_admin_show('详情','${pageContext.request.contextPath}/product/editOrAddToPage.do?productId=${product.productId}&flag=3')" href="javascript:;">
+                			<i class="layui-icon">&#xe63c;</i>
+							 <a title="编辑"  onclick="x_admin_show('编辑菜品','${pageContext.request.contextPath}/product/editOrAddToPage.do?productId=${product.productId}&flag=2')" href="javascript:;">
 				                <i class="layui-icon">&#xe642;</i>
 				              </a>
 				              <a title="删除" onclick="product_del('${product.productId}')" href="javascript:;">
@@ -172,7 +174,7 @@
 	          });
 	      }
 		
-	      /*用户-删除*/
+	      /*删除*/
 	      function product_del(productId){
 	          layer.confirm('确认要删除吗？',function(index){
 	        	//发送ajax
