@@ -2,7 +2,11 @@ package com.mall.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mall.pojo.order.Order;
 import com.mall.pojo.order.OrderCriteria;
@@ -23,7 +28,7 @@ import com.mall.utils.util1.DateUtil;
 
 @Controller
 @RequestMapping("/order")
-public class OrderController {
+public class OrderController extends BaseController {
 	
 	@Autowired
 	private OrderService orderService;
@@ -168,6 +173,47 @@ public class OrderController {
 	@RequestMapping(value="/details")
 	public String details(String orderId,ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
 		return "order/order_details";
+	}
+	
+	@RequestMapping(value="orderConfirm")
+	public void orderConfirm(HttpServletRequest req, HttpServletResponse resp,
+			@RequestParam(value = "orderId[]") String[] orderId){
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			List<String> list = new ArrayList<String>();
+			for (String string : orderId) {
+				list.add(string);
+			}
+			
+			OrderCriteria orderCriteria = new OrderCriteria();
+			if(null!=orderId && (orderId.length>0) ){
+				orderCriteria.createCriteria().andOrderIdIn(list);
+				orderCriteria.createCriteria().andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DAI_SHANG_JIA_QUE_REN);
+			}else{
+				map.put("flag","0");
+				map.put("message","参数错误!");
+				return;
+			}
+			Order order = new Order();
+			order.setOrderStatus(Order.ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG);
+			int i=orderService.updateByExampleSelective(order, orderCriteria);
+			
+			if(i>0){
+				map.put("flag","1");
+				map.put("message","确认成功!");
+				return;
+			}else{
+				map.put("flag","0");
+				map.put("message","确认失败!");
+				return;
+			}
+		} catch (Exception e) {
+			map.put("flag","0");
+			map.put("message","系统异常，请稍后重试！");
+			return;
+		}finally{
+			outJson(map);
+		}
 	}
 	
 	public static void main(String[] args) throws ParseException {

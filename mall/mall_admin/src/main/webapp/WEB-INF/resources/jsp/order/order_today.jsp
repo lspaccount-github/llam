@@ -17,29 +17,6 @@
 	<div class="x-body">
 		<div class="layui-row">
 			<form class="layui-col-md12 x-so" action="/mall_admin/order/to_today.do" method="get">
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">餐点类型</option>
-						<option value="0">早餐</option>
-						<option value="1">午餐</option>
-						<option value="2">晚餐</option>
-					</select>
-				</div> -->
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">付款状态</option>
-						<option value="0">未支付</option>
-						<option value="1">已支付</option>
-						<option value="2">已退款</option>
-					</select>
-				</div> -->
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">支付方式</option>
-						<option value="2">微信支付</option>
-						<option value="3">餐卡支付</option>
-					</select>
-				</div> -->
 				<div class="layui-input-inline">
 					<select class="layui-select" name="orderStatus" value="${order.orderStatus}">
 						<option value="">订单状态</option>
@@ -54,10 +31,17 @@
 				</button>
 			</form>
 		</div>
-		<span class="x-right" style="line-height: 40px">共有数据：${pagination.totalCount} 条</span> </xblock>
+		<xblock>
+	        <button class="layui-btn layui-btn-danger" onclick="order_confirm('','1')"><i class="layui-icon"></i>批量确认</button>
+	        <!-- <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button> -->
+	        <span class="x-right" style="line-height: 40px">共有数据：${pagination.totalCount} 条</span> 
+      	</xblock>
 		<table class="layui-table">
 			<thead>
 				<tr>
+					 <th>
+		              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+		            </th>
 					<th>订单编号</th>
 					<th>下单时间</th>
 					<th>收货人</th>
@@ -73,6 +57,11 @@
 			   <c:when test="${pagination.list!=null && pagination.list.size()>0}">  
 			       <c:forEach items="${pagination.list}" var="order">
 						<tr>
+						<td>
+							<c:if test="${order.orderStatus=='2'}">
+								<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${order.orderId}'><i class="layui-icon">&#xe605;</i></div>
+				            </c:if>
+			            </td>
 						<td>${order.orderId}</td>
 						<td><fmt:formatDate value="${order.createTime}" type="both"/></td>
 						<td>${order.orderAddress.contacts}:${order.orderAddress.phone}</td>
@@ -80,36 +69,23 @@
 						<td>${order.orderMoney}</td>
 						<td>餐卡支付</td>
 						<td>${order.orderStatusView}</td>
-						<td class="td-manage"><a title="查看详情"
-							onclick="x_admin_show('编辑','../admin_ui/product-add.html')"
+						<td class="td-manage">
+						<a title="查看详情" onclick="x_admin_show('编辑','../admin_ui/product-add.html')"
 							href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
-						</a><!--  <a title="删除" onclick="member_del(this,'要删除的id')"
-							href="javascript:;"> <i class="layui-icon">&#xe640;</i>
-						</a> --></td>
+						</a>
+						<c:if test="${order.orderStatus=='2'}">
+							<a title="确认" onclick="order_confirm('${order.orderId}','2')" href="javascript:;">
+				                <i class="layui-icon">&#xe618;</i>
+				            </a>
+			            </c:if>
+						</td>
 					</tr>
 				</c:forEach>
 			   </c:when>
 			   <c:otherwise> 
-			    	<td colspan="8" align="center">没有查询到信息</td>
+			    	<td colspan="9" align="center">没有查询到信息</td>
 			   </c:otherwise>
 			</c:choose>
-				<!-- <tr>
-					<td>20171117114536754550</td>
-					<td>2017-08-17 18:22</td>
-					<td>刘主任:18925139194</td>
-					<td>北楼消化科301室</td>
-					<td>7854.10</td>
-					<td>已支付</td>
-					<td>微信支付</td>
-					<td>备餐中</td>
-					<td class="td-manage"><a title="查看"
-						onclick="x_admin_show('编辑','../admin_ui/product-add.html')"
-						href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
-					</a> <a title="删除" onclick="member_del(this,'要删除的id')"
-						href="javascript:;"> <i class="layui-icon">&#xe640;</i>
-					</a></td>
-				</tr> -->
-				
 			</tbody>
 		</table>
 		<div class="page">
@@ -119,7 +95,61 @@
 		</div>
 	</div>
 	<script>
-		
+		function order_confirm(orderId,flag){
+			var data = tableCheck.getData();
+			 layer.confirm('要确认'+orderId+'该笔订单吗？',function(index){
+				//发送ajax
+				var dataJson = null;
+					if(flag=="1"){//批量
+						if(0==data.length){
+							//信息框
+				        	  layer.open({
+				        	    content: "请选择订单"
+				        	    ,btn: '确定'
+				        	  });
+		            		return;
+						}
+						dataJson = {"orderId":data};
+					}else if(flag=="2"){//单个
+						dataJson = {"orderId":[orderId]};
+					}
+	        	  $.ajax({
+	  		        url : '${pageContext.request.contextPath}/order/orderConfirm.do',
+	  		        type : "post",
+	  		        dataType : "json",
+	  		      	data:dataJson,
+	  		        cache : false,
+	  		        async : false,
+	  		        success : function(data, textStatus, jqXHR) {
+	  		            if ('success' == textStatus) {
+	  		            	if(data.flag=="0"){
+	  		            		//信息框
+	  				        	  layer.open({
+	  				        	    content: data.message
+	  				        	    ,btn: '确定'
+	  				        	  });
+	  		            		return;
+	  		            	}else if(data.flag=="1"){
+	  		            		layer.alert(data.message, {
+	  		            		  skin: 'layui-layer-molv' //样式类名
+	  		            		  ,closeBtn: 0
+	  		            		}, function(){
+	  		            			window.location.reload();
+	  		            		});
+	  		            		return;
+	  		            	}
+	  		            }
+	  		        },
+	  		        error : function(XMLHttpRequest, textStatus, errorThrown) {
+	  		        	//信息框
+	  		        	  layer.open({
+	  		        	    content: '系统异常,请稍后重试！'
+	  		        	    ,btn: '确定'
+	  		        	  });
+	  		        }
+	  		    });
+	          });
+		}
 	</script>
 	<!-- <script>
 		var _hmt = _hmt || [];

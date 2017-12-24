@@ -19,29 +19,6 @@
 			<form class=" layui-col-md12 x-so" action="/mall_admin/order/to_history.do" method="get">
 				<input class="layui-input" placeholder="开始日" name="startTime" id="start" value="${startTime}">
 				<input class="layui-input" placeholder="截止日" name="endTime" id="end" value="${endTime}">
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">餐点类型</option>
-						<option value="0">早餐</option>
-						<option value="1">午餐</option>
-						<option value="2">晚餐</option>
-					</select>
-				</div> -->
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">付款状态</option>
-						<option value="0">未支付</option>
-						<option value="1">已支付</option>
-						<option value="2">已退款</option>
-					</select>
-				</div> -->
-				<!-- <div class="layui-input-inline">
-					<select name="contrller">
-						<option value="">支付方式</option>
-						<option value="2">微信支付</option>
-						<option value="3">餐卡支付</option>
-					</select>
-				</div> -->
 				<div class="layui-input-inline">
 					<select class="layui-select" name="orderStatus" value="${order.orderStatus}">
 						<option value="">订单状态</option>
@@ -57,7 +34,11 @@
 				</button>
 			</form>
 		</div>
-		<span class="x-right" style="line-height: 40px">共有数据：${pagination.totalCount} 条</span> </xblock>
+		<xblock>
+	        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量确认</button>
+	        <!-- <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button> -->
+	        <span class="x-right" style="line-height: 40px">共有数据：${pagination.totalCount} 条</span> 
+      	</xblock>
 		<table class="layui-table">
 			<thead>
 				<tr>
