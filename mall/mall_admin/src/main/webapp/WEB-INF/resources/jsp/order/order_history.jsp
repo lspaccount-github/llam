@@ -34,11 +34,12 @@
 				</button>
 			</form>
 		</div>
-		<xblock>
-	        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量确认</button>
+		<!-- <xblock> -->
+	        <!-- <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量确认</button> -->
 	        <!-- <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button> -->
+	        <!-- </xblock> -->
 	        <span class="x-right" style="line-height: 40px">共有数据：${pagination.totalCount} 条</span> 
-      	</xblock>
+	        
 		<table class="layui-table">
 			<thead>
 				<tr>
