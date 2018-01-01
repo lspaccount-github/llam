@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <div class="container">
-    <div class="logo"><a href="./index.html">北京航天总院订餐管理</a></div>&emsp;
+    <div class="logo"><a href="${pageContext.request.contextPath}/home.do">北京航天总院订餐管理</a></div>&emsp;
     <div class="left_open">
         <i title="展开左侧栏" class="iconfont">&#xe699;</i>
     </div>

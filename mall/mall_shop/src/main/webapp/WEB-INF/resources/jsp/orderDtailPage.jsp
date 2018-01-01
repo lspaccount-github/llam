@@ -46,6 +46,11 @@
 	              </c:if>
 	          </div>
         </c:if> 
+        <c:if test="${order.orderStatus == 3}">  
+	          <div class="cancle">
+	              <span><a href="javascript:void(0);" onclick="confirmOrder('${order.orderId}')">确认订单已完成</a></span>
+	          </div>
+        </c:if> 
       </div>
 </body>
 </html>
@@ -116,43 +121,102 @@ function endDaoJiShiTimer(){
 
 //取消订单方法
 	function cancelOrder(orderId){
-		var param = {"orderId":orderId};
-		 $.ajax({
-		        url : '${pageContext.request.contextPath}/order/cancelOrder.html',
-		        type : "post",
-		        dataType : "json",
-		        data : param,
-		        cache : false,
-		        async : false,
-		        success : function(data, textStatus, jqXHR) {
-		            if ('success' == textStatus) {
-		            	if(data.flag=="0"){
-		            		//信息框
+		//询问框
+		  layer.open({
+		    content: '您确定要取消该订单吗？'
+		    ,btn: ['确定', '取消']
+		    ,yes: function(index){
+		      layer.close(index);
+		      var param = {"orderId":orderId};
+				 $.ajax({
+				        url : '${pageContext.request.contextPath}/order/cancelOrder.html',
+				        type : "post",
+				        dataType : "json",
+				        data : param,
+				        cache : false,
+				        async : false,
+				        success : function(data, textStatus, jqXHR) {
+				            if ('success' == textStatus) {
+				            	if(data.flag=="0"){
+				            		//信息框
+						        	  layer.open({
+						        	    content: data.message
+						        	    ,btn: '确定'
+						        	  });
+				            		return;
+				            	}else{
+				            		layer.open({
+				            			  title:'提示'
+				            			  ,content: data.message
+				            			  ,btn: '确定',
+				            			  shadeClose: false,
+				            			  yes: function(){
+				            				  location.reload();
+				            			  }
+				            			});
+				            	}
+				            }
+				        },
+				        error : function(XMLHttpRequest, textStatus, errorThrown) {
+				        	//信息框
 				        	  layer.open({
-				        	    content: data.message
+				        	    content: '系统异常,请稍后重试！'
 				        	    ,btn: '确定'
 				        	  });
-		            		return;
-		            	}else{
-		            		layer.open({
-		            			  title:'提示'
-		            			  ,content: data.message
-		            			  ,btn: '确定',
-		            			  shadeClose: false,
-		            			  yes: function(){
-		            				  location.reload();
-		            			  }
-		            			});
-		            	}
-		            }
-		        },
-		        error : function(XMLHttpRequest, textStatus, errorThrown) {
-		        	//信息框
-		        	  layer.open({
-		        	    content: '系统异常,请稍后重试！'
-		        	    ,btn: '确定'
-		        	  });
-		        }
-		    });
+				        }
+				    });
+		    }
+		  });
 	}
+	
+	
+			//确认订单方法
+			function confirmOrder(orderId){
+				//询问框
+				  layer.open({
+				    content: '您确定要确认该订单吗？'
+				    ,btn: ['确定', '取消']
+				    ,yes: function(index){
+				      layer.close(index);
+				      var param = {"orderId":orderId};
+						 $.ajax({
+						        url : '${pageContext.request.contextPath}/order/confirmOrder.html',
+						        type : "post",
+						        dataType : "json",
+						        data : param,
+						        cache : false,
+						        async : false,
+						        success : function(data, textStatus, jqXHR) {
+						            if ('success' == textStatus) {
+						            	if(data.flag=="0"){
+						            		//信息框
+								        	  layer.open({
+								        	    content: data.message
+								        	    ,btn: '确定'
+								        	  });
+						            		return;
+						            	}else{
+						            		layer.open({
+						            			  title:'提示'
+						            			  ,content: data.message
+						            			  ,btn: '确定',
+						            			  shadeClose: false,
+						            			  yes: function(){
+						            				  location.reload();
+						            			  }
+						            			});
+						            	}
+						            }
+						        },
+						        error : function(XMLHttpRequest, textStatus, errorThrown) {
+						        	//信息框
+						        	  layer.open({
+						        	    content: '系统异常,请稍后重试！'
+						        	    ,btn: '确定'
+						        	  });
+						        }
+						    });
+				    }
+				  });
+			}
 </script>

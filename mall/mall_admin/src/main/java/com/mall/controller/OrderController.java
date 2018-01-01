@@ -170,8 +170,24 @@ public class OrderController extends BaseController {
 		return "order/order_history";
 	}
 	
+	
+	/**
+	 * 
+	 * @Title: details 
+	 * @Description: 查看订单详情
+	 * @param @param orderId
+	 * @param @param modelMap
+	 * @param @param request
+	 * @param @param response
+	 * @param @return    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="/details")
 	public String details(String orderId,ModelMap modelMap,HttpServletRequest request,HttpServletResponse response){
+		//查询所有订单相关信息
+		Order order = orderService.getOrderByOderIdLazy(orderId);
+		modelMap.addAttribute("order", order);
 		return "order/order_details";
 	}
 	

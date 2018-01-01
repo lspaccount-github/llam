@@ -272,13 +272,15 @@ public class OrderPageController extends BaseController{
 		
 		long i=addDateMinut.getTime()-new Date().getTime();//订单加15分钟的时间  减去  当前时间  
 		if(i<0){
-			//TODO 跳转订单详情页
+			// 跳转订单详情页
+			return "redirect:/order/goToOrderDtail.html?orderId="+orderId;
 		}
 		request.setAttribute("timeDifference",i);
 				
 		request.setAttribute("createTime", DateUtil.formatDate2(order.getCreateTime()));
 		request.setAttribute("totalPrice", order.getOrderMoney());
 		request.setAttribute("orderId", orderId);
+		
 		return"payCheckPage";
 	}
 	
@@ -301,7 +303,7 @@ public class OrderPageController extends BaseController{
 		}
 		//获取当前登陆人的id，根据当前登陆人的id  查询订单列表 
 		//订单对象中包含订单商品信息
-		String userid= "199309110311";
+		String userid= onlineObject.getUserSysId();
 		try {
 			List<Order> orderList = orderService.getOrderListByUserId(userid);
 			request.setAttribute("orderList", orderList);
@@ -333,13 +335,22 @@ public class OrderPageController extends BaseController{
 		Date addDateMinut = DateUtil.addDateMinut(order.getCreateTime(),15);
 	
 		long i=addDateMinut.getTime()-new Date().getTime();//订单加15分钟的时间  减去  当前时间  
-		request.setAttribute("timeDifference",4000);
+		request.setAttribute("timeDifference",i);
 		request.setAttribute("order", order);
 		request.setAttribute("avatar", onlineObject.getAvatar());
 		return "orderDtailPage";
 	}
 	
-	
+	/**
+	 * 
+	 * @Title: cancelOrder 
+	 * @Description: 取消订单
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param orderId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="cancelOrder")
 	public void cancelOrder(HttpServletRequest req, HttpServletResponse resp,String orderId){
 		Map<String,String> map = new HashMap<String,String>();
@@ -378,6 +389,60 @@ public class OrderPageController extends BaseController{
 			logger.error("===订单取消异常====",e);
 			map.put("flag","0");
 			map.put("message","订单取消异常，请稍后重试！");
+		}finally{
+			outJson(map);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: cancelOrder 
+	 * @Description: 确认完成订单
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param orderId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="confirmOrder")
+	public void confirmOrder(HttpServletRequest req, HttpServletResponse resp,String orderId){
+		Map<String,String> map = new HashMap<String,String>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			if(null==orderId && "".equals(orderId)){
+				map.put("flag","0");
+				map.put("message","参数异常，请稍后重试！");
+				return;
+			}
+			
+			Order order = new Order();
+			order.setOrderStatus(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);//订单已取消
+			OrderCriteria orderCriteria = new OrderCriteria();
+			orderCriteria.createCriteria().andOrderIdEqualTo(orderId).andUserIdEqualTo(onlineObject.getUserSysId()).andOrderStatusEqualTo(1);
+			int i = orderService.updateByExampleSelective(order, orderCriteria);
+			if(i>0){
+				map.put("flag","1");
+				map.put("message","订单已完成！");
+			}else{
+				map.put("flag","0");
+				map.put("message","订单确认失败，请稍后重试！");
+			}
+			
+		} catch (Exception e) {
+			logger.error("===订单确认异常====",e);
+			map.put("flag","0");
+			map.put("message","订单确认异常，请稍后重试！");
 		}finally{
 			outJson(map);
 		}
