@@ -35,13 +35,13 @@
 		    <property name="cronExpression" value="0 */1 * * * ?" />
 		</bean>
 		<!-- ********************** 调度 如果将lazy-init='false'那么容器启动就会执行调度程序************* -->
-		<bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		    <property name="triggers">
 		    	<list>
 					<ref bean="hospitalCardReconciliationInfoTask" />
 		    	</list>
 			</property>
-		</bean>
+		</bean> -->
 	<!-- 方式二end: -->
 	
 </beans>

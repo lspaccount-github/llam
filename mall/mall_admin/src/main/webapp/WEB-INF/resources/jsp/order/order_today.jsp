@@ -70,7 +70,8 @@
 						<td>餐卡支付</td>
 						<td>${order.orderStatusView}</td>
 						<td class="td-manage">
-						<a title="查看详情" onclick="x_admin_show('编辑','../admin_ui/product-add.html')"
+						<a title="查看详情" 
+							onclick="x_admin_show('订单详情','${pageContext.request.contextPath}/order/details.do?orderId=${order.orderId}')"
 							href="javascript:;"> <i class="layui-icon">&#xe63c;</i>
 						</a>
 						<c:if test="${order.orderStatus=='2'}">

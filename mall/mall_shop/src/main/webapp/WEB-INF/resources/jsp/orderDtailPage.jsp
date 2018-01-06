@@ -24,8 +24,20 @@
               <p>电话: <span>${order.orderAddress.phone}</span></p>
               <p>送餐地址：<span>${order.orderAddress.detailAddress}</span></p>
             </div>
-           <%--  ${order.orderStatus} --%>
-            <div class="handle">${order.orderStatusView}</div>
+           <%--  ${order.orderStatus}
+           红色:wait_handle
+           橙色:cancle_order
+           蓝色:handle
+            --%>
+           <c:if test="${order.orderStatus=='1'}">
+           		<div class="wait_handle">${order.orderStatusView}</div>
+           </c:if>
+           <c:if test="${order.orderStatus=='2' or order.orderStatus=='3'}">
+           		<div class="cancle_order">${order.orderStatusView}</div>
+           </c:if>
+            <c:if test="${order.orderStatus=='4' or order.orderStatus=='5'}">
+           		<div class="handle">${order.orderStatusView}</div>
+           </c:if>
           </div>  
           <div class="calculate">
             <ul>
@@ -47,8 +59,8 @@
 	          </div>
         </c:if> 
         <c:if test="${order.orderStatus == 3}">  
-	          <div class="cancle">
-	              <span><a href="javascript:void(0);" onclick="confirmOrder('${order.orderId}')">确认订单已完成</a></span>
+	          <div class="cancleConfirm">
+	              <span class="confirm"><a href="javascript:void(0);" onclick="confirmOrder('${order.orderId}')">确认订单已完成</a></span>
 	          </div>
         </c:if> 
       </div>

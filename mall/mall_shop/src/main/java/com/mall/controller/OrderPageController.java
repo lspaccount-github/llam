@@ -26,6 +26,7 @@ import com.mall.pojo.order.OrderConfirm;
 import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
+import com.mall.pojo.product_classify.ProductClassify;
 import com.mall.pojo.user.User;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.order.OrderService;
@@ -134,7 +135,7 @@ public class OrderPageController extends BaseController{
 	 */
 	@RequestMapping(value="submitOrder")
 	public void submitOrder(HttpServletRequest req, HttpServletResponse resp,
-			String contacts,String phone,String position1,String position2,String productinfo){
+			String contacts,String phone,String remark,String position1,String position2,String productinfo){
 		Map<String,String> map = new HashMap<String,String>();
 		try {
 			//判断是否验证
@@ -188,12 +189,15 @@ public class OrderPageController extends BaseController{
 			orderConfirms = orderService.checkOrder(orderConfirms);
 			for (OrderConfirm orderConfirm : orderConfirms) {
 				totalPrice=totalPrice.add(new BigDecimal(orderConfirm.getNum()).multiply(orderConfirm.getPrice()));
+				//查询商品分类
+				ProductClassify productClassify = productClassifyService.getProductClassifyListByProductClassifyId(orderConfirm.getProduct().getClassifyId());
 				
 				OrderProduct orderProduct = new OrderProduct();
 				//orderProduct.setOrderProductId(Long.parseLong(UUIDUtils.getUUID(15)));
 				orderProduct.setOrderId(orderId);
 				orderProduct.setProductId(orderConfirm.getProductId());
 				orderProduct.setProductName(orderConfirm.getProduct().getProductName());
+				orderProduct.setClassifyName(productClassify.getClassifyName());//分类名称
 				orderProduct.setPictureUrl(orderConfirm.getProduct().getPictureUrl());
 				orderProduct.setProductUnit(orderConfirm.getProduct().getProductUnit());
 				orderProduct.setMinBuyNum(orderConfirm.getProduct().getMinBuyNum());
@@ -211,6 +215,10 @@ public class OrderPageController extends BaseController{
 			order.setUserId(onlineObject.getUserSysId()); 
 			order.setCreateTime(new Date());
 			order.setMerchantId("20171112185000001");
+			if(null!=remark && !"".equals(remark)){
+				order.setRemark(remark);//订单备注
+			}
+			
 			
 			//封装收货地址对象
 			OrderAddress orderAddress = new OrderAddress();
@@ -427,9 +435,10 @@ public class OrderPageController extends BaseController{
 			}
 			
 			Order order = new Order();
-			order.setOrderStatus(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);//订单已取消
+			order.setOrderStatus(Order.ORDER_ORDERTYPE_DIN_DAN_YI_WAN_CHENG);//订单已完成
+			order.setCompleteTime(new Date());
 			OrderCriteria orderCriteria = new OrderCriteria();
-			orderCriteria.createCriteria().andOrderIdEqualTo(orderId).andUserIdEqualTo(onlineObject.getUserSysId()).andOrderStatusEqualTo(1);
+			orderCriteria.createCriteria().andOrderIdEqualTo(orderId).andUserIdEqualTo(onlineObject.getUserSysId()).andOrderStatusEqualTo(Order.ORDER_ORDERTYPE_DIN_DAN_CHU_LI_ZHONG);
 			int i = orderService.updateByExampleSelective(order, orderCriteria);
 			if(i>0){
 				map.put("flag","1");

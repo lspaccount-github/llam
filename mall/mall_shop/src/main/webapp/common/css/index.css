@@ -42,7 +42,7 @@ i{font-style:normal;}
 .container_box .boxwindow span:nth-child(2){margin-left: 20px;}
 .container_box .boxwindow span:nth-child(3){float: right;}
 .container_box ul li select{height:26px;width:80px;margin-top: 7px;}
-.container_box ul {height: 160px;background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}
+.container_box ul {height: 200px;background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}
 .container_box ul li{border-bottom:1px solid #e8e8e8;position: relative;height: 40px;line-height: 40px;}
 .container_box ul li:last-child{border-bottom:none;}
 .container_box ul li span{position: absolute;left:0 ;top:0;}
@@ -91,10 +91,10 @@ i{font-style:normal;}
 .order_status div:nth-child(1) img{height:50px;width:50px;border-radius: 50%;border: 1px solid #e8e8e8;}
 .order_status div:nth-child(2){float: left;font-size: 13px;color: #333;margin-left: 20px;}
 .order_status div:nth-child(2) p{margin-top:5px;}
-.order_status div:nth-child(3){float: right;height:60px;width:60px;border-radius: 50%;text-align: center;padding: 10px 15px;}
-.order_status .wait_handle{border: 1px solid  #df5f51;color: #df5f51;}
-.order_status .handle{border: 1px solid  #4586d8;color:#4586d8;padding: 19px 1px!important;}
-.order_status .cancle_order{border: 1px solid  #eda59d;color:#eda59d;}
+.order_status div:nth-child(3){float: right;height:60px;width:60px;border-radius: 50%;text-align: center;padding: 10px 2px;}
+.order_status .wait_handle{border: 1px solid  #f95437;color: #f95437;padding: 18px 8px!important;}
+.order_status .handle{border: 1px solid  #4586d8;color:#4586d8;}
+.order_status .cancle_order{border: 1px solid  #df5f51;color:#df5f51;}
 .calculate{background: #fff;border: 1px solid #e8e8e8;margin: 10px;overflow: hidden;    }
 .calculate ul li{height: 40px;line-height:40px; font-family: 20px;border-bottom:1px solid #e8e8e8; margin:0 10px;}
 .calculate ul li span:nth-child(1){float: left;}
@@ -104,9 +104,15 @@ i{font-style:normal;}
 .calculate div span{color:#df5f51;}
 
 /*订单想详情页面取消订单和去支付按钮样式*/
+
+.cancleConfirm{width: 100%;position: relative;}
+.cancleConfirm span{width:150px;height:30px;position: absolute;left: 50%;top: 50%;transform: translate(-50%,50%)}
+.cancleConfirm span a{padding: 10px 20px;font-size: 13px;border: 1px solid #eaeaea;display: inline-block;font-style: normal;}
+
+
 .cancle{width: 100%;margin-top: 30px;}
 .cancle span{width:50%;float: left;}
-.cancle span a{;padding: 10px 20px;font-size: 13px;border: 1px solid #eaeaea;display: inline-block;font-style: normal;}
+.cancle span a{padding: 10px 20px;font-size: 13px;border: 1px solid #eaeaea;display: inline-block;font-style: normal;}
 .cancle span:nth-child(1) a{float: right;margin-right:43px;color: #999;}
 .cancle span:nth-child(2) a{float: left;margin-left:-11px;background: #df5f51;color: #fff;}
 em{font-style: normal;}

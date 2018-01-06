@@ -24,6 +24,7 @@ import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order.OrderCriteria.Criteria;
 import com.mall.service.order.OrderService;
 import com.mall.utils.pageUtil.Pagination;
+import com.mall.utils.util.PropertiesUtil;
 import com.mall.utils.util1.DateUtil;
 
 @Controller
@@ -38,9 +39,8 @@ public class OrderController extends BaseController {
 	private final static int size = 10;
 	
 	/**
-	 * @throws ParseException 
 	 * 
-	 * @Title: toTodayList 
+	 * @Title: 今日订单列表 
 	 * @Description: 今日订单 
 	 * @param @param modelMap
 	 * @param @param request
@@ -100,6 +100,22 @@ public class OrderController extends BaseController {
 		return "order/order_today";
 	}
 	
+	/**
+	 * 
+	 * @Title: 历史订单列表
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param modelMap
+	 * @param @param request
+	 * @param @param response
+	 * @param @param pageNo
+	 * @param @param order
+	 * @param @param startTime
+	 * @param @param endTime
+	 * @param @return
+	 * @param @throws ParseException    设定文件 
+	 * @return String    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="/to_history")
 	public String toHistoryList(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,
 			Integer pageNo,@ModelAttribute("order") Order order,String startTime,String endTime) throws ParseException{
@@ -173,7 +189,7 @@ public class OrderController extends BaseController {
 	
 	/**
 	 * 
-	 * @Title: details 
+	 * @Title: 查看订单详情
 	 * @Description: 查看订单详情
 	 * @param @param orderId
 	 * @param @param modelMap
@@ -188,9 +204,20 @@ public class OrderController extends BaseController {
 		//查询所有订单相关信息
 		Order order = orderService.getOrderByOderIdLazy(orderId);
 		modelMap.addAttribute("order", order);
+		modelMap.addAttribute("IMG_WEB", PropertiesUtil.getParameter("IMG_WEB","parameter"));
 		return "order/order_details";
 	}
 	
+	/**
+	 * 
+	 * @Title: 确认订单支持单个和批量 
+	 * @Description: TODO(这里用一句话描述这个方法的作用) 
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param orderId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
 	@RequestMapping(value="orderConfirm")
 	public void orderConfirm(HttpServletRequest req, HttpServletResponse resp,
 			@RequestParam(value = "orderId[]") String[] orderId){
@@ -231,6 +258,9 @@ public class OrderController extends BaseController {
 			outJson(map);
 		}
 	}
+
+	
+	
 	
 	public static void main(String[] args) throws ParseException {
 		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd");

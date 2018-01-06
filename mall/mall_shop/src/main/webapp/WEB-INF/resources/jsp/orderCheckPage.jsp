@@ -51,6 +51,10 @@
 	   			<input type="tel" name="phone" id="phone" maxlength="11" style="color:#999;"  value="${orderAddress.phone}">	
 	   		</li>
 	   		<li>
+	   			<span>订单备注</span>	   			
+	   			<input type="text" name="remark" id="remark" maxlength="11" style="color:#000;"  value="">	
+	   		</li>
+	   		<li>
 	   			<span>方位</span>
 	   			 <div>
 	   			 <select name="position1" id="position1">
@@ -161,7 +165,7 @@
 		$("#productinfoh1").val(JSON.stringify(productinfoStr).replace(/\"/g,"'"));
 		/* $("#submitOrder").submit(); */
 		///////////////////////////////////////////////////
-		var param = {"contacts":$('#name').val(),"phone":$('#phone').val(),"productinfo":$("#productinfoh1").val(),"position1":$("#position1").val(),"position2":$("#position2").val()};
+		var param = {"contacts":$('#name').val(),"phone":$('#phone').val(),"remark":$('#remark').val(),"productinfo":$("#productinfoh1").val(),"position1":$("#position1").val(),"position2":$("#position2").val()};
 		 $.ajax({
 		        url : '${pageContext.request.contextPath}/order/submitOrder.html',
 		        type : "post",
