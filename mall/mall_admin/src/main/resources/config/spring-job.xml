@@ -23,25 +23,25 @@
 	<!-- 方式二start -->
 		<!-- [quartz使用] -->
 		<!-- 集成quartz框架的方式  -->
-		<bean id="userTask" class="com.mall.task.UserTask"/> 
+		<bean id="reconciliationTask" class="com.mall.task.ReconciliationTask"/> 
 		
-		<bean id="userInfo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		    <property name="targetObject" ref="userTask" />	<!-- 调用的类 -->
-		    <property name="targetMethod" value="showUserInfo" /> 	<!-- 调用类中的方法 -->
+		<bean id="hospitalCardReconciliationInfo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		    <property name="targetObject" ref="reconciliationTask" />	<!-- 调用的类 -->
+		    <property name="targetMethod" value="hospitalCardReconciliation" /> 	<!-- 调用类中的方法 -->
 			<property name="concurrent" value="false"/>
 		</bean>
-		<bean id="showUserInfoTask" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	
-		    <property name="jobDetail" ref="userInfo" />
-		    <property name="cronExpression" value="0/3 * * * * ?" />
+		<bean id="hospitalCardReconciliationInfoTask" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">	
+		    <property name="jobDetail" ref="hospitalCardReconciliationInfo" />
+		    <property name="cronExpression" value="0 */1 * * * ?" />
 		</bean>
 		<!-- ********************** 调度 如果将lazy-init='false'那么容器启动就会执行调度程序************* -->
-		<!-- <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		    <property name="triggers">
 		    	<list>
-					<ref bean="showUserInfoTask" />
+					<ref bean="hospitalCardReconciliationInfoTask" />
 		    	</list>
 			</property>
-		</bean> -->
+		</bean>
 	<!-- 方式二end: -->
 	
 </beans>
