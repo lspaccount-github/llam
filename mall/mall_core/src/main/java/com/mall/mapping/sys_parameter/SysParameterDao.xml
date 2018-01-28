@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.dao.sys_parameter.SysParameterDao" >
+  <resultMap id="BaseResultMap" type="com.mall.pojo.sys_parameter.SysParameter" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="parameter_name" property="parameterName" jdbcType="VARCHAR" />
+    <result column="parameter_status" property="parameterStatus" jdbcType="CHAR" />
+    <result column="parameter_value" property="parameterValue" jdbcType="VARCHAR" />
+    <result column="parameter_company" property="parameterCompany" jdbcType="VARCHAR" />
+    <result column="car_time" property="carTime" jdbcType="TIMESTAMP" />
+    <result column="upd_user" property="updUser" jdbcType="VARCHAR" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <if test="fields == null" >
+      id, parameter_name, parameter_status, parameter_value, parameter_company, car_time, 
+      upd_user, upd_time
+    </if>
+    <if test="fields != null" >
+      ${fields}
+    </if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mall.pojo.sys_parameter.SysParameterCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ho_sys_parameter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="startRow != null" >
+      limit #{startRow} , #{pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    id,parameter_name,parameter_status,parameter_value,parameter_company,car_time,upd_user,upd_time
+    from ho_sys_parameter
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ho_sys_parameter
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mall.pojo.sys_parameter.SysParameterCriteria" >
+    delete from ho_sys_parameter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mall.pojo.sys_parameter.SysParameter" >
+    insert into ho_sys_parameter (id, parameter_name, parameter_status, 
+      parameter_value, parameter_company, car_time, 
+      upd_user, upd_time)
+    values (#{id,jdbcType=BIGINT}, #{parameterName,jdbcType=VARCHAR}, #{parameterStatus,jdbcType=CHAR}, 
+      #{parameterValue,jdbcType=VARCHAR}, #{parameterCompany,jdbcType=VARCHAR}, #{carTime,jdbcType=TIMESTAMP}, 
+      #{updUser,jdbcType=VARCHAR}, #{updTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mall.pojo.sys_parameter.SysParameter" >
+    insert into ho_sys_parameter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parameterName != null" >
+        parameter_name,
+      </if>
+      <if test="parameterStatus != null" >
+        parameter_status,
+      </if>
+      <if test="parameterValue != null" >
+        parameter_value,
+      </if>
+      <if test="parameterCompany != null" >
+        parameter_company,
+      </if>
+      <if test="carTime != null" >
+        car_time,
+      </if>
+      <if test="updUser != null" >
+        upd_user,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parameterName != null" >
+        #{parameterName,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterStatus != null" >
+        #{parameterStatus,jdbcType=CHAR},
+      </if>
+      <if test="parameterValue != null" >
+        #{parameterValue,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterCompany != null" >
+        #{parameterCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="carTime != null" >
+        #{carTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updUser != null" >
+        #{updUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mall.pojo.sys_parameter.SysParameterCriteria" resultType="java.lang.Integer" >
+    select count(*) from ho_sys_parameter
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ho_sys_parameter
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.parameterName != null" >
+        parameter_name = #{record.parameterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parameterStatus != null" >
+        parameter_status = #{record.parameterStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.parameterValue != null" >
+        parameter_value = #{record.parameterValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parameterCompany != null" >
+        parameter_company = #{record.parameterCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carTime != null" >
+        car_time = #{record.carTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updUser != null" >
+        upd_user = #{record.updUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ho_sys_parameter
+    set id = #{record.id,jdbcType=BIGINT},
+      parameter_name = #{record.parameterName,jdbcType=VARCHAR},
+      parameter_status = #{record.parameterStatus,jdbcType=CHAR},
+      parameter_value = #{record.parameterValue,jdbcType=VARCHAR},
+      parameter_company = #{record.parameterCompany,jdbcType=VARCHAR},
+      car_time = #{record.carTime,jdbcType=TIMESTAMP},
+      upd_user = #{record.updUser,jdbcType=VARCHAR},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mall.pojo.sys_parameter.SysParameter" >
+    update ho_sys_parameter
+    <set >
+      <if test="parameterName != null" >
+        parameter_name = #{parameterName,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterStatus != null" >
+        parameter_status = #{parameterStatus,jdbcType=CHAR},
+      </if>
+      <if test="parameterValue != null" >
+        parameter_value = #{parameterValue,jdbcType=VARCHAR},
+      </if>
+      <if test="parameterCompany != null" >
+        parameter_company = #{parameterCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="carTime != null" >
+        car_time = #{carTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updUser != null" >
+        upd_user = #{updUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mall.pojo.sys_parameter.SysParameter" >
+    update ho_sys_parameter
+    set parameter_name = #{parameterName,jdbcType=VARCHAR},
+      parameter_status = #{parameterStatus,jdbcType=CHAR},
+      parameter_value = #{parameterValue,jdbcType=VARCHAR},
+      parameter_company = #{parameterCompany,jdbcType=VARCHAR},
+      car_time = #{carTime,jdbcType=TIMESTAMP},
+      upd_user = #{updUser,jdbcType=VARCHAR},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

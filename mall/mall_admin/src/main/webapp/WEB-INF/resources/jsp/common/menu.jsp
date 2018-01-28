@@ -100,9 +100,9 @@
 	          </a>
 	          <ul class="sub-menu">
 	              <li>
-	                  <a _href="${pageContext.request.contextPath}/order/tolist.do">
+	                  <a _href="${pageContext.request.contextPath}/parameter/tolist.do">
 	                      <i class="iconfont">&#xe6a7;</i>
-	                      <cite>订餐设置</cite>
+	                      <cite>参数设置</cite>
 	                  </a>
 	              </li >
 	          </ul>

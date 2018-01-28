@@ -1,6 +1,7 @@
 package com.mall.service.impl.order;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -139,7 +140,10 @@ public class OrderServiceImpl implements OrderService{
 			map.put("paymentPassword",hospitalCard.getPaymentPassword());
 			map.put("paymentMoney", order.getOrderMoney());
 			int i=zgXyCardInfoDao.payment(map);
-			//TODO 注释2
+			//2Zg_RyxfInfo
+			//ZgRyxfInfo zgRyxfInfo = new ZgRyxfInfo();
+			//zgRyxfInfo.setRyxfid("20171110000001");
+			//TODO 序列没有办法生成，暂无法插入
 			
 			//3
 			OrderCriteria orderCriteria = new OrderCriteria();
@@ -201,5 +205,10 @@ public class OrderServiceImpl implements OrderService{
 		return orderDao.sumorderMoneyByCriteria(orderCriteria);
 	}
 	
-	
+	public static void main(String[] args) {
+		String msg="";  
+        Date date = new Date();  
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMddHH:mm:ss.SSS");  
+        msg+="["+sdf.format(date)+"]";  
+	}
 }
