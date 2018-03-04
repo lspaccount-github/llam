@@ -48,4 +48,10 @@ public class SysParameterServiceImpl implements SysParameterService{
 		SysParameter selectByPrimaryKey = sysParameterDao.selectByPrimaryKey(id);
 		return selectByPrimaryKey;
 	}
+
+
+	@Override
+	public List<SysParameter> selectByExample(SysParameterCriteria example) {
+		return sysParameterDao.selectByExample(example);
+	}
 }

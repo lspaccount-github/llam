@@ -42,7 +42,8 @@ i{font-style:normal;}
 .container_box .boxwindow span:nth-child(2){margin-left: 20px;}
 .container_box .boxwindow span:nth-child(3){float: right;}
 .container_box ul li select{height:26px;width:80px;margin-top: 7px;}
-.container_box ul {height: 200px;background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}
+/*.container_box ul {height: 200px;background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}*/
+.container_box ul {background: #fff;border:1px solid #e8e8e8;border-radius: 5px;padding:0 20px;}
 .container_box ul li{border-bottom:1px solid #e8e8e8;position: relative;height: 40px;line-height: 40px;}
 .container_box ul li:last-child{border-bottom:none;}
 .container_box ul li span{position: absolute;left:0 ;top:0;}

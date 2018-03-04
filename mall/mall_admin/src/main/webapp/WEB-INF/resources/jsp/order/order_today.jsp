@@ -46,6 +46,7 @@
 					<th>下单时间</th>
 					<th>收货人</th>
 					<th>地址</th>
+					<th>方位</th>
 					<th>订单金额</th>
 					<th>支付方式</th>
 					<th>订单状态</th>
@@ -66,6 +67,7 @@
 						<td><fmt:formatDate value="${order.createTime}" type="both"/></td>
 						<td>${order.orderAddress.contacts}:${order.orderAddress.phone}</td>
 						<td>${order.orderAddress.detailAddress}</td>
+						<td>${order.orderAddress.position}</td>
 						<td>${order.orderMoney}</td>
 						<td>餐卡支付</td>
 						<td>${order.orderStatusView}</td>

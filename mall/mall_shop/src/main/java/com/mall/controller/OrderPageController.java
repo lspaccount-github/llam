@@ -27,12 +27,15 @@ import com.mall.pojo.order.OrderCriteria;
 import com.mall.pojo.order_address.OrderAddress;
 import com.mall.pojo.order_product.OrderProduct;
 import com.mall.pojo.product_classify.ProductClassify;
+import com.mall.pojo.sys_parameter.SysParameter;
+import com.mall.pojo.sys_parameter.SysParameterCriteria;
 import com.mall.pojo.user.User;
 import com.mall.service.merchant.MerchantService;
 import com.mall.service.order.OrderService;
 import com.mall.service.order_address.OrderAddressService;
 import com.mall.service.product.ProductService;
 import com.mall.service.product_classify.ProductClassifyService;
+import com.mall.service.sys_parameter.SysParameterService;
 import com.mall.utils.NumberUtils;
 import com.mall.utils.util1.DateUtil;
 import com.mall.utils.util1.UUIDUtils;
@@ -61,7 +64,8 @@ public class OrderPageController extends BaseController{
 	private OrderService orderService;
 	@Autowired
 	private OrderAddressService orderAddressService;
-	 
+	@Autowired
+	private SysParameterService sysParameterService;
 	
 	/**
 	 * 
@@ -113,6 +117,7 @@ public class OrderPageController extends BaseController{
 			orderAddress = new OrderAddress();
 			orderAddress.setContacts("请输入姓名");
 			orderAddress.setPhone("请输入联系电话");
+			orderAddress.setDetailAddress("请输入详细地址");
 		}
 		//set收货地址
 		request.setAttribute("orderAddress", orderAddress);
@@ -135,7 +140,7 @@ public class OrderPageController extends BaseController{
 	 */
 	@RequestMapping(value="submitOrder")
 	public void submitOrder(HttpServletRequest req, HttpServletResponse resp,
-			String contacts,String phone,String remark,String position1,String position2,String productinfo){
+			String contacts,String phone,String remark,String position,String detailAddress,String productinfo,String isDistribution,String isTableware,String tablewareNum){
 		Map<String,String> map = new HashMap<String,String>();
 		try {
 			//判断是否验证
@@ -151,7 +156,7 @@ public class OrderPageController extends BaseController{
 			}
 			//入参校验
 			if(StringUtils.isBlank(contacts) || StringUtils.isBlank(phone)
-					|| StringUtils.isBlank(position1) || StringUtils.isBlank(position2) 
+					 || StringUtils.isBlank(detailAddress) 
 					||StringUtils.isBlank(productinfo)){
 				map.put("flag","0");
 				map.put("message","参数异常！");
@@ -167,12 +172,28 @@ public class OrderPageController extends BaseController{
 				map.put("message","联系电话输入格式不正确！");
 				return;
 			}
-			if(!NumberUtils.isNumeric(position1) || !NumberUtils.isNumeric(position2)){
+			if(detailAddress.length()>50 || detailAddress.equals("请输入请输入详细地址")){
+				map.put("flag","0");
+				map.put("message","详细地址输入格式不正确！");
+				return;
+			}
+			
+			if(null==position || "请选择".equals(position)){
 				map.put("flag","0");
 				map.put("message","选择的方位格式不正确！");
 				return;
 			}
 			
+			if(null==isDistribution || "0".equals(isDistribution)){
+				map.put("flag","0");
+				map.put("message","请选择是否配送！");
+				return;
+			}
+			if(null==isTableware || "0".equals(isTableware)){
+				map.put("flag","0");
+				map.put("message","请选择是否需要餐具！");
+				return;
+			}			
 			
 			//json 转换为对象
 			List<OrderConfirm> orderConfirms = new ArrayList<OrderConfirm>(); 
@@ -207,6 +228,46 @@ public class OrderPageController extends BaseController{
 				orderProduct.setPrice(orderConfirm.getPrice());
 				orderProducts.add(orderProduct);
 			}
+			
+			if("1".equals(isDistribution)){//需要配送
+				//查询配送费
+				SysParameterCriteria criteria = new SysParameterCriteria();
+				criteria.createCriteria().andParameterNameEqualTo("配送费");
+				List<SysParameter> selectByExample = sysParameterService.selectByExample(criteria);
+				SysParameter sysParameter = selectByExample.get(0);
+				totalPrice = totalPrice.add(new BigDecimal(sysParameter.getParameterValue()));
+				
+				OrderProduct orderProduct = new OrderProduct();
+				orderProduct.setOrderId(orderId);
+				orderProduct.setProductName(sysParameter.getParameterName());
+				orderProduct.setProductUnit(sysParameter.getParameterCompany());
+				orderProduct.setBuyProductNum((long)1);
+				orderProduct.setPrice(new BigDecimal(sysParameter.getParameterValue()));
+				orderProducts.add(orderProduct);
+			}
+			if("1".equals(isDistribution)){//需要配送
+				if(null!=tablewareNum && !"".equals(tablewareNum) && Integer.parseInt(tablewareNum)>0){
+					//查询配送费
+					SysParameterCriteria criteria = new SysParameterCriteria();
+					criteria.createCriteria().andParameterNameEqualTo("餐具费");
+					List<SysParameter> selectByExample = sysParameterService.selectByExample(criteria);
+					SysParameter sysParameter = selectByExample.get(0);
+					totalPrice = totalPrice.add(new BigDecimal(sysParameter.getParameterValue()).multiply(new BigDecimal(Integer.parseInt(tablewareNum))));
+					
+					OrderProduct orderProduct = new OrderProduct();
+					orderProduct.setOrderId(orderId);
+					orderProduct.setProductName(sysParameter.getParameterName());
+					orderProduct.setProductUnit(sysParameter.getParameterCompany());
+					orderProduct.setBuyProductNum((long)Integer.parseInt(tablewareNum));
+					orderProduct.setPrice(new BigDecimal(sysParameter.getParameterValue()));
+					orderProducts.add(orderProduct);
+				}else{
+					map.put("flag","0");
+					map.put("message","请输入餐具数量！");
+					return;
+				}
+			}
+			
 			//保存订单
 			Order order = new Order();
 			order.setOrderId(orderId);		
@@ -226,7 +287,10 @@ public class OrderPageController extends BaseController{
 			orderAddress.setOrderId(orderId);
 			orderAddress.setContacts(contacts);
 			orderAddress.setPhone(phone);
-			orderAddress.setDetailAddress(position1+","+position2);
+			orderAddress.setPosition(position);
+			//orderAddress.setDetailAddress(position1+","+position2);
+			orderAddress.setDetailAddress(detailAddress);
+			
 			
 			//orderservice 保存订单方法
 			orderService.saveOrderAndOrderProduct(order,orderProducts,orderAddress);
@@ -452,6 +516,57 @@ public class OrderPageController extends BaseController{
 			logger.error("===订单确认异常====",e);
 			map.put("flag","0");
 			map.put("message","订单确认异常，请稍后重试！");
+		}finally{
+			outJson(map);
+		}
+	}
+	
+	/**
+	 * 
+	 * @Title: cancelOrder 
+	 * @Description:获取
+	 * @param @param req
+	 * @param @param resp
+	 * @param @param orderId    设定文件 
+	 * @return void    返回类型 
+	 * @throws
+	 */
+	@RequestMapping(value="SysParameter")
+	public void getDistribution(HttpServletRequest req, HttpServletResponse resp,String id){
+		Map<String,Object> map = new HashMap<String,Object>();
+		try {
+			//判断是否验证
+			User onlineObject = getOnlineObject(req, resp);
+			if(null!=onlineObject && null!=onlineObject.getUserid() 
+					&& !onlineObject.getUserid().equals("") && null!=onlineObject.getUserSysId()
+					&& !onlineObject.getUserSysId().equals("")){
+				//验证通过不处理
+			}else{
+				map.put("flag","0");
+				map.put("message","您还没有关注微信企业号，请先关注，谢谢！");
+				return;
+			}
+			if(null==id && "".equals(id)){
+				map.put("flag","0");
+				map.put("message","参数异常，请稍后重试！");
+				return;
+			}
+			
+			SysParameterCriteria s = new SysParameterCriteria();
+			s.createCriteria().andIdEqualTo(Long.parseLong(id));
+			List<SysParameter> selectByExample = sysParameterService.selectByExample(s);
+			
+			if(selectByExample.size()>0){
+				map.put("sysParameter", selectByExample.get(0));
+			}else{
+				map.put("flag","0");
+				map.put("message","订单取消失败，请稍后重试！");
+			}
+			
+		} catch (Exception e) {
+			logger.error("===订单取消异常====",e);
+			map.put("flag","0");
+			map.put("message","订单取消异常，请稍后重试！");
 		}finally{
 			outJson(map);
 		}

@@ -1,5 +1,7 @@
 package com.mall.service.sys_parameter;
 
+import java.util.List;
+
 import com.mall.pojo.sys_parameter.SysParameter;
 import com.mall.pojo.sys_parameter.SysParameterCriteria;
 import com.mall.utils.pageUtil.Pagination;
@@ -44,5 +46,7 @@ public interface SysParameterService {
 	 * @throws
 	 */
 	public SysParameter selectByPrimaryKey(Long id);
+	
+	List<SysParameter> selectByExample(SysParameterCriteria example);
 
 }

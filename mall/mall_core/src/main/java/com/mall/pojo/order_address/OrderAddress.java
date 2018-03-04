@@ -33,6 +33,11 @@ public class OrderAddress implements Serializable {
      */
     private String detailAddress;
 
+    /**
+     * 方位
+     */
+    private String position;
+
     private static final long serialVersionUID = 1L;
 
     public Long getOrderAddress() {
@@ -83,6 +88,14 @@ public class OrderAddress implements Serializable {
         this.detailAddress = detailAddress == null ? null : detailAddress.trim();
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position == null ? null : position.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -95,6 +108,7 @@ public class OrderAddress implements Serializable {
         sb.append(", sirOrMadam=").append(sirOrMadam);
         sb.append(", phone=").append(phone);
         sb.append(", detailAddress=").append(detailAddress);
+        sb.append(", position=").append(position);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
