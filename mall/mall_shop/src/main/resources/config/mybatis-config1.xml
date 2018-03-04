@@ -9,7 +9,7 @@
         <!-- 禁止积极主动的加载 -->
         <setting name="aggressiveLazyLoading" value="false" />
         <!-- 打印查询语句 -->
-        <setting name="logImpl" value="STDOUT_LOGGING" />
+        <setting name="logImpl" value="LOG4J" />
     </settings> 
     <typeAliases>
 		<package name="com.mall.pojo"/>
